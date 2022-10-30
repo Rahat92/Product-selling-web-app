@@ -1,0 +1,9 @@
+export const increaseNum = 'INCREASE_NUMBER';
+export const decreaseNum = 'DECREASE_NUMBER';
+export const fetchAllProduct = 'FETCH_ALL_PRODUCT';
+export const deleteAProduct = 'DELETE_PRODUCT';
+export const getAProduct = 'GET_PRODUCT';
+export const editSingleProduct = 'eidt_single_product';
+export const handleInputChange = 'handle_input_change';
+export const createProduct = 'CREATE_NEW_PRODUCT';
+export const createASingleProduct = 'CREATE_SINGLE_PRODUCT';
