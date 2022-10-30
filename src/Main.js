@@ -1,20 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createSearchParams, Link, useNavigate } from 'react-router-dom';
+import { createSearchParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct } from './actions';
 const Main = () => {
   const navigate = useNavigate()
+  const location = useLocation().search;
+  const currentPage = new URLSearchParams(location).get('page')
+  console.log(currentPage)
   const selector = useSelector(state=> state)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(()=>{
-    dispatch(fetchProducts())
-
-  },[selector.deleteproduct.data, selector.createBrandNewProduct.data])
+    dispatch(fetchProducts(currentPage))
+    selector.currentNum = +currentPage;
+  },[selector.deleteproduct.data, selector.createBrandNewProduct.data, selector.currentNum])
+  const paramss = {
+    page:selector.currentNum+1
+  }
   const doIncrease = () => {
     dispatch(increase())
+    navigate({
+      pathname:'/',
+      search:`?${createSearchParams(paramss)}`
+    })
+  }
+  const para = {
+    page:selector.currentNum-1
   }
   const doDecrease = () => {
-    dispatch(decrease())
+    dispatch(decrease());
+    navigate({
+      pathname:'/',
+      search:`?${createSearchParams(para)}`
+    })
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
@@ -64,6 +81,7 @@ const Main = () => {
                 <input type= 'submit' value= 'create'/>
               </form>
             ) }
+            <br />
           </div>
           { !selector.singleProduct.doc?(
             <h2 style={{background:'green', position:'absolute', padding:'.5rem', color:'white', borderRadius:'5px'}}>Click On a single Product to see detail here</h2>)

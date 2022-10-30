@@ -1,6 +1,6 @@
 import { createASingleProduct, createProduct, decreaseNum, deleteAProduct, editSingleProduct, fetchAllProduct, getAProduct, handleInputChange, increaseNum } from "../const";
 import { combineReducers } from 'redux'
-const numberReducer = (initialState = 0, action) => {
+const numberReducer = (initialState = 1, action) => {
   switch(action.type){
     case increaseNum:
       return initialState+action.payload;

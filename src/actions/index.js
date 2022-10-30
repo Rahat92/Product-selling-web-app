@@ -12,9 +12,13 @@ export const decrease = () => {
     payload:1
   }
 }
-export const fetchProducts = () => {  
+export const fetchProducts = (currentPage) => {  
   return async(dispatch) => {
-    const response = await requestCreator.get('/products')
+    const response = await requestCreator.get('/products',{
+      params:{
+        page:currentPage
+      }
+    })
     dispatch({
       type:fetchAllProduct,
       payload: response
