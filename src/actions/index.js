@@ -1,4 +1,4 @@
-import { createASingleProduct, createProduct, decreaseNum, getAProduct, deleteAProduct, handleInputChange, fetchAllProduct, increaseNum, editSingleProduct } from "../const"
+import { tracsortvalue,createASingleProduct, createProduct, decreaseNum, getAProduct, deleteAProduct, handleInputChange, fetchAllProduct, increaseNum, editSingleProduct } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
   return {
@@ -12,11 +12,13 @@ export const decrease = () => {
     payload:1
   }
 }
-export const fetchProducts = (currentPage) => {  
+export const fetchProducts = (currentPage, sortvalue, searchValue) => {  
   return async(dispatch) => {
     const response = await requestCreator.get('/products',{
       params:{
-        page:currentPage
+        page:currentPage,
+        sort:sortvalue,
+        keyword:searchValue
       }
     })
     dispatch({
@@ -63,7 +65,7 @@ export const editProduct =(id, name, rating, navigate) => {
       type: editSingleProduct,
       payload:response
     })
-    navigate('/', { replace: true})
+    navigate(-1)
   }
 }
 
@@ -90,5 +92,11 @@ export const createAProduct = (product, price) => {
       type: createASingleProduct,
       payload: response
     })
+  }
+}
+export const trackSortedValue = (value) => {
+  return{
+    type:tracsortvalue,
+    payload:value
   }
 }

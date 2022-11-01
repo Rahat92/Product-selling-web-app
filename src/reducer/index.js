@@ -1,4 +1,4 @@
-import { createASingleProduct, createProduct, decreaseNum, deleteAProduct, editSingleProduct, fetchAllProduct, getAProduct, handleInputChange, increaseNum } from "../const";
+import { createASingleProduct, createProduct, decreaseNum, deleteAProduct, editSingleProduct, fetchAllProduct, getAProduct, handleInputChange, increaseNum, tracsortvalue } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -52,6 +52,13 @@ const createBrandNewProduct = (initialState = {}, action) => {
   }
   return initialState;
 }
+
+const sortValueReducer = (initialState = 'price,-ratingsAverage', action) => {
+  if(action.type === tracsortvalue){
+    return initialState = action.payload
+  }
+  return initialState
+}
 export default combineReducers({
   currentNum: numberReducer,
   allProduct: allProduct,
@@ -60,5 +67,6 @@ export default combineReducers({
   editedProduct:editProductReducer,
   changeInput: handleInputReducer,
   createAProduct: createSingleProduct,
-  createBrandNewProduct:createBrandNewProduct
+  createBrandNewProduct:createBrandNewProduct,
+  sortValue:sortValueReducer
 })

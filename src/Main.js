@@ -1,37 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createSearchParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct } from './actions';
+import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
+import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct } from './actions';
 const Main = () => {
   const navigate = useNavigate()
-  const location = useLocation().search;
-  const currentPage = new URLSearchParams(location).get('page')
-  console.log(currentPage)
+  const param = useParams();
+  const [search, setSearch] = useState();
+  console.log(param)
+  const currentUrl = window.location.pathname
+  // const [searchParam, setSearchParams] = useSearchParams();
+  // console.log(searchParam.get('page'))
+  // let currentPage = new URLSearchParams(location).get('page')
+  // let currentPage = searchParam.get('page')
+  // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
   const dispatch = useDispatch();
   useEffect(()=>{
-    dispatch(fetchProducts(currentPage))
-    selector.currentNum = +currentPage;
-  },[selector.deleteproduct.data, selector.createBrandNewProduct.data, selector.currentNum])
-  const paramss = {
-    page:selector.currentNum+1
+    const price = selector.sortValue === 'price'?'-price':selector.sortValue
+    console.log(price)
+    dispatch(fetchProducts(selector.currentNum,price, search))
+    selector.currentNum = selector.currentNum
+  },[selector.deleteproduct.data, selector.createBrandNewProduct.data,selector.sortValue, selector.currentNum,search])
+  if(selector.allProduct.data){
+    if(selector.allProduct.data.result>4){
+      selector.currentNum = undefined
+    }
   }
   const doIncrease = () => {
     dispatch(increase())
-    navigate({
-      pathname:'/',
-      search:`?${createSearchParams(paramss)}`
-    })
-  }
-  const para = {
-    page:selector.currentNum-1
   }
   const doDecrease = () => {
     dispatch(decrease());
-    navigate({
-      pathname:'/',
-      search:`?${createSearchParams(para)}`
-    })
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
@@ -45,10 +44,6 @@ const Main = () => {
   const sendReview = () => {
 
   }
-  const allProduct = () => {
-    if(!selector.allProduct.data){
-      return <p>Loading data, Please wait...</p>
-    }
   const createProduct = () => {
     dispatch(createNewProduct())
   }
@@ -57,16 +52,29 @@ const Main = () => {
     selector.createAProduct = false
     dispatch(createAProduct(e.target.productName.value,e.target.price.value))
   }
+  const trackSortValue =(e)=> {
+    dispatch(trackSortedValue(e.target.value))
+  }
+
+  const searchFor = (e) => {
+    setSearch(e.target.value)
+  }
+  const allProduct = () => {
+    if(!selector.allProduct.data){
+      return <p>Loading data, Please wait...</p>
+    }
     return(
         <div>
           <div>
             <h1>Total Documents: {selector.allProduct.data.docNum}</h1>
             <ul>
-              {selector.allProduct.data.docs.map(el=>{
+              {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
                 return (
-                  <li key = {el.id}>{el.name} <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button><button onClick={()=>deleteProduct(el.id)}>Delete</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link></li>
+                  <div>
+                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button><button onClick={()=>deleteProduct(el.id)}>Delete</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link></li>
+                  </div>
                 )
-              })}
+              }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}
             </ul>
             {/* <button type = 'button' onClick={createProduct}>create new Product</button> */}
             {!selector.createAProduct?
@@ -90,6 +98,7 @@ const Main = () => {
             <div>
               <h2><span style = {{background:'grey', padding:'.3rem', borderRadius:'3px'}}>{selector.singleProduct.doc.name}</span>'s details</h2>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>নামঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.name}</span><br/>
+              <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>কেটাগরিঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.category}</span><br/>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মুল্যঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.price}</span><br/>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মোট রেটিংঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.numberOfRatings}</span><br/>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>রেটিংসঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.ratingsAverage}</span>
@@ -130,10 +139,17 @@ const Main = () => {
   }
   return (
     <div>
+        <input onChange = {searchFor} type = 'text' name = 'keyword'/>
+      <br />
       <button type='button' onClick={gotoParams}>params</button>
+      <br />
       <h1>Number {selector.currentNum}</h1>
-      <button onClick={doDecrease}>decrease</button>
-      <button onClick={doIncrease}>increase</button>
+      <button onClick={doDecrease} disabled = {selector.currentNum === 1? true:false}>decrease</button>
+      <button onClick={doIncrease} disabled = {selector.allProduct.data&&selector.allProduct.data.docs.length>0?false:true}>increase</button><br/>
+        <select onChange={trackSortValue}>
+          <option>price</option>
+          <option>ratingsAverage</option>
+        </select>
       {allProduct()}
       {/* { !selector.deleteproduct.data?'':afterDelete() } */}
     </div>

@@ -7,3 +7,4 @@ export const editSingleProduct = 'eidt_single_product';
 export const handleInputChange = 'handle_input_change';
 export const createProduct = 'CREATE_NEW_PRODUCT';
 export const createASingleProduct = 'CREATE_SINGLE_PRODUCT';
+export const tracsortvalue = 'SORT_VALUE';
