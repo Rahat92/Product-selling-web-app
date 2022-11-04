@@ -1,4 +1,4 @@
-import { createASingleProduct, createProduct, decreaseNum, deleteAProduct, editSingleProduct, fetchAllProduct, getAProduct, handleInputChange, increaseNum, tracsortvalue } from "../const";
+import { createASingleProduct, createProduct, decreaseNum, deleteAProduct, editSingleProduct, fetchAllProduct, getAProduct, getMeFail, getMeRequest, getMeSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -59,6 +59,73 @@ const sortValueReducer = (initialState = 'price,-ratingsAverage', action) => {
   }
   return initialState
 }
+
+const userReducer = (initialState = {user:{}}, action)=>{
+  switch(action.type){
+    case loginRequest:
+      return {
+        loading : true,
+        isAuthenticated : false,
+      }
+    case loginSuccess:
+      return {
+        ...initialState,
+        loading : false,
+        isAuthenticated : true,
+        user : action.payload
+      }
+    case loginFail:
+      return {
+        ...initialState,
+        loading : false,
+        isAuthenticated : false,
+        user:null,
+        error:action.payload
+      }
+    case getMeRequest:
+      return{
+        loading:true,
+        isAuthenticated: false,
+      }
+    case getMeSuccess:
+      return {
+        ...initialState,
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload
+      }
+    case getMeFail:
+      return {
+        loading: false,
+        isAuthenticated:false,
+        user:null
+      }
+    default:
+      return initialState
+  }
+}
+const logOutReducer = (initialState = {}, action) => {
+  switch(action.type){
+    case logOutRequest:
+      return {
+        loading:true,
+        isAuthenticated:true,
+      }
+    case logOutSuccess:
+      return {
+        loading:false,
+        isAuthenticated:false,
+        user:null
+      }
+    case logOutFail:
+      return {
+        loading: false,
+        isAuthenticated: true
+      }
+    default:
+      return initialState
+  }
+}
 export default combineReducers({
   currentNum: numberReducer,
   allProduct: allProduct,
@@ -68,5 +135,7 @@ export default combineReducers({
   changeInput: handleInputReducer,
   createAProduct: createSingleProduct,
   createBrandNewProduct:createBrandNewProduct,
-  sortValue:sortValueReducer
+  sortValue:sortValueReducer,
+  user:userReducer,
+  logOut:logOutReducer
 })

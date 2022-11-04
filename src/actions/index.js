@@ -1,4 +1,4 @@
-import { tracsortvalue,createASingleProduct, createProduct, decreaseNum, getAProduct, deleteAProduct, handleInputChange, fetchAllProduct, increaseNum, editSingleProduct } from "../const"
+import { tracsortvalue,createASingleProduct, createProduct, decreaseNum, getAProduct, deleteAProduct, handleInputChange, fetchAllProduct, increaseNum, editSingleProduct, loginRequest, loginSuccess, loginFail, getMeSuccess, getMeRequest, getMeFail, logOutRequest, logOutSuccess, logOutFail } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
   return {
@@ -47,7 +47,7 @@ export const deleteOneProduct = (id) => {
   return async (dispatch) => {
     await requestCreator.delete(`/products/${id}`).then(data=>{
       response = data;
-    }).catch(err=>  response = err)
+    }).catch(err=>  response = err.response)
     dispatch({
       type:deleteAProduct,
       payload:response
@@ -86,7 +86,7 @@ export const createAProduct = (product, price) => {
   return async(dispatch) => {
     await requestCreator.post(`products`,{
       name: product,
-      price: price
+      price: price    
     }).then((data) => response = data).catch(err=>response = err)
     dispatch({
       type: createASingleProduct,
@@ -98,5 +98,73 @@ export const trackSortedValue = (value) => {
   return{
     type:tracsortvalue,
     payload:value
+  }
+}
+
+export const loginUser = (email, password) => {
+  return async(dispatch) => {
+    try{
+      dispatch({
+        type: loginRequest
+      })
+      // const config = {
+      //   headers: {
+      //       'Content-Type': 'application/json'
+      //   }
+      // }
+      const {data} = await requestCreator.post('/users/login',{
+        email,
+        password
+      })
+      dispatch({
+        type: loginSuccess,
+        payload:data.user
+      })
+    }catch(error){
+      dispatch({
+        type:loginFail,
+        payload:error.response.data
+      })
+    }
+  }
+}
+
+export const getMe = () => {
+  return async (dispatch) => {
+    try{
+      dispatch({
+        type: getMeRequest
+      })
+      const { data } = await requestCreator.get(`/users/me`);
+      dispatch({
+        type: getMeSuccess,
+        payload:data.doc
+      })
+    }catch(error){
+      dispatch({
+        type:getMeFail,
+        payload:error.response.data
+      })
+    }
+  }
+}
+
+export const getLogOut = () => {
+  return async (dispatch) => {
+    try{
+      dispatch({
+        type: logOutRequest
+      })
+      const response = await requestCreator.get('/users/logout')
+      dispatch({
+        type:logOutSuccess,
+        payload:response
+      })
+    }catch(error){
+      dispatch({
+        type:logOutFail,
+        payload:error.response
+      })
+    }
   }
 }

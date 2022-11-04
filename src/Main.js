@@ -1,31 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct } from './actions';
+import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe } from './actions';
 const Main = () => {
   const navigate = useNavigate()
   const param = useParams();
-  const [search, setSearch] = useState();
-  console.log(param)
-  const currentUrl = window.location.pathname
+  const [search, setSearch] = useState('');
+  const currentUrl = window.location.pathname;
   // const [searchParam, setSearchParams] = useSearchParams();
   // console.log(searchParam.get('page'))
   // let currentPage = new URLSearchParams(location).get('page')
   // let currentPage = searchParam.get('page')
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
+  const { user } = useSelector(state=>state.user)
   const dispatch = useDispatch();
   useEffect(()=>{
     const price = selector.sortValue === 'price'?'-price':selector.sortValue
-    console.log(price)
-    dispatch(fetchProducts(selector.currentNum,price, search))
-    selector.currentNum = selector.currentNum
-  },[selector.deleteproduct.data, selector.createBrandNewProduct.data,selector.sortValue, selector.currentNum,search])
-  if(selector.allProduct.data){
-    if(selector.allProduct.data.result>4){
-      selector.currentNum = undefined
+    dispatch(getMe())
+    const request = () => {
+      dispatch(fetchProducts(selector.currentNum,price, search))
     }
-  }
+
+    // selector.currentNum = selector.currentNum
+    // if(selector.allProduct.data){
+    //   if(selector.allProduct.data.result<4 && search.length>0){
+    //     selector.currentNum = 1
+    //   }
+    // }
+    let timer;
+    
+    if(selector.allProduct.data){
+      if(search&&selector.allProduct.data.result<4&& !selector.currentNum>1){
+        selector.currentNum=1
+      }else{
+        selector.currentNum = selector.currentNum;
+      }
+    }
+    if(search){
+      timer = setTimeout(()=>{
+        // if(selector.allProduct.data.result>4){
+        //   console.log('hello world')
+        //   selector.currentNum = selector.currentNum
+        // }
+        // if(selector.allProduct.data.result<=4){
+        //   selector.currentNum = 1
+        // }
+        
+        request()
+      },500)
+    }
+    if(search.length === 0){
+      request()
+    }
+    return ()=> clearTimeout(timer)
+
+  },[selector.deleteproduct.data, selector.createBrandNewProduct.data,selector.sortValue, selector.currentNum,search])
+  
+  
   const doIncrease = () => {
     dispatch(increase())
   }
@@ -55,10 +87,11 @@ const Main = () => {
   const trackSortValue =(e)=> {
     dispatch(trackSortedValue(e.target.value))
   }
-
+  
   const searchFor = (e) => {
     setSearch(e.target.value)
   }
+  
   const allProduct = () => {
     if(!selector.allProduct.data){
       return <p>Loading data, Please wait...</p>
@@ -71,13 +104,14 @@ const Main = () => {
               {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
                 return (
                   <div>
-                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button><button onClick={()=>deleteProduct(el.id)}>Delete</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link></li>
+                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>{selector.deleteProduct&&!selector.deleteProduct.data?'deleteing':'delete'}</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link></>)}</li>
                   </div>
                 )
               }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}
             </ul>
             {/* <button type = 'button' onClick={createProduct}>create new Product</button> */}
-            {!selector.createAProduct?
+            {/* {user&&user.role === 'admin'?'hello world':null} */}
+            {user&&user.role === 'admin'&&(!selector.createAProduct?
             (
               <button type = 'button' onClick={createProduct}>create new Product</button>
             ):(
@@ -88,7 +122,7 @@ const Main = () => {
                 <input type = 'number' name = 'price' /><br />
                 <input type= 'submit' value= 'create'/>
               </form>
-            ) }
+            ) )}
             <br />
           </div>
           { !selector.singleProduct.doc?(
@@ -139,7 +173,7 @@ const Main = () => {
   }
   return (
     <div>
-        <input onChange = {searchFor} type = 'text' name = 'keyword'/>
+        <input onChange = {searchFor} type = 'text' value={search} name = 'keyword'/>
       <br />
       <button type='button' onClick={gotoParams}>params</button>
       <br />
