@@ -1,4 +1,4 @@
-import { tracsortvalue,createASingleProduct, createProduct, decreaseNum, getAProduct, deleteAProduct, handleInputChange, fetchAllProduct, increaseNum, editSingleProduct, loginRequest, loginSuccess, loginFail, getMeSuccess, getMeRequest, getMeFail, logOutRequest, logOutSuccess, logOutFail } from "../const"
+import { tracsortvalue,createASingleProduct, createProduct, decreaseNum, getAProduct, deleteAProduct, handleInputChange, fetchAllProduct, increaseNum, editSingleProduct, loginRequest, loginSuccess, loginFail, getMeSuccess, getMeRequest, getMeFail, logOutRequest, logOutSuccess, logOutFail, createMyReviewRequest, createReviewError, createMyReviewSuccess, createMyReviewFail } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
   return {
@@ -101,7 +101,7 @@ export const trackSortedValue = (value) => {
   }
 }
 
-export const loginUser = (email, password) => {
+export const loginUser = (email, password, navigate) => {
   return async(dispatch) => {
     try{
       dispatch({
@@ -120,6 +120,7 @@ export const loginUser = (email, password) => {
         type: loginSuccess,
         payload:data.user
       })
+      navigate('/')
     }catch(error){
       dispatch({
         type:loginFail,
@@ -149,7 +150,7 @@ export const getMe = () => {
   }
 }
 
-export const getLogOut = () => {
+export const getLogOut = (navigate) => {
   return async (dispatch) => {
     try{
       dispatch({
@@ -160,10 +161,34 @@ export const getLogOut = () => {
         type:logOutSuccess,
         payload:response
       })
+      navigate('/login')
     }catch(error){
       dispatch({
         type:logOutFail,
         payload:error.response
+      })
+    }
+  }
+}
+
+export const createReview = (review,rating,productId) => {
+  return async(dispatch) => {
+    try{
+      dispatch({
+        type: createMyReviewRequest
+      })
+      const {data} = await requestCreator.post(`/products/${productId}/reviews`,{
+        review: review,
+        rating: rating
+      })
+      dispatch({
+        type:createMyReviewSuccess,
+        payload:data
+      })
+    }catch(error){
+      dispatch({
+        type:createMyReviewFail,
+        payload: error.response
       })
     }
   }

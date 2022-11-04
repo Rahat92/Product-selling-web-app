@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe } from './actions';
+import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview } from './actions';
 const Main = () => {
   const navigate = useNavigate()
   const param = useParams();
@@ -73,8 +73,11 @@ const Main = () => {
   const editProduct = (id) => {
     dispatch(editProduct(id))
   }
-  const sendReview = () => {
-
+  const sendReview = (e,productId) => {
+    e.preventDefault()
+    const review = e.target.review.value;
+    const rating = e.target.rating.value;
+    dispatch(createReview(review,rating,productId))
   }
   const createProduct = () => {
     dispatch(createNewProduct())
@@ -144,16 +147,19 @@ const Main = () => {
                       <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)', maxWidth:'40rem'}}>
                         <h2>{el.user.name}</h2>
                         <h3>{el.review}</h3>
+                        {selector.singleProduct.doc.id}
                       </div>
                   )
                 })}
-                <form onSubmit={sendReview}>
+                {user&&user.role === 'user'&&(
+                  <form onSubmit={(e)=>sendReview(e,selector.singleProduct.doc.id)}>
                   createComment : &nbsp;
                   <input type= 'text' name = 'review' /><br /><br />
                   ratings : &nbsp;
-                  <input type= 'number' name = 'review' /><br />
+                  <input type= 'number' name = 'rating' /><br />
                   <input type="submit" value="save" />
                 </form>
+                )}
             </div>
           </div> 
           }

@@ -1,4 +1,4 @@
-import { createASingleProduct, createProduct, decreaseNum, deleteAProduct, editSingleProduct, fetchAllProduct, getAProduct, getMeFail, getMeRequest, getMeSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue } from "../const";
+import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createReviewError, decreaseNum, deleteAProduct, editSingleProduct, fetchAllProduct, getAProduct, getMeFail, getMeRequest, getMeSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -126,6 +126,30 @@ const logOutReducer = (initialState = {}, action) => {
       return initialState
   }
 }
+
+
+const reviewReducer = (state = {review:{}}, action) => {
+  switch(action.type){
+    case createMyReviewRequest:
+      return {
+        loading: true
+      }
+    case createMyReviewSuccess:
+      return {
+        ...state,
+        loading: false,
+        review: action.payload
+      }
+    case createMyReviewFail:
+      return{
+        ...state,
+        loading:false,
+        review:null,
+        error:action.payload
+      }
+  }
+}
+
 export default combineReducers({
   currentNum: numberReducer,
   allProduct: allProduct,

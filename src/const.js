@@ -17,3 +17,6 @@ export const getMeFail = 'GET_ME_FAIL';
 export const logOutRequest = 'LOG_OUT_REQUEST';
 export const logOutSuccess = 'LOG_OUT_SUCCESS';
 export const logOutFail = 'LOG_OUT_FAIL';
+export const createMyReviewRequest = 'CREATE_MY_REVIEW_REQUEST';
+export const createMyReviewSuccess = 'CREATE_MY_REVIEW_SUCCESS';
+export const createMyReviewFail = 'CREATE_MY_REVIEW_FAIL';

@@ -15,7 +15,7 @@ const Login = () => {
     e.preventDefault()
       const email = e.target.email.value;
       const password = e.target.password.value;
-    dispatch(loginUser(email, password))
+    dispatch(loginUser(email, password, navigate))
   }
   if(user.user!==null&&user.isAuthenticated){
     navigate('/')

@@ -11,20 +11,20 @@ const UserState = () => {
   useEffect(()=>{
     dispatch(getMe())
   },[])
-  const goLogin = () => {
-      if(!logOut.isAuthenticated){
-        navigate('/login')
-      }else{
-        navigate('/')
-      }
-  }
+  // const goLogin = () => {
+  //     if(!logOut.isAuthenticated){
+  //       navigate('/login')
+  //     }else{
+  //       navigate('/')
+  //     }
+  // }
   console.log(logOut)
   return(
     <>
         {user&&(
           <button type = 'button' onClick={()=>{
-            dispatch(getLogOut())
-            setTimeout(()=>goLogin(),500)
+            dispatch(getLogOut(navigate))
+            // setTimeout(()=>goLogin(),500)
           }}>Log out</button>
         )}
         {!user&&!window.location.pathname.includes('/login')&&(
