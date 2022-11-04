@@ -1,21 +1,34 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { editProduct, getSingleProduct, handleChange } from './actions';
+import { editProduct, getMe, getSingleProduct, handleChange } from './actions';
 const Product = () => {
   const navigate = useNavigate()
   const parameter = useParams()
   const dispatch = useDispatch()
   const selector = useSelector(state => state.singleProduct)
+  const { editedProduct, user }  = useSelector(state=>state)
+
   useEffect(()=> {
     dispatch(getSingleProduct(parameter.id))    
+    dispatch(getMe())
   },[parameter.id])
-
+  if(user.user === null){
+    navigate('/login')
+  }
+  console.log(user)
   const onsubmit = (e) => {
     e.preventDefault();
     const productName = e.target.product.value;
     const rating = e.target.rating.value;
-    dispatch(editProduct(parameter.id,productName, rating, navigate))
+    dispatch(editProduct(parameter.id,productName, rating))
+    setTimeout(()=>{
+      if(editedProduct&&editedProduct.data.status === 'success'){
+        navigate('/')
+      }else{
+        navigate('/about')
+      }
+    },500)
   }
   if(!selector.doc){
     return 'loading...'
