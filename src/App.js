@@ -32,7 +32,6 @@ const App = () => {
           <Route path = {`/me`} element = {<About />}/>
           <Route path = {`product/:id`} element = {<Navigate to = '/'/>}/>
         </Routes>
-        {/* <Link to = '/about'>about</Link> */}
       </Router>
     </div>
   )

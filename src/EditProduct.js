@@ -24,14 +24,14 @@ const Product = () => {
     e.preventDefault();
     const productName = e.target.product.value;
     const rating = e.target.rating.value;
-    dispatch(editProduct(parameter.id,productName, rating))
-    setTimeout(()=>{
-      if(editedProduct&&editedProduct.data.status === 'success'){
-        navigate('/')
-      }else{
-        navigate('/about')
-      }
-    },500)
+    dispatch(editProduct(parameter.id,productName, rating,navigate))
+    // setTimeout(()=>{
+    //   if(editedProduct&&editedProduct.data.status === 'success'){
+    //     navigate('/')
+    //   }else{
+    //     navigate('/about')
+    //   }
+    // },500)
   }
   if(!selector.doc){
     return 'loading...'
@@ -44,7 +44,7 @@ const Product = () => {
         <input type = "text" name = 'product' defaultValue = {selector.doc._id === parameter.id?selector.doc.name:''} /><br />
         Product Rating: <br />
         <input type= 'number' name = 'rating' defaultValue = {selector.doc._id === parameter.id?selector.doc.ratingsAverage:''}/>
-        <input type= 'submit' />
+        <input type= 'submit' value={'update'} />
       </form>
     </div>
   )
