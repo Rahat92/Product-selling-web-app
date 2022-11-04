@@ -16,6 +16,9 @@ const Product = () => {
   if(user.user === null){
     navigate('/login')
   }
+  if(user.user&&user.user.role !== 'admin'){
+    navigate('/')
+  }
   console.log(user)
   const onsubmit = (e) => {
     e.preventDefault();

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Main from './Main';
-import { BrowserRouter as Router, Routes, Route,Navigate, useNavigate, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route,Navigate, useNavigate, Link, NavLink } from 'react-router-dom';
 import Product from './EditProduct';
 import Params from './Params';
 import SearchResult from './SearchResult';
@@ -20,8 +20,8 @@ const App = () => {
   },[])
   return(
     <div>
-      {user&&<div style={{position: 'fixed', top:'0', right:'3rem'}}><h2>{user.name}(<span style={{color:'red', bold:'bolder'}}>{user.role}</span>)</h2></div>}
       <Router>
+      {user&&<div style={{position: 'fixed', top:'0', right:'3rem'}}><Link to = '/me'><h2>{user.name}(<span style={{color:'red', bold:'bolder'}}>{user.role}</span>)</h2></Link></div>}
       {!pathName.includes('login')&&<UserState />}
         <Routes>
           <Route path = "/" element = {<Main/>}/>
@@ -29,7 +29,7 @@ const App = () => {
           <Route path = {`/params`} element = {<Params/>}/>
           <Route path = {`/search/:keyword`} element = {<Main/>}/>
           <Route path = {`/login`} element = {<Login/>}/>
-          <Route path = {`/about`} element = {<About />}/>
+          <Route path = {`/me`} element = {<About />}/>
           <Route path = {`product/:id`} element = {<Navigate to = '/'/>}/>
         </Routes>
         {/* <Link to = '/about'>about</Link> */}

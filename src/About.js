@@ -15,8 +15,15 @@ const About = () => {
     navigate('/login')
   }
   if(user){
+    const {name, email, role} = user;
     return(
-        <div><h1>About page</h1></div>
+        <div>
+          <ul style = {{listStyle:'none', fontSize:'25px'}}>
+            <li>Name: {name}</li>
+            <li>Email: {email}</li>
+            <li>Role: {role}</li>
+          </ul>
+        </div>
     )
   }
   }
