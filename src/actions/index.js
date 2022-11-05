@@ -65,7 +65,7 @@ export const editProduct =(id, name, rating, navigate) => {
       type: editSingleProduct,
       payload:response
     })
-    navigate(-1)
+    navigate('/')
   }
 }
 

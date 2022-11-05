@@ -15,9 +15,11 @@ const Main = () => {
   const selector = useSelector(state=> state)
   const { user } = useSelector(state=>state.user)
   const dispatch = useDispatch();
+  const price = selector.sortValue === 'price'?'-price':selector.sortValue
   useEffect(()=>{
-    const price = selector.sortValue === 'price'?'-price':selector.sortValue
-    dispatch(getMe())
+    if(!search){
+      dispatch(getMe())
+    }
     const request = () => {
       dispatch(fetchProducts(selector.currentNum,price, search))
     }
@@ -55,7 +57,7 @@ const Main = () => {
     }
     return ()=> clearTimeout(timer)
 
-  },[selector.deleteproduct.data,selector.reviews , selector.createBrandNewProduct.data,selector.sortValue, selector.currentNum,search])
+  },[selector.deleteproduct.data,selector.reviews , selector.createBrandNewProduct.data,price, selector.currentNum,search])
   
   
   const doIncrease = () => {

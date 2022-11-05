@@ -12,7 +12,7 @@ const Product = () => {
   useEffect(()=> {
     dispatch(getSingleProduct(parameter.id))    
     dispatch(getMe())
-  },[parameter.id])
+  },[parameter.id, editedProduct.data])
   if(user.user === null){
     navigate('/login')
   }
