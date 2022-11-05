@@ -20,3 +20,6 @@ export const logOutFail = 'LOG_OUT_FAIL';
 export const createMyReviewRequest = 'CREATE_MY_REVIEW_REQUEST';
 export const createMyReviewSuccess = 'CREATE_MY_REVIEW_SUCCESS';
 export const createMyReviewFail = 'CREATE_MY_REVIEW_FAIL';
+export const getProductReviewRequest = 'GET_PRODUCT_REVIEW_REQUEST';
+export const getProductReviewSuccess = 'GET_PRODUCT_REVIEW_SUCCESS';
+export const getProductReviewFail = 'GET_PRODUCT_REVIEW_FAIL';

@@ -1,4 +1,4 @@
-import { tracsortvalue,createASingleProduct, createProduct, decreaseNum, getAProduct, deleteAProduct, handleInputChange, fetchAllProduct, increaseNum, editSingleProduct, loginRequest, loginSuccess, loginFail, getMeSuccess, getMeRequest, getMeFail, logOutRequest, logOutSuccess, logOutFail, createMyReviewRequest, createReviewError, createMyReviewSuccess, createMyReviewFail } from "../const"
+import { tracsortvalue,createASingleProduct, createProduct, decreaseNum, getAProduct, deleteAProduct, handleInputChange, fetchAllProduct, increaseNum, editSingleProduct, loginRequest, loginSuccess, loginFail, getMeSuccess, getMeRequest, getMeFail, logOutRequest, logOutSuccess, logOutFail, createMyReviewRequest, createReviewError, createMyReviewSuccess, createMyReviewFail, getProductReviewRequest, getProductReviewSuccess, getProductReviewFail } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
   return {
@@ -188,6 +188,24 @@ export const createReview = (review,rating,productId) => {
     }catch(error){
       dispatch({
         type:createMyReviewFail,
+        payload: error.response
+      })
+    }
+  }
+}
+
+export const getProductReviews = (productId) => {
+  return async(dispatch) => {
+    try{
+      dispatch({type: getProductReviewRequest})
+      const { data } = await requestCreator.get(`/products/${productId}/reviews`)
+      dispatch({
+        type: getProductReviewSuccess,
+        payload: data
+      })
+    }catch(error){
+      dispatch({
+        type:getProductReviewFail,
         payload: error.response
       })
     }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview } from './actions';
+import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, getProductReviews } from './actions';
 const Main = () => {
   const navigate = useNavigate()
   const param = useParams();
@@ -55,7 +55,7 @@ const Main = () => {
     }
     return ()=> clearTimeout(timer)
 
-  },[selector.deleteproduct.data, selector.createBrandNewProduct.data,selector.sortValue, selector.currentNum,search])
+  },[selector.deleteproduct.data,selector.reviews , selector.createBrandNewProduct.data,selector.sortValue, selector.currentNum,search])
   
   
   const doIncrease = () => {
@@ -66,6 +66,7 @@ const Main = () => {
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
+    dispatch(getProductReviews(id))
   }
   const deleteProduct = (id) => {
     dispatch(deleteOneProduct(id))
