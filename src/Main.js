@@ -163,10 +163,10 @@ const Main = () => {
                 })} */}
                 {review&&review.docs&&review.docs.map(el => {
                   return(
-                      <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)', maxWidth:'40rem'}}>
+                      <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)'}}>
                         <h2>{el.user.name}</h2>
                         <h3>{el.review}</h3>
-                        {selector.singleProduct.doc.id}
+                        {user&&el.user._id === user._id?<div><button>delete</button><button>edit</button></div>:''}
                       </div>
                   )
                 })}
