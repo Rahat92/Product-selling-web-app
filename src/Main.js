@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, getProductReviews } from './actions';
+import Modal from './Modal';
 const Main = () => {
   const navigate = useNavigate()
   const param = useParams();
   const [search, setSearch] = useState('');
   const currentUrl = window.location.pathname;
+  const [deleteClick, setDeleteClick] = useState(false);
+  const [ id, setId ] = useState()
   // const [searchParam, setSearchParams] = useSearchParams();
   // console.log(searchParam.get('page'))
   // let currentPage = new URLSearchParams(location).get('page')
@@ -71,7 +74,9 @@ const Main = () => {
     dispatch(getProductReviews(id))
   }
   const deleteProduct = (id) => {
-    dispatch(deleteOneProduct(id))
+    // dispatch(deleteOneProduct(id))
+    setDeleteClick(true)
+    setId(id)
   }
   const editProduct = (id) => {
     dispatch(editProduct(id))
@@ -111,7 +116,9 @@ const Main = () => {
               {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
                 return (
                   <div>
-                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>{selector.deleteProduct&&!selector.deleteProduct.data?'deleteing':'delete'}</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link></>)}</li>
+                    {console.log(el.id)}
+                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link></>)}</li>
+                    {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} />:''}
                   </div>
                 )
               }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}

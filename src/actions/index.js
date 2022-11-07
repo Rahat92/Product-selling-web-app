@@ -42,7 +42,7 @@ export const getSingleProduct = (id) => {
   }
 }
 
-export const deleteOneProduct = (id) => {
+export const deleteOneProduct = (id, setDeleteClick) => {
   let response;
   return async (dispatch) => {
     await requestCreator.delete(`/products/${id}`).then(data=>{
@@ -52,6 +52,7 @@ export const deleteOneProduct = (id) => {
       type:deleteAProduct,
       payload:response
     })
+    setDeleteClick(false)
   }
 }
 export const editProduct =(id, name, rating, navigate) => {
