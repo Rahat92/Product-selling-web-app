@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview } from './actions';
+import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview } from './actions';
 import Modal from './Modal';
 const Main = () => {
   const navigate = useNavigate()
@@ -61,7 +61,7 @@ const Main = () => {
     }
     return ()=> clearTimeout(timer)
 
-  },[selector.deleteproduct.data,review, selector.createBrandNewProduct.data,price, selector.currentNum,search])
+  },[selector.deleteproduct.data,review&&review.doc, selector.createBrandNewProduct.data,price, selector.currentNum,search])
   
   
   const doIncrease = () => {
@@ -72,10 +72,14 @@ const Main = () => {
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
-    console.log(review)
   }
   const deleteProduct = (id) => {
     // dispatch(deleteOneProduct(id))
+    setDeleteClick(true)
+    setId(id)
+  } 
+  const deleteReview = (id) => {
+  // const deleteReview = (id) => {
     setDeleteClick(true)
     setId(id)
   }
@@ -86,8 +90,7 @@ const Main = () => {
     e.preventDefault()
     const review = e.target.review.value;
     const rating = e.target.rating.value;
-    dispatch(createReview(review,rating,productId))
-    getProduct(productId)
+    dispatch(createReview(review,rating,productId, getProduct))
   }
   const createProduct = () => {
     dispatch(createNewProduct())
@@ -118,7 +121,7 @@ const Main = () => {
                 return (
                   <div>
                     <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link></>)}</li>
-                    {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} />:''}
+                    {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
                   </div>
                 )
               }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}
@@ -166,7 +169,8 @@ const Main = () => {
                       <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)'}}>
                         <h2>{el.user.name}</h2>
                         <h3>{el.review}</h3>
-                        {user&&el.user._id === user._id?<div><button>delete</button><button>edit</button></div>:''}
+                        {user&&el.user._id === user._id?<div><button onClick= {()=>deleteReview(el._id)}>delete</button><button>edit</button></div>:''}
+                        {deleteClick? <Modal getProduct = {()=>getProduct(selector.singleProduct.doc._id)} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview}/>:''}
                       </div>
                   )
                 })}

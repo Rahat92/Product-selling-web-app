@@ -23,3 +23,7 @@ export const createMyReviewFail = 'CREATE_MY_REVIEW_FAIL';
 export const getProductReviewRequest = 'GET_PRODUCT_REVIEW_REQUEST';
 export const getProductReviewSuccess = 'GET_PRODUCT_REVIEW_SUCCESS';
 export const getProductReviewFail = 'GET_PRODUCT_REVIEW_FAIL';
+export const deleteReviewRequest = 'DELETE_REVIEW_REQUEST';
+export const deleteReviewSuccess = 'DELETE_REVIEW_SUCCESS';
+export const deleteReviewFail = 'DELETE_REVIEW_FAIL';
+

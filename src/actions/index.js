@@ -1,4 +1,34 @@
-import { tracsortvalue,createASingleProduct, createProduct, decreaseNum, getAProduct, deleteAProduct, handleInputChange, fetchAllProduct, increaseNum, editSingleProduct, loginRequest, loginSuccess, loginFail, getMeSuccess, getMeRequest, getMeFail, logOutRequest, logOutSuccess, logOutFail, createMyReviewRequest, createReviewError, createMyReviewSuccess, createMyReviewFail, getProductReviewRequest, getProductReviewSuccess, getProductReviewFail } from "../const"
+import { 
+  tracsortvalue,
+  createASingleProduct, 
+  createProduct, 
+  decreaseNum, 
+  getAProduct, 
+  deleteAProduct, 
+  handleInputChange, 
+  fetchAllProduct, 
+  increaseNum, 
+  editSingleProduct, 
+  loginRequest, 
+  loginSuccess, 
+  loginFail, 
+  getMeSuccess, 
+  getMeRequest, 
+  getMeFail, 
+  logOutRequest, 
+  logOutSuccess, 
+  logOutFail, 
+  createMyReviewRequest, 
+  createReviewError, 
+  createMyReviewSuccess, 
+  createMyReviewFail, 
+  getProductReviewRequest, 
+  getProductReviewSuccess, 
+  getProductReviewFail, 
+  deleteReviewRequest, 
+  deleteReviewSuccess, 
+  deleteReviewFail 
+} from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
   return {
@@ -192,7 +222,7 @@ export const getLogOut = (navigate) => {
   }
 }
 
-export const createReview = (review,rating,productId) => {
+export const createReview = (review,rating,productId, getProduct) => {
   return async(dispatch) => {
     try{
       dispatch({
@@ -206,6 +236,7 @@ export const createReview = (review,rating,productId) => {
         type:createMyReviewSuccess,
         payload:data
       })
+      getProduct(productId)
     }catch(error){
       dispatch({
         type:createMyReviewFail,
@@ -214,4 +245,24 @@ export const createReview = (review,rating,productId) => {
     }
   }
 }
-
+export const deleteOneReview = (id, setDeleteClick, getProduct) => {
+  return async(dispatch) => {
+    try{
+      dispatch({
+        type:deleteReviewRequest
+      })
+      const { data } = await requestCreator.delete(`/reviews/${id}`)
+      dispatch({
+        type: deleteReviewSuccess,
+        payload: data
+      })
+      setDeleteClick(false)
+      getProduct()
+    }catch(error){
+      dispatch({
+        type: deleteReviewFail,
+        payload: error.response.data
+      })
+    }
+  }
+}
