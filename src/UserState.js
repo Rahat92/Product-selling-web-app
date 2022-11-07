@@ -18,7 +18,6 @@ const UserState = () => {
   //       navigate('/')
   //     }
   // }
-  console.log(logOut)
   return(
     <>
         {user&&(

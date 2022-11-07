@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, getProductReviews } from './actions';
+import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview } from './actions';
 import Modal from './Modal';
 const Main = () => {
   const navigate = useNavigate()
@@ -16,6 +16,7 @@ const Main = () => {
   // let currentPage = searchParam.get('page')
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
+  const { review, loading } = useSelector(state=>state.reviews)
   const { user } = useSelector(state=>state.user)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
@@ -60,7 +61,7 @@ const Main = () => {
     }
     return ()=> clearTimeout(timer)
 
-  },[selector.deleteproduct.data,selector.reviews , selector.createBrandNewProduct.data,price, selector.currentNum,search])
+  },[selector.deleteproduct.data,review, selector.createBrandNewProduct.data,price, selector.currentNum,search])
   
   
   const doIncrease = () => {
@@ -71,7 +72,7 @@ const Main = () => {
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
-    dispatch(getProductReviews(id))
+    console.log(review)
   }
   const deleteProduct = (id) => {
     // dispatch(deleteOneProduct(id))
@@ -116,7 +117,6 @@ const Main = () => {
               {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
                 return (
                   <div>
-                    {console.log(el.id)}
                     <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link></>)}</li>
                     {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} />:''}
                   </div>
@@ -153,7 +153,15 @@ const Main = () => {
             </div>
             <div style={{border: '1px solid black', marginLeft:'1rem', padding:'.5rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
                 <h1>Comments:</h1>
-                {selector.singleProduct.doc.review.map(el => {
+                {/* {review&&review.docs&&review.docs.map(el=>{
+                  return (
+                    <div>
+                      <h2>{el.review}</h2>
+                      <h3>{el.user.name}</h3>
+                    </div>
+                  )
+                })} */}
+                {review&&review.docs&&review.docs.map(el => {
                   return(
                       <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)', maxWidth:'40rem'}}>
                         <h2>{el.user.name}</h2>
@@ -163,13 +171,14 @@ const Main = () => {
                   )
                 })}
                 {user&&user.role === 'user'&&(
+                  review&&review.docs&&review.docs.length>=0&&(!review.docs.find(el=>el.user._id === user._id))&&
                   <form onSubmit={(e)=>sendReview(e,selector.singleProduct.doc.id)}>
-                  createComment : &nbsp;
-                  <input type= 'text' name = 'review' /><br /><br />
-                  ratings : &nbsp;
-                  <input type= 'number' name = 'rating' /><br />
-                  <input type="submit" value="save" />
-                </form>
+                    createComment : &nbsp;
+                    <input type= 'text' name = 'review' /><br /><br />
+                    ratings : &nbsp;
+                    <input type= 'number' name = 'rating' /><br />
+                    <input type="submit" value="save" />
+                  </form>
                 )}
             </div>
           </div> 

@@ -27,18 +27,38 @@ export const fetchProducts = (currentPage, sortvalue, searchValue) => {
     })
   }
 }
-export const getSingleProduct = (id) => {
-  let response;
+export const getProductReviews = (productId) => {
   return async(dispatch) => {
-    await requestCreator.get(`/products/${id}`).then((data) => {
-      response = data.data;
-    }).catch(err=>{
-      response = err.message
-    })
-    dispatch({
-      type:getAProduct,
-      payload:response
-    })
+    try{
+      dispatch({type: getProductReviewRequest})
+      const { data } = await requestCreator.get(`/products/${productId}/reviews`)
+      dispatch({
+        type: getProductReviewSuccess,
+        payload: data
+      })
+    }catch(error){
+      dispatch({
+        type:getProductReviewFail,
+        payload: error.response
+      })
+    }
+  }
+}
+export const getSingleProduct = (id) => {
+  return async(dispatch) => {
+    try{
+      const { data } = await requestCreator.get(`/products/${id}`)
+      dispatch({
+        type:getAProduct,
+        payload:data
+      })
+      await dispatch(getProductReviews(id))
+    }catch(error){
+      dispatch({
+        type: 'getAProductFail',
+        payload:error.response.data
+      })
+    }
   }
 }
 
@@ -195,20 +215,3 @@ export const createReview = (review,rating,productId) => {
   }
 }
 
-export const getProductReviews = (productId) => {
-  return async(dispatch) => {
-    try{
-      dispatch({type: getProductReviewRequest})
-      const { data } = await requestCreator.get(`/products/${productId}/reviews`)
-      dispatch({
-        type: getProductReviewSuccess,
-        payload: data
-      })
-    }catch(error){
-      dispatch({
-        type:getProductReviewFail,
-        payload: error.response
-      })
-    }
-  }
-}
