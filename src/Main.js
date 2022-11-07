@@ -33,8 +33,8 @@ const Main = () => {
     let timer;
     
     if(selector.allProduct.data){
-      if(search&&selector.allProduct.data.result<4&& !selector.currentNum>1){
-        selector.currentNum=1
+      if(search){
+        selector.currentNum= 1
       }else{
         selector.currentNum = selector.currentNum;
       }
@@ -81,6 +81,7 @@ const Main = () => {
     const review = e.target.review.value;
     const rating = e.target.rating.value;
     dispatch(createReview(review,rating,productId))
+    getProduct(productId)
   }
   const createProduct = () => {
     dispatch(createNewProduct())

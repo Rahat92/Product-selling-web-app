@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMe } from './actions';
 import UserState from './UserState';
 import LoginComponent from './LoginComponent';
+import Count from './Count';
+import CountMany from './CountMany';
 const App = () => {
   const pathName = window.location.pathname
   const dispatch = useDispatch();
@@ -22,7 +24,7 @@ const App = () => {
     <div>
       <Router>
       {user&&<div style={{position: 'fixed', top:'0', right:'3rem'}}><Link to = '/me'><h2>{user.name}(<span style={{color:'red', bold:'bolder'}}>{user.role}</span>)</h2></Link></div>}
-      {!pathName.includes('login')&&<UserState />}
+      {!pathName.includes('login')&&!pathName.includes('count')&&<UserState />}
       <Link to = '/'>Home</Link>
         <Routes>
           <Route path = "/" element = {<Main/>}/>
@@ -31,7 +33,9 @@ const App = () => {
           <Route path = {`/search/:keyword`} element = {<Main/>}/>
           <Route path = {`/login`} element = {<Login/>}/>
           <Route path = {`/me`} element = {<About />}/>
-          <Route path = {`product/:id`} element = {<Navigate to = '/'/>}/>
+          {/* <Route path = {`product/:id`} element = {<Navigate to = '/'/>}/> */}
+          <Route path = {`/count`} element = {<Count />}/>
+          <Route path = {`/countmany`} element = {<CountMany />}/>
         </Routes>
       </Router>
     </div>
