@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview } from './actions';
 import Modal from './Modal';
 const Main = () => {
+  const name = useRef()
+
+  const myReview = name&&name.current&&name.current.innerHTML
+  console.log(myReview)
   const navigate = useNavigate()
   const param = useParams();
   const [search, setSearch] = useState('');
   const [ editReviewClick, setEditReviewClick ] = useState(false)
+  const [ editReview, setEditReview ] = useState({
+    review:'',
+    rating:''
+  })
   const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
@@ -108,12 +116,17 @@ const Main = () => {
   const searchFor = (e) => {
     setSearch(e.target.value)
   }
-  const editMyReview = (id) => {
+  const editMyReview = (id, review, rating) => {
     setEditReviewClick(true)
+    setEditReview({
+      review,
+      rating
+    })
   }
   const reviewEditCancel = () => {
     setEditReviewClick(false)  
   }
+  console.log(editReview.review)
   const allProduct = () => {
     if(!selector.allProduct.data){
       return <p>Loading data, Please wait...</p>
@@ -166,22 +179,27 @@ const Main = () => {
                 {review&&review.docs&&review.docs.map(el => {
                   return(
                       <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)', maxWidth:'400px'}}>
-                        {/* <h1 style = {{color:user&&el.user._id === user._id?'red':''}}>{el.user.name}</h1>
-                        <h2 style={{color:'green'}}>{el.review}</h2> */}
                         {editReviewClick&&user&&el.user._id === user._id?(
                         <div>
                           <form>
                             comment
-                            <input type = 'text' /> <br />
+                            <input type = 'text' defaultValue={editReview.review} /> <br />
                             review
-                            <input type = 'number' /> <br />
+                            <input type = 'number' defaultValue={editReview.rating}/> <br />
                             <button type = 'button' onClick={reviewEditCancel}>cancel</button>
                             <button type = 'button'>update</button>
                           </form>  
                         </div>
-                        ):<><h1 style = {{color:user&&el.user._id === user._id?'red':''}}>{el.user.name}</h1>
-                        <h2 style={{color:'green'}}>{el.review}</h2></>}
-                        {user&&el.user._id === user._id&&!editReviewClick?<div><button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id)}>edit</button></div>:''}
+                        ):
+                        // irritate review all reviews
+                        <>
+                          <h1 style = {{color:user&&el.user._id === user._id?'red':''}}>{el.user.name}</h1>
+                          <h2 ref={user&&el.user._id === user._id? name:{}} style={{color:'green'}}>{el.review}</h2></>}
+                          
+                        {/* if user id and review's user id matched then reveal a eidt and delete button */}
+                          {user&&el.user._id === user._id&&!editReviewClick?<><button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
+                        </>:
+                        ''}
                         {deleteClick? <Modal getProduct = {()=>getProduct(selector.singleProduct.doc._id)} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview}/>:''}
                       </div>
                   )
