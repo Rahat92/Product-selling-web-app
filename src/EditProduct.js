@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { editProduct, getMe, getSingleProduct, handleChange } from './actions';
-const Product = () => {
+const Product = ({ productName, productRating }) => {
+  console.log(productName, productRating)
   const navigate = useNavigate()
   const parameter = useParams()
   const dispatch = useDispatch()
@@ -10,7 +11,9 @@ const Product = () => {
   const { editedProduct, user }  = useSelector(state=>state)
 
   useEffect(()=> {
-    dispatch(getSingleProduct(parameter.id))    
+    if(!productName&&!productRating){
+      dispatch(getSingleProduct(parameter.id))    
+    }
     dispatch(getMe())
   },[parameter.id, editedProduct.data])
   if(user.user === null){
@@ -41,9 +44,9 @@ const Product = () => {
       <h2>Edit Product</h2>
       <form onSubmit={onsubmit}>
         product Name: <br />
-        <input type = "text" name = 'product' defaultValue = {selector.doc._id === parameter.id?selector.doc.name:''} /><br />
+        <input type = "text" name = 'product' defaultValue = {!productName?selector.doc._id === parameter.id?selector.doc.name:'':productName} /><br />
         Product Rating: <br />
-        <input type= 'number' name = 'rating' defaultValue = {selector.doc._id === parameter.id?selector.doc.ratingsAverage:''}/>
+        <input type= 'number' name = 'rating' defaultValue = {!productRating?selector.doc._id === parameter.id?selector.doc.ratingsAverage:'':productRating}/>
         <input type= 'submit' value={'update'} />
       </form>
     </div>

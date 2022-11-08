@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Main from './Main';
 import { BrowserRouter as Router, Routes, Route,Navigate, useNavigate, Link, NavLink } from 'react-router-dom';
 import Product from './EditProduct';
@@ -14,12 +14,23 @@ import Count from './Count';
 import CountMany from './CountMany';
 const App = () => {
   const pathName = window.location.pathname
+  const [ productData, setProductData ] = useState({
+    productName:'',
+    productRating:''
+  })
+  const { productName, productRating } = productData;
   const dispatch = useDispatch();
   const { user } = useSelector(state=>state.user)
   console.log(user)
   useEffect(() => {
     dispatch(getMe())
   },[])
+  const anyFunc = (productName, productRating) => {
+    setProductData({
+      productName : productName,
+      productRating : productRating
+    })
+  }
   return(
     <div>
       <Router>
@@ -27,10 +38,10 @@ const App = () => {
       {!pathName.includes('login')&&!pathName.includes('count')&&<UserState />}
       <Link to = '/'>Home</Link>
         <Routes>
-          <Route path = "/" element = {<Main/>}/>
-          <Route path = {`product/:id`} element = {<Product/>}/>
+          <Route path = "/" element = {<Main anyFunc={anyFunc}/>}/>
+          <Route path = {`product/:id`} element = {<Product  productName = {productName} productRating = {productRating}/>}/>
           <Route path = {`/params`} element = {<Params/>}/>
-          <Route path = {`/search/:keyword`} element = {<Main/>}/>
+          <Route path = {`/search/:keyword`} element = {<Main />}/>
           <Route path = {`/login`} element = {<Login/>}/>
           <Route path = {`/me`} element = {<About />}/>
           {/* <Route path = {`product/:id`} element = {<Navigate to = '/'/>}/> */}

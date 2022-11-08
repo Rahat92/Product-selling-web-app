@@ -3,20 +3,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview } from './actions';
 import Modal from './Modal';
-const Main = () => {
+const Main = ({anyFunc}) => {
   const name = useRef()
 
   const myReview = name&&name.current&&name.current.innerHTML
   console.log(myReview)
   const navigate = useNavigate()
-  const param = useParams();
+  // const param = useParams();
   const [search, setSearch] = useState('');
   const [ editReviewClick, setEditReviewClick ] = useState(false)
   const [ editReview, setEditReview ] = useState({
     review:'',
     rating:''
   })
-  const currentUrl = window.location.pathname;
+  // const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
   // const [searchParam, setSearchParams] = useSearchParams();
@@ -126,7 +126,10 @@ const Main = () => {
   const reviewEditCancel = () => {
     setEditReviewClick(false)  
   }
-  console.log(editReview.review)
+  const sendProductDataToEditForm = (productName, productRating, id) => {
+    anyFunc(productName, productRating)
+    navigate(`product/${id}`)
+  }
   const allProduct = () => {
     if(!selector.allProduct.data){
       return <p>Loading data, Please wait...</p>
@@ -139,7 +142,7 @@ const Main = () => {
               {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
                 return (
                   <div>
-                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link></>)}</li>
+                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><Link style={{color:'red', padding:'.5rem', textDecoration:'none'}} to={`/product/${el.id}`}>Edit</Link><button onClick={()=>sendProductDataToEditForm(el.name, el.ratingsAverage, el.id)}>edit product</button></>)}</li>
                     {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
                   </div>
                 )
