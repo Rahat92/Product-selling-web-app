@@ -7,6 +7,7 @@ const Main = () => {
   const navigate = useNavigate()
   const param = useParams();
   const [search, setSearch] = useState('');
+  const [ editReviewClick, setEditReviewClick ] = useState(false)
   const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
@@ -107,7 +108,12 @@ const Main = () => {
   const searchFor = (e) => {
     setSearch(e.target.value)
   }
-  
+  const editMyReview = (id) => {
+    setEditReviewClick(true)
+  }
+  const reviewEditCancel = () => {
+    setEditReviewClick(false)  
+  }
   const allProduct = () => {
     if(!selector.allProduct.data){
       return <p>Loading data, Please wait...</p>
@@ -156,20 +162,26 @@ const Main = () => {
             </div>
             <div style={{border: '1px solid black', marginLeft:'1rem', padding:'.5rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
                 <h1>Comments:</h1>
-                {/* {review&&review.docs&&review.docs.map(el=>{
-                  return (
-                    <div>
-                      <h2>{el.review}</h2>
-                      <h3>{el.user.name}</h3>
-                    </div>
-                  )
-                })} */}
+                
                 {review&&review.docs&&review.docs.map(el => {
                   return(
-                      <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)'}}>
-                        <h2>{el.user.name}</h2>
-                        <h3>{el.review}</h3>
-                        {user&&el.user._id === user._id?<div><button onClick= {()=>deleteReview(el._id)}>delete</button><button>edit</button></div>:''}
+                      <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)', maxWidth:'400px'}}>
+                        {/* <h1 style = {{color:user&&el.user._id === user._id?'red':''}}>{el.user.name}</h1>
+                        <h2 style={{color:'green'}}>{el.review}</h2> */}
+                        {editReviewClick&&user&&el.user._id === user._id?(
+                        <div>
+                          <form>
+                            comment
+                            <input type = 'text' /> <br />
+                            review
+                            <input type = 'number' /> <br />
+                            <button type = 'button' onClick={reviewEditCancel}>cancel</button>
+                            <button type = 'button'>update</button>
+                          </form>  
+                        </div>
+                        ):<><h1 style = {{color:user&&el.user._id === user._id?'red':''}}>{el.user.name}</h1>
+                        <h2 style={{color:'green'}}>{el.review}</h2></>}
+                        {user&&el.user._id === user._id&&!editReviewClick?<div><button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id)}>edit</button></div>:''}
                         {deleteClick? <Modal getProduct = {()=>getProduct(selector.singleProduct.doc._id)} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview}/>:''}
                       </div>
                   )
