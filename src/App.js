@@ -12,6 +12,7 @@ import UserState from './UserState';
 import LoginComponent from './LoginComponent';
 import Count from './Count';
 import CountMany from './CountMany';
+import AllUser from './AllUser';
 const App = () => {
   const pathName = window.location.pathname
   const [ productData, setProductData ] = useState({
@@ -36,7 +37,9 @@ const App = () => {
       <Router>
       {user&&<div style={{position: 'fixed', top:'0', right:'3rem'}}><Link to = '/me'><h2>{user.name}(<span style={{color:'red', bold:'bolder'}}>{user.role}</span>)</h2></Link></div>}
       {!pathName.includes('login')&&!pathName.includes('count')&&<UserState />}
-      <Link to = '/'>Home</Link>
+      &nbsp;&nbsp;&nbsp;
+      <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
+      <Link to = '/admin/alluser'>All User</Link>
         <Routes>
           <Route path = "/" element = {<Main anyFunc={anyFunc}/>}/>
           <Route path = {`product/:id`} element = {<Product  productName = {productName} productRating = {productRating}/>}/>
@@ -47,6 +50,7 @@ const App = () => {
           {/* <Route path = {`product/:id`} element = {<Navigate to = '/'/>}/> */}
           <Route path = {`/count`} element = {<Count />}/>
           <Route path = {`/countmany`} element = {<CountMany />}/>
+          <Route path = {`/admin/alluser`} element = {<AllUser />}/>
         </Routes>
       </Router>
     </div>

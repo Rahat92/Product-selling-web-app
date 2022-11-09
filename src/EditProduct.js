@@ -36,8 +36,10 @@ const Product = ({ productName, productRating }) => {
     //   }
     // },500)
   }
-  if(!selector.doc){
-    return 'loading...'
+  if(!productName&&!productRating){
+    if(!selector.doc){
+      return <h1>loading...</h1>
+    }
   }
   return(
     <div>

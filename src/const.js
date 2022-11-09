@@ -26,4 +26,9 @@ export const getProductReviewFail = 'GET_PRODUCT_REVIEW_FAIL';
 export const deleteReviewRequest = 'DELETE_REVIEW_REQUEST';
 export const deleteReviewSuccess = 'DELETE_REVIEW_SUCCESS';
 export const deleteReviewFail = 'DELETE_REVIEW_FAIL';
-
+export const getAllActiveUserRequest = 'GET_ALL_ACTIVE_USER_REQUEST';
+export const getAllActiveUserSuccess = 'GET_ALL_ACTIVE_USER_SUCCESS';
+export const getAllActiveUserFail = 'GET_ALL_ACTIVE_USER_FAIL';
+export const updateReviewRequest = 'UPDATE_REVIEW_REQUEST';
+export const updateReviewSuccess = 'UPDATE_REVIEW_SUCCESS';
+export const updateReviewFail = 'UPDATE_REVIEW_FAIL';

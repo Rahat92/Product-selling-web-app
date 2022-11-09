@@ -27,7 +27,13 @@ import {
   getProductReviewFail, 
   deleteReviewRequest, 
   deleteReviewSuccess, 
-  deleteReviewFail 
+  deleteReviewFail,
+  getAllActiveUserRequest, 
+  getAllActiveUserSuccess, 
+  getAllActiveUserFail,
+  updateReviewRequest,
+  updateReviewSuccess,
+  updateReviewFail, 
 } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
@@ -261,6 +267,50 @@ export const deleteOneReview = (id, setDeleteClick, getProduct) => {
     }catch(error){
       dispatch({
         type: deleteReviewFail,
+        payload: error.response.data
+      })
+    }
+  }
+}
+
+export const getAllUser = () => {
+  return async(dispatch) => {
+    try{
+      dispatch({
+        type:getAllActiveUserRequest
+      })
+      const { data } = await requestCreator.get(`/users`)
+      dispatch({
+        type:getAllActiveUserSuccess,
+        payload:data
+      })
+    }catch(error){
+      dispatch({
+        type: getAllActiveUserFail,
+        payload: error.response.data
+      })
+    }
+  }
+}
+export const updateReview = (id, review, rating, getProduct, productId, setEditReviewClick) => {
+  return async (dispatch) => {
+    try{
+      dispatch({
+        type: updateReviewRequest
+      })
+      const { data } = await requestCreator.patch(`/reviews/${id}`,{
+        review,
+        rating
+      })
+      dispatch({
+        type: updateReviewSuccess,
+        payload: data
+      })
+      setEditReviewClick(false)
+      getProduct(productId)
+    }catch(error){
+      dispatch({
+        type: updateReviewFail,
         payload: error.response.data
       })
     }

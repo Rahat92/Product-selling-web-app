@@ -1,4 +1,4 @@
-import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createReviewError, decreaseNum, deleteAProduct, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue } from "../const";
+import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createReviewError, decreaseNum, deleteAProduct, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -184,6 +184,48 @@ const reviewReducer = (state = {review:{}}, action) => {
   }
 }
 
+const user = (state = {user:{}}, action) => {
+  switch(action.type){
+    case getAllActiveUserRequest:
+      return {
+        loading: true
+      }
+    case getAllActiveUserSuccess:
+      return {
+        loading:false,
+        user: action.payload
+      }
+    case getAllActiveUserFail:
+      return {
+        loading: false,
+        user: null
+      }
+    default:
+      return state;
+  }
+}
+
+const updateReviewReducer = ( state = {review:{}}, action) => {
+  switch(action.type){
+    case updateReviewRequest:
+      return {
+        loading: true,
+      }
+    case updateReviewSuccess:
+      return {
+        loading: false,
+        review: action.payload
+      }
+    case updateReviewFail:
+      return {
+        ...state,
+        loading:false,
+        review:null
+      }
+    default:
+      return state
+  }
+}
 export default combineReducers({
   currentNum: numberReducer,
   allProduct: allProduct,
@@ -196,5 +238,7 @@ export default combineReducers({
   sortValue:sortValueReducer,
   user:userReducer,
   logOut:logOutReducer,
-  reviews: reviewReducer
+  reviews: reviewReducer,
+  users: user,
+  updateReview: updateReviewReducer
 })

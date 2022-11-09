@@ -1,13 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview } from './actions';
+import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview, updateReview } from './actions';
 import Modal from './Modal';
 const Main = ({anyFunc}) => {
-  const name = useRef()
-
-  const myReview = name&&name.current&&name.current.innerHTML
-  console.log(myReview)
   const navigate = useNavigate()
   // const param = useParams();
   const [search, setSearch] = useState('');
@@ -126,6 +122,10 @@ const Main = ({anyFunc}) => {
   const reviewEditCancel = () => {
     setEditReviewClick(false)  
   }
+  const updateMyReview = (e, id,productId) => {
+    e.preventDefault()
+    dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick))
+  }
   const sendProductDataToEditForm = (productName, productRating, id) => {
     anyFunc(productName, productRating)
     navigate(`product/${id}`)
@@ -138,7 +138,7 @@ const Main = ({anyFunc}) => {
         <div>
           <div>
             <h1>Total Documents: {selector.allProduct.data.docNum}</h1>
-            <ul>
+            <ul style={{listStyle: 'none'}}>
               {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
                 return (
                   <div>
@@ -184,20 +184,21 @@ const Main = ({anyFunc}) => {
                       <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)', maxWidth:'400px'}}>
                         {editReviewClick&&user&&el.user._id === user._id?(
                         <div>
-                          <form>
+                          <form onSubmit={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)}>
                             comment
-                            <input type = 'text' defaultValue={editReview.review} /> <br />
+                            <input type = 'text' name = 'review' defaultValue={editReview.review} /> <br />
                             review
-                            <input type = 'number' defaultValue={editReview.rating}/> <br />
+                            <input type = 'number' name='rating' defaultValue={editReview.rating}/> <br />
                             <button type = 'button' onClick={reviewEditCancel}>cancel</button>
-                            <button type = 'button'>update</button>
+                            <input type = 'submit' value={'update'} />
+                            {/* <button type = 'button' onClick={()=>dispatch(updateReview(el._id, editReview.review, editReview.rating,getProduct))}>update</button> */}
                           </form>  
                         </div>
                         ):
                         // irritate review all reviews
                         <>
                           <h1 style = {{color:user&&el.user._id === user._id?'red':''}}>{el.user.name}</h1>
-                          <h2 ref={user&&el.user._id === user._id? name:{}} style={{color:'green'}}>{el.review}</h2></>}
+                          <h2 style={{color:'green'}}>{el.review}</h2></>}
                           
                         {/* if user id and review's user id matched then reveal a eidt and delete button */}
                           {user&&el.user._id === user._id&&!editReviewClick?<><button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
