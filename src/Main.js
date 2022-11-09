@@ -26,6 +26,7 @@ const Main = ({anyFunc}) => {
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
   useEffect(()=>{
+    setEditReviewClick(false)
     if(!search){
       dispatch(getMe())
     }

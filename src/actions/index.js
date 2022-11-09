@@ -306,7 +306,7 @@ export const updateReview = (id, review, rating, getProduct, productId, setEditR
         type: updateReviewSuccess,
         payload: data
       })
-      setEditReviewClick(false)
+      // setEditReviewClick(null)
       getProduct(productId)
     }catch(error){
       dispatch({
