@@ -1,4 +1,4 @@
-import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createReviewError, decreaseNum, deleteAProduct, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
+import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, decreaseNum, deleteAProduct, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -226,6 +226,19 @@ const updateReviewReducer = ( state = {review:{}}, action) => {
       return state
   }
 }
+
+/// for experiment////
+
+const productNameAndpriceReducer = (state = [], action) => {
+  switch(action.type){
+    case getProductNameAndPrice:
+      return [...state, ...action.payload]
+    case createProductNameAndPrice:
+      return [ ...state, action.payload ]
+    default:
+      return state;
+  }
+}
 export default combineReducers({
   currentNum: numberReducer,
   allProduct: allProduct,
@@ -240,5 +253,6 @@ export default combineReducers({
   logOut:logOutReducer,
   reviews: reviewReducer,
   users: user,
-  updateReview: updateReviewReducer
+  updateReview: updateReviewReducer,
+  products: productNameAndpriceReducer,
 })

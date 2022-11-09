@@ -13,6 +13,7 @@ import LoginComponent from './LoginComponent';
 import Count from './Count';
 import CountMany from './CountMany';
 import AllUser from './AllUser';
+import Names from './Names';
 const App = () => {
   const pathName = window.location.pathname
   const [ productData, setProductData ] = useState({
@@ -51,6 +52,7 @@ const App = () => {
           <Route path = {`/count`} element = {<Count />}/>
           <Route path = {`/countmany`} element = {<CountMany />}/>
           <Route path = {`/admin/alluser`} element = {<AllUser />}/>
+          <Route path = {`/names/`} element = {<Names />}/>
         </Routes>
       </Router>
     </div>

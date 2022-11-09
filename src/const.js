@@ -32,3 +32,8 @@ export const getAllActiveUserFail = 'GET_ALL_ACTIVE_USER_FAIL';
 export const updateReviewRequest = 'UPDATE_REVIEW_REQUEST';
 export const updateReviewSuccess = 'UPDATE_REVIEW_SUCCESS';
 export const updateReviewFail = 'UPDATE_REVIEW_FAIL';
+
+
+////// for experiment////////
+export const createProductNameAndPrice = 'CREATE_PRODUCT_NAME_AND_PRICE';
+export const getProductNameAndPrice = 'GET_PRODUCT_NAME_AND_PRICE';

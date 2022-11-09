@@ -33,7 +33,9 @@ import {
   getAllActiveUserFail,
   updateReviewRequest,
   updateReviewSuccess,
-  updateReviewFail, 
+  updateReviewFail,
+  createProductNameAndPrice,
+  getProductNameAndPrice, 
 } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
@@ -138,18 +140,35 @@ export const createNewProduct = () => {
     type: createProduct,
   }
 }
-export const createAProduct = (product, price) => {
-  let response;
-  return async(dispatch) => {
-    await requestCreator.post(`products`,{
-      name: product,
-      price: price    
-    }).then((data) => response = data).catch(err=>response = err)
-    dispatch({
-      type: createASingleProduct,
-      payload: response
-    })
+export const createAProduct = (product, price, navigate) => {
+  return async (dispatch) => {
+    try{
+      const response = await requestCreator.post(`products`,{
+        name: product,
+        price: price    
+      })
+      dispatch({
+        type:createASingleProduct,
+        payload: response
+      }) 
+    }catch(error){
+      dispatch({
+        type:'createProductFail',
+        payload: error.response.data
+      })
+    }
   }
+  // let response;
+  // return async(dispatch) => {
+  //   await requestCreator.post(`products`,{
+  //     name: product,
+  //     price: price    
+  //   }).then((data) => response = data).catch(err=>response = err)
+  //   dispatch({
+  //     type: createASingleProduct,
+  //     payload: response
+  //   })
+  // }
 }
 export const trackSortedValue = (value) => {
   return{
@@ -314,5 +333,34 @@ export const updateReview = (id, review, rating, getProduct, productId, setEditR
         payload: error.response.data
       })
     }
+  }
+}
+
+
+
+
+
+
+///for experiment purpose
+
+export const createProductsNameAndPrice = (name, price) => {
+  return async (dispatch) => {
+    const { data } = await requestCreator.post(`/products`,{
+      name:name,
+      price:price
+    })
+    dispatch({
+      type: createProductNameAndPrice,
+      payload: data.doc
+    })
+  }
+}
+export const getProductsNameAndPrice = () => {
+  return async (dispatch) => {
+    const { data } = await requestCreator.get(`/products`)
+    dispatch({
+      type: getProductNameAndPrice,
+      payload: data.docs
+    })
   }
 }

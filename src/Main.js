@@ -104,7 +104,7 @@ const Main = ({anyFunc}) => {
   const postProduct = (e) => {
     e.preventDefault();
     selector.createAProduct = false
-    dispatch(createAProduct(e.target.productName.value,e.target.price.value))
+    dispatch(createAProduct(e.target.productName.value,e.target.price.value, navigate))
   }
   const trackSortValue =(e)=> {
     dispatch(trackSortedValue(e.target.value))
