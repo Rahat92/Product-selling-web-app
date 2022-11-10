@@ -23,7 +23,7 @@ const Main = ({anyFunc}) => {
   // let currentPage = searchParam.get('page')
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
-  const { reviews } = useSelector(state=>state.reviews)
+  const { reviews, userName } = useSelector(state=>state.reviews)
   console.log(reviews)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
@@ -73,7 +73,7 @@ const Main = ({anyFunc}) => {
     }
     return ()=> clearTimeout(timer)
 
-  },[user,selector.deleteproduct.data,reviews, selector.createBrandNewProduct.data,price, selector.currentNum,search])
+  },[user,selector.deleteproduct.data,reviews,selector.singleProduct, selector.createBrandNewProduct.data,price, selector.currentNum,search])
   
   
   const doIncrease = () => {
@@ -102,7 +102,7 @@ const Main = ({anyFunc}) => {
     e.preventDefault()
     const review = e.target.review.value;
     const rating = e.target.rating.value;
-    dispatch(createReview(review,rating,productId, setCreateUserReview))
+    dispatch(createReview(review,rating,getProduct,productId, setCreateUserReview))
   }
   const createProduct = () => {
     dispatch(createNewProduct())
@@ -157,7 +157,7 @@ const Main = ({anyFunc}) => {
             </ul>
             {/* <button type = 'button' onClick={createProduct}>create new Product</button> */}
             {/* {user&&user.role === 'admin'?'hello world':null} */}
-            {user.role === 'admin'&&(!selector.createAProduct?
+            {user&&user.role === 'admin'&&(!selector.createAProduct?
             (
               <button type = 'button' onClick={createProduct}>create new Product</button>
             ):(
