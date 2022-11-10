@@ -14,6 +14,7 @@ import Count from './Count';
 import CountMany from './CountMany';
 import AllUser from './AllUser';
 import Names from './Names';
+import store from './store';
 const App = () => {
   const pathName = window.location.pathname
   const [ productData, setProductData ] = useState({
@@ -25,7 +26,7 @@ const App = () => {
   const { user } = useSelector(state=>state.user)
   console.log(user)
   useEffect(() => {
-    dispatch(getMe())
+    store.dispatch(getMe())
   },[])
   const anyFunc = (productName, productRating) => {
     setProductData({

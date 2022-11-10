@@ -4,6 +4,7 @@ import { createSearchParams, useSearchParams, useParams, Link, useLocation, useN
 import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview, updateReview } from './actions';
 import Modal from './Modal';
 const Main = ({anyFunc}) => {
+  const { isAuthenticated, user, loading } = useSelector(state=>state.user)
   const navigate = useNavigate()
   // const param = useParams();
   const [search, setSearch] = useState('');
@@ -21,16 +22,19 @@ const Main = ({anyFunc}) => {
   // let currentPage = searchParam.get('page')
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
-  const { reviews, loading } = useSelector(state=>state.reviews)
+  const { reviews } = useSelector(state=>state.reviews)
   console.log(reviews)
-  const { user } = useSelector(state=>state.user)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
+  if(user&&user.role === 'user'){
+    console.log(user.role)
+  }
   useEffect(()=>{
     setEditReviewClick(false)
-    if(!search){
-      dispatch(getMe())
-    }
+    // if(!search){
+    //   dispatch(getMe())
+    // }
+
     const request = () => {
       dispatch(fetchProducts(selector.currentNum,price, search))
     }
@@ -68,7 +72,7 @@ const Main = ({anyFunc}) => {
     }
     return ()=> clearTimeout(timer)
 
-  },[selector.deleteproduct.data,reviews, selector.createBrandNewProduct.data,price, selector.currentNum,search])
+  },[user,selector.deleteproduct.data,reviews, selector.createBrandNewProduct.data,price, selector.currentNum,search])
   
   
   const doIncrease = () => {
@@ -152,7 +156,7 @@ const Main = ({anyFunc}) => {
             </ul>
             {/* <button type = 'button' onClick={createProduct}>create new Product</button> */}
             {/* {user&&user.role === 'admin'?'hello world':null} */}
-            {user&&user.role === 'admin'&&(!selector.createAProduct?
+            {user.role === 'admin'&&(!selector.createAProduct?
             (
               <button type = 'button' onClick={createProduct}>create new Product</button>
             ):(
@@ -180,11 +184,10 @@ const Main = ({anyFunc}) => {
             </div>
             <div style={{border: '1px solid black', marginLeft:'1rem', padding:'.5rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
                 <h1>Comments:</h1>
-                {reviews.length>0?reviews.map(el=>{
+                {reviews.length>0&&reviews.map(el=>{
                   return(
-                    
                     <div style = {{border:'1px solid black'}}>
-                      <h1 style = {{color:user&&el.user._id === user._id?'red':'green'}}>{el.user.name}</h1>
+                      <h1 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.user.name}</h1>
                       <h2 style={{color:'green'}}>{el.review}</h2>
                       {user&&el.user._id === user._id&&(
                         <div>
@@ -193,9 +196,10 @@ const Main = ({anyFunc}) => {
                       )}
                     </div>
                   )
-                }):
-                <div>
-                  <h2>No review yet: Create a review</h2>  
+                })
+                }
+                {user&&user.role === 'user'&&
+                  (!reviews.find(el=>el.user._id === user._id)&&
                   <form onSubmit={(e)=>sendReview(e,selector.singleProduct.doc.id)}>
                     createComment : &nbsp;
                     <input type= 'text' name = 'review' /><br /><br />
@@ -203,17 +207,7 @@ const Main = ({anyFunc}) => {
                     <input type= 'number' name = 'rating' /><br />
                     <input type="submit" value="save" />
                   </form>
-                </div>}
-                {/* {user&&user.role === 'user'&&
-                  (!reviews.find(el=>el.user._id === user._id) || reviews.length === 0&&
-                  <form onSubmit={(e)=>sendReview(e,selector.singleProduct.doc.id)}>
-                    createComment : &nbsp;
-                    <input type= 'text' name = 'review' /><br /><br />
-                    ratings : &nbsp;
-                    <input type= 'number' name = 'rating' /><br />
-                    <input type="submit" value="save" />
-                  </form>
-                )} */}
+                )}
             </div>
           </div> 
           }

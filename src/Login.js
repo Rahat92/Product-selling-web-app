@@ -5,10 +5,10 @@ import { getMe, loginUser } from './actions';
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector(state=>state.user)
+  const { isAuthenticated, user, loading } = useSelector(state=>state.user)
   console.log(user)
   useEffect(()=>{
-    dispatch(getMe())
+    
   },[])
   
   const loginuser = (e) => {
@@ -17,7 +17,7 @@ const Login = () => {
       const password = e.target.password.value;
     dispatch(loginUser(email, password, navigate))
   }
-  if(user.user!==null&&user.isAuthenticated){
+  if(user!==null&&isAuthenticated){
     navigate('/')
   }
   return(
