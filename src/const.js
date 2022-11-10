@@ -1,4 +1,8 @@
+
 export const increaseNum = 'INCREASE_NUMBER';
+export const createUserReviewRequest = 'CREATE_USER_REVIEW_REQUEST';
+export const createUserReviewSuccess = 'CREATE_USER_REVIEW_SUCCESS';
+export const createUserReviewFail = 'CREATE_USER_REVIEW_FAIL';
 export const decreaseNum = 'DECREASE_NUMBER';
 export const fetchAllProduct = 'FETCH_ALL_PRODUCT';
 export const deleteAProduct = 'DELETE_PRODUCT';

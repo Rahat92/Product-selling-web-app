@@ -1,4 +1,4 @@
-import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, decreaseNum, deleteAProduct, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
+import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -128,57 +128,57 @@ const logOutReducer = (initialState = {}, action) => {
 }
 
 
-const reviewReducer = (state = {review:{}}, action) => {
+const reviewReducer = (state = {reviews:[]}, action) => {
   switch(action.type){
-    case createMyReviewRequest:
-      return {
-        loading: true
-      }
-    case createMyReviewSuccess:
-      return {
-        ...state,
-        loading: false,
-        review: action.payload
-      }
-    case createMyReviewFail:
-      return{
-        ...state,
-        loading:false,
-        review:null,
-        error:action.payload
-      }
-    case getProductReviewRequest:
-      return{
-        loading:true,
-        review: null
-      }
+    // case getProductReviewRequest:
+    //   return{
+    //     loading:true,
+    //   }
     case getProductReviewSuccess:
       return {
         ...state,
         loading: false,
-        review: action.payload
+        reviews:[...action.payload]
       }
     case getProductReviewFail:
       return {
+        ...state,
         loading: false,
-        review: null
+        reviews: null
       }
-    case deleteReviewRequest:
+    case createUserReviewRequest:
       return {
         ...state,
-        loading:true,
+        loading: true
       }
-    case deleteReviewSuccess:
+    case createUserReviewSuccess:
       return {
+        ...state,
+        loading: false,
+        reviews: [...state.reviews, action.payload]
+      }
+    case createUserReviewFail:
+      return{
         ...state,
         loading:false,
-        review: action.payload
+        error:action.payload
       }
-    case deleteReviewFail:
-      return {
-        ...state,
-        loading: false,
-      }
+    // case deleteReviewRequest:
+    //   return {
+    //     ...state,
+    //     loading:true,
+    //   }
+    // case deleteReviewSuccess:
+    //   return {
+    //     ...state,
+    //     loading:false,
+    //     review: action.payload
+    //   }
+    // case deleteReviewFail:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //   }
     default:
       return state
   }

@@ -1,4 +1,7 @@
 import { 
+  createUserReviewRequest,
+  createUserReviewSuccess,
+  createUserReviewFail,
   tracsortvalue,
   createASingleProduct, 
   createProduct, 
@@ -72,7 +75,7 @@ export const getProductReviews = (productId) => {
       const { data } = await requestCreator.get(`/products/${productId}/reviews`)
       dispatch({
         type: getProductReviewSuccess,
-        payload: data
+        payload: data.docs
       })
     }catch(error){
       dispatch({
@@ -90,7 +93,7 @@ export const getSingleProduct = (id) => {
         type:getAProduct,
         payload:data
       })
-      await dispatch(getProductReviews(id))
+      dispatch(getProductReviews(id))
     }catch(error){
       dispatch({
         type: 'getAProductFail',
@@ -247,24 +250,23 @@ export const getLogOut = (navigate) => {
   }
 }
 
-export const createReview = (review,rating,productId, getProduct) => {
+export const createReview = (review, rating, productId) => {
   return async(dispatch) => {
     try{
       dispatch({
-        type: createMyReviewRequest
+        type: createUserReviewRequest
       })
-      const {data} = await requestCreator.post(`/products/${productId}/reviews`,{
-        review: review,
-        rating: rating
+      const { data } = await requestCreator.post(`/products/${productId}/reviews`,{
+        review,
+        rating,
       })
       dispatch({
-        type:createMyReviewSuccess,
-        payload:data
+        type: createUserReviewSuccess,
+        payload: data.doc
       })
-      getProduct(productId)
     }catch(error){
       dispatch({
-        type:createMyReviewFail,
+        type: createUserReviewFail,
         payload: error.response
       })
     }

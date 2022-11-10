@@ -21,7 +21,8 @@ const Main = ({anyFunc}) => {
   // let currentPage = searchParam.get('page')
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
-  const { review, loading } = useSelector(state=>state.reviews)
+  const { reviews, loading } = useSelector(state=>state.reviews)
+  console.log(reviews)
   const { user } = useSelector(state=>state.user)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
@@ -67,7 +68,7 @@ const Main = ({anyFunc}) => {
     }
     return ()=> clearTimeout(timer)
 
-  },[selector.deleteproduct.data,review&&review.doc, selector.createBrandNewProduct.data,price, selector.currentNum,search])
+  },[selector.deleteproduct.data,reviews, selector.createBrandNewProduct.data,price, selector.currentNum,search])
   
   
   const doIncrease = () => {
@@ -96,7 +97,7 @@ const Main = ({anyFunc}) => {
     e.preventDefault()
     const review = e.target.review.value;
     const rating = e.target.rating.value;
-    dispatch(createReview(review,rating,productId, getProduct))
+    dispatch(createReview(review,rating,productId))
   }
   const createProduct = () => {
     dispatch(createNewProduct())
@@ -179,38 +180,22 @@ const Main = ({anyFunc}) => {
             </div>
             <div style={{border: '1px solid black', marginLeft:'1rem', padding:'.5rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
                 <h1>Comments:</h1>
-                
-                {review&&review.docs&&review.docs.map(el => {
+                {reviews.length>0?reviews.map(el=>{
                   return(
-                      <div style={{color:'black', borderRadius:'5px', padding:'.5rem',margin:'1rem', textAlign:'center', position:'relative', background:'rgba(0, 0, 0, .2)', maxWidth:'400px'}}>
-                        {editReviewClick&&user&&el.user._id === user._id?(
+                    
+                    <div style = {{border:'1px solid black'}}>
+                      <h1 style = {{color:user&&el.user._id === user._id?'red':'green'}}>{el.user.name}</h1>
+                      <h2 style={{color:'green'}}>{el.review}</h2>
+                      {user&&el.user._id === user._id&&(
                         <div>
-                          <form onSubmit={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)}>
-                            comment
-                            <input type = 'text' name = 'review' defaultValue={editReview.review} /> <br />
-                            review
-                            <input type = 'number' name='rating' defaultValue={editReview.rating}/> <br />
-                            <button type = 'button' onClick={reviewEditCancel}>cancel</button>
-                            <input type = 'submit' value={'update'} />
-                            {/* <button type = 'button' onClick={()=>dispatch(updateReview(el._id, editReview.review, editReview.rating,getProduct))}>update</button> */}
-                          </form>  
+                          <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
                         </div>
-                        ):
-                        // irritate review all reviews
-                        <>
-                          <h1 style = {{color:user&&el.user._id === user._id?'red':''}}>{el.user.name}</h1>
-                          <h2 style={{color:'green'}}>{el.review}</h2></>}
-                          
-                        {/* if user id and review's user id matched then reveal a eidt and delete button */}
-                          {user&&el.user._id === user._id&&!editReviewClick?<><button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
-                        </>:
-                        ''}
-                        {deleteClick? <Modal getProduct = {()=>getProduct(selector.singleProduct.doc._id)} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview}/>:''}
-                      </div>
+                      )}
+                    </div>
                   )
-                })}
-                {user&&user.role === 'user'&&(
-                  review&&review.docs&&review.docs.length>=0&&(!review.docs.find(el=>el.user._id === user._id))&&
+                }):
+                <div>
+                  <h2>No review yet: Create a review</h2>  
                   <form onSubmit={(e)=>sendReview(e,selector.singleProduct.doc.id)}>
                     createComment : &nbsp;
                     <input type= 'text' name = 'review' /><br /><br />
@@ -218,7 +203,17 @@ const Main = ({anyFunc}) => {
                     <input type= 'number' name = 'rating' /><br />
                     <input type="submit" value="save" />
                   </form>
-                )}
+                </div>}
+                {/* {user&&user.role === 'user'&&
+                  (!reviews.find(el=>el.user._id === user._id) || reviews.length === 0&&
+                  <form onSubmit={(e)=>sendReview(e,selector.singleProduct.doc.id)}>
+                    createComment : &nbsp;
+                    <input type= 'text' name = 'review' /><br /><br />
+                    ratings : &nbsp;
+                    <input type= 'number' name = 'rating' /><br />
+                    <input type="submit" value="save" />
+                  </form>
+                )} */}
             </div>
           </div> 
           }
