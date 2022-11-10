@@ -250,7 +250,7 @@ export const getLogOut = (navigate) => {
   }
 }
 
-export const createReview = (review, rating, productId) => {
+export const createReview = (review, rating, productId, setCreateUserReview) => {
   return async(dispatch) => {
     try{
       dispatch({
@@ -264,6 +264,7 @@ export const createReview = (review, rating, productId) => {
         type: createUserReviewSuccess,
         payload: data.doc
       })
+      setCreateUserReview(true)
     }catch(error){
       dispatch({
         type: createUserReviewFail,

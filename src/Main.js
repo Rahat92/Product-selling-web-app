@@ -5,6 +5,7 @@ import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, d
 import Modal from './Modal';
 const Main = ({anyFunc}) => {
   const { isAuthenticated, user, loading } = useSelector(state=>state.user)
+  const [ createUserReview, setCreateUserReview ] = useState(false)
   const navigate = useNavigate()
   // const param = useParams();
   const [search, setSearch] = useState('');
@@ -101,7 +102,7 @@ const Main = ({anyFunc}) => {
     e.preventDefault()
     const review = e.target.review.value;
     const rating = e.target.rating.value;
-    dispatch(createReview(review,rating,productId))
+    dispatch(createReview(review,rating,productId, setCreateUserReview))
   }
   const createProduct = () => {
     dispatch(createNewProduct())
@@ -198,7 +199,7 @@ const Main = ({anyFunc}) => {
                   )
                 })
                 }
-                {user&&user.role === 'user'&&
+                {user&&user.role === 'user'&&!createUserReview&&
                   (!reviews.find(el=>el.user._id === user._id)&&
                   <form onSubmit={(e)=>sendReview(e,selector.singleProduct.doc.id)}>
                     createComment : &nbsp;
