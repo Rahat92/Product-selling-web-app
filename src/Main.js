@@ -73,7 +73,7 @@ const Main = ({anyFunc}) => {
     }
     return ()=> clearTimeout(timer)
 
-  },[user,selector.deleteproduct.data,reviews,selector.singleProduct, selector.createBrandNewProduct.data,price, selector.currentNum,search])
+  },[user,selector.deleteproduct.data,reviews, selector.createBrandNewProduct.data,price, selector.currentNum,search])
   
   
   const doIncrease = () => {
