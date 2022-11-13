@@ -164,17 +164,17 @@ const reviewReducer = (state = {reviews:[]}, action) => {
         loading:false,
         error:action.payload
       }
-    // case deleteReviewRequest:
-    //   return {
-    //     ...state,
-    //     loading:true,
-    //   }
-    // case deleteReviewSuccess:
-    //   return {
-    //     ...state,
-    //     loading:false,
-    //     review: action.payload
-    //   }
+    case deleteReviewRequest:
+      return {
+        ...state,
+        loading:true,
+      }
+    case deleteReviewSuccess:
+      return {
+        ...state,
+        loading:false,
+        reviews: [...state.reviews ].filter(el=>el._id!==action.payload)
+      }
     // case deleteReviewFail:
     //   return {
     //     ...state,

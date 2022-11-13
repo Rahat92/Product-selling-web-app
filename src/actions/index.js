@@ -266,7 +266,7 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
       })
       // getProduct(productId)
       dispatch(getSingleProduct(productId))
-      setCreateUserReview(true)
+      // setCreateUserReview(true)
     }catch(error){
       dispatch({
         type: createUserReviewFail,
@@ -275,7 +275,7 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
     }
   }
 }
-export const deleteOneReview = (id, setDeleteClick, getProduct) => {
+export const deleteOneReview = (id, setDeleteClick, getProduct,productId) => {
   return async(dispatch) => {
     try{
       dispatch({
@@ -284,10 +284,11 @@ export const deleteOneReview = (id, setDeleteClick, getProduct) => {
       const { data } = await requestCreator.delete(`/reviews/${id}`)
       dispatch({
         type: deleteReviewSuccess,
-        payload: data
+        payload: id
       })
       setDeleteClick(false)
-      getProduct()
+      // getProduct()
+      dispatch(getSingleProduct(productId))
     }catch(error){
       dispatch({
         type: deleteReviewFail,
