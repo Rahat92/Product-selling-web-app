@@ -180,6 +180,27 @@ const reviewReducer = (state = {reviews:[]}, action) => {
     //     ...state,
     //     loading: false,
     //   }
+    case updateReviewRequest:
+      return {
+        ...state,
+        loading: true,
+      }
+    case updateReviewSuccess:
+      const copiedList = [...state.reviews]
+      let index;
+      copiedList.find((el,i)=>{
+        if(el._id===action.payload._id){
+          index = i;
+        }
+      })
+      console.log(index)
+      copiedList[index] = action.payload;
+      console.log(copiedList)
+      return{
+        // ...state,
+        loading: false,
+        reviews: copiedList
+      }
     default:
       return state
   }

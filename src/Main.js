@@ -24,12 +24,8 @@ const Main = ({anyFunc}) => {
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
   const { reviews, userName } = useSelector(state=>state.reviews)
-  console.log(reviews)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
-  if(user&&user.role === 'user'){
-    console.log(user.role)
-  }
   useEffect(()=>{
     setEditReviewClick(false)
     // if(!search){
@@ -182,15 +178,42 @@ const Main = ({anyFunc}) => {
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>কেটাগরিঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.category}</span><br/>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মুল্যঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.price}</span><br/>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মোট রেটিংঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.numberOfRatings}</span><br/>
-              <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>রেটিংসঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.ratingsAverage}</span>
+              <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>রেটিংসঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.ratingsAverage.toFixed()}</span>
             </div>
             <div style={{border: '1px solid black', overflow:'hidden', marginLeft:'1rem', padding:'2rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
                 <h1>Comments:</h1>
                 {reviews.length>0&&reviews.map(el=>{
-                  return(
-                    <div style = {{border:'1px solid black', padding:'.5rem'}}>
-                      <h1 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.user.name}</h1>
-                      <h2 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.review}</h2>
+                  // if(editReviewClick&&user&&el.user._id === user._id){
+                  //   return 'hello world'
+                  // }
+                  // return(
+                  //   <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
+                  //     <h4 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.user.name}</h4>
+                  //     <h1 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.review}</h1>
+                  //     {user&&el.user._id === user._id&&(
+                  //       <div>
+                  //         <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
+                  //         {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
+                  //       </div>
+                  //     )}
+                  //   </div>
+                  // )
+                  return editReviewClick&&user&&el.user._id === user._id?
+                    <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
+                        <form onSubmit={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)}>
+                            comment
+                            <input type = 'text' name = 'review' defaultValue={editReview.review} /> <br />
+                            review
+                            <input type = 'number' name='rating' defaultValue={editReview.rating}/> <br />
+                            <button type = 'button' onClick={reviewEditCancel}>cancel</button>
+                            <input type = 'submit' value={'update'} />
+                            {/* <button type = 'button' onClick={()=>dispatch(updateReview(el._id, editReview.review, editReview.rating,getProduct))}>update</button> */}
+                          </form> 
+                    </div>
+                  :
+                    <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
+                      <h4 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.user.name}</h4>
+                      <h1 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.review}</h1>
                       {user&&el.user._id === user._id&&(
                         <div>
                           <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
@@ -198,7 +221,6 @@ const Main = ({anyFunc}) => {
                         </div>
                       )}
                     </div>
-                  )
                 })
                 }
                 {user&&user.role === 'user'&&!createUserReview&&
