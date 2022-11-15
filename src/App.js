@@ -14,6 +14,7 @@ import Count from './Count';
 import CountMany from './CountMany';
 import AllUser from './AllUser';
 import Names from './Names';
+import User from './User';
 import store from './store';
 const App = () => {
   const pathName = window.location.pathname
@@ -33,11 +34,12 @@ const App = () => {
       productRating : productRating
     })
   }
+  console.log(window.location.pathname)
   return(
     <div>
       <Router>
       {user&&<div style={{position: 'fixed', top:'0', right:'3rem'}}><Link to = '/me'><h2>{user.name}(<span style={{color:'red', bold:'bolder'}}>{user.role}</span>)</h2></Link></div>}
-      {!pathName.includes('login')&&!pathName.includes('count')&&<UserState />}
+      {<UserState />}
       &nbsp;&nbsp;&nbsp;
       <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
       <Link to = '/admin/alluser'>All User</Link>
@@ -53,6 +55,7 @@ const App = () => {
           <Route path = {`/countmany`} element = {<CountMany />}/>
           <Route path = {`/admin/alluser`} element = {<AllUser />}/>
           <Route path = {`/names/`} element = {<Names />}/>
+          <Route path = {`/profile/:userId`} element = {<User />}/>
         </Routes>
       </Router>
     </div>

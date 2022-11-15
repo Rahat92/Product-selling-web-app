@@ -38,7 +38,10 @@ import {
   updateReviewSuccess,
   updateReviewFail,
   createProductNameAndPrice,
-  getProductNameAndPrice, 
+  getProductNameAndPrice,
+  getSingleUserRequest,
+  getSingleUserSuccess,
+  getSingleUserFail, 
 } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
@@ -342,7 +345,25 @@ export const updateReview = (id, review, rating, getProduct, productId, setEditR
   }
 }
 
-
+export const getUser = (userId) => {
+  return async (dispatch) => {
+    try{
+      dispatch({
+        type: getSingleUserRequest,
+      })
+      const { data } = await requestCreator.get(`/users/${userId}`);
+      dispatch({
+        type: getSingleUserSuccess,
+        payload: data.doc
+      })
+    }catch(error){
+      dispatch({
+        type: getSingleUserFail,
+        payload: error.response.data
+      })
+    }
+  }
+}
 
 
 

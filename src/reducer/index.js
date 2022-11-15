@@ -1,4 +1,4 @@
-import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
+import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, getSingleUserFail, getSingleUserRequest, getSingleUserSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -82,6 +82,25 @@ const userReducer = (initialState = {user:{}}, action)=>{
         user:null,
         error:action.payload
       }
+    case logOutRequest:
+      return {
+        ...initialState,
+        loading:true,
+        isAuthenticated:true,
+      }
+    case logOutSuccess:
+      return {
+        ...initialState,
+        loading:false,
+        isAuthenticated:false,
+        user:null
+      }
+    case logOutFail:
+      return {
+        ...initialState,
+        loading: false,
+        isAuthenticated: true
+      }
     case getMeRequest:
       return{
         loading:true,
@@ -104,28 +123,28 @@ const userReducer = (initialState = {user:{}}, action)=>{
       return initialState
   }
 }
-const logOutReducer = (initialState = {}, action) => {
-  switch(action.type){
-    case logOutRequest:
-      return {
-        loading:true,
-        isAuthenticated:true,
-      }
-    case logOutSuccess:
-      return {
-        loading:false,
-        isAuthenticated:false,
-        user:null
-      }
-    case logOutFail:
-      return {
-        loading: false,
-        isAuthenticated: true
-      }
-    default:
-      return initialState
-  }
-}
+// const logOutReducer = (initialState = {}, action) => {
+//   switch(action.type){
+//     case logOutRequest:
+//       return {
+//         loading:true,
+//         isAuthenticated:true,
+//       }
+//     case logOutSuccess:
+//       return {
+//         loading:false,
+//         isAuthenticated:false,
+//         user:null
+//       }
+//     case logOutFail:
+//       return {
+//         loading: false,
+//         isAuthenticated: true
+//       }
+//     default:
+//       return initialState
+//   }
+// }
 
 
 const reviewReducer = (state = {reviews:[]}, action) => {
@@ -220,7 +239,8 @@ const user = (state = {user:{}}, action) => {
     case getAllActiveUserFail:
       return {
         loading: false,
-        user: null
+        user: null,
+        message: action.payload
       }
     default:
       return state;
@@ -261,6 +281,29 @@ const productNameAndpriceReducer = (state = [], action) => {
       return state;
   }
 }
+
+
+const normalUserReducer = (state = {user: {}}, action) => {
+  switch(action.type){
+    case getSingleUserRequest:
+      return {
+        loading: true,
+      }
+    case getSingleUserSuccess:
+      return {
+        ...state,
+        loading: false,
+        user: action.payload
+      }
+    case getSingleUserFail:
+      return {
+        loading: false,
+        message: action.payload
+      }
+    default: 
+      return state
+  }
+}
 export default combineReducers({
   currentNum: numberReducer,
   allProduct: allProduct,
@@ -272,9 +315,9 @@ export default combineReducers({
   createBrandNewProduct:createBrandNewProduct,
   sortValue:sortValueReducer,
   user:userReducer,
-  logOut:logOutReducer,
   reviews: reviewReducer,
   users: user,
   updateReview: updateReviewReducer,
   products: productNameAndpriceReducer,
+  normalUser: normalUserReducer
 })

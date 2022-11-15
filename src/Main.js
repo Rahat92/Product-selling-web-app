@@ -182,29 +182,15 @@ const Main = ({anyFunc}) => {
             </div>
             <div style={{border: '1px solid black', overflow:'hidden', marginLeft:'1rem', padding:'2rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
                 <h1>Comments:</h1>
+                {reviews.length === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
                 {reviews.length>0&&reviews.map(el=>{
-                  // if(editReviewClick&&user&&el.user._id === user._id){
-                  //   return 'hello world'
-                  // }
-                  // return(
-                  //   <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
-                  //     <h4 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.user.name}</h4>
-                  //     <h1 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.review}</h1>
-                  //     {user&&el.user._id === user._id&&(
-                  //       <div>
-                  //         <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
-                  //         {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
-                  //       </div>
-                  //     )}
-                  //   </div>
-                  // )
                   return editReviewClick&&user&&el.user._id === user._id?
                     <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
                         <form onSubmit={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)}>
-                            comment
-                            <input type = 'text' name = 'review' defaultValue={editReview.review} /> <br />
-                            review
-                            <input type = 'number' name='rating' defaultValue={editReview.rating}/> <br />
+                            <span style={{fontWeight:'700'}}>Update comment</span> &nbsp; &nbsp;
+                            <input style={{padding:'.3rem', fontSize:'1.5rem', marginBottom:'1rem'}} type = 'text' name = 'review' defaultValue={editReview.review} /> <br />
+                            <span style={{fontWeight:'700'}}>Update review</span> &nbsp; &nbsp;
+                            <input style={{padding:'.3rem', fontSize:'1.5rem'}} type = 'number' min='3' max= '5' name='rating' defaultValue={editReview.rating}/> <br />
                             <button type = 'button' onClick={reviewEditCancel}>cancel</button>
                             <input type = 'submit' value={'update'} />
                             {/* <button type = 'button' onClick={()=>dispatch(updateReview(el._id, editReview.review, editReview.rating,getProduct))}>update</button> */}
@@ -212,7 +198,7 @@ const Main = ({anyFunc}) => {
                     </div>
                   :
                     <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
-                      <h4 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.user.name}</h4>
+                      <h4 style = {{color:user&&el.user._id === user._id?'green':'', fontSize: user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user._id === user._id?700:400}}><Link to = {user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>{el.user.name}</Link></h4>
                       <h1 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.review}</h1>
                       {user&&el.user._id === user._id&&(
                         <div>
@@ -227,9 +213,9 @@ const Main = ({anyFunc}) => {
                   (!reviews.find(el=>el.user._id === user._id)&&
                   <form onSubmit={(e)=>sendReview(e,selector.singleProduct.doc.id)}>
                     createComment : &nbsp;
-                    <input type= 'text' name = 'review' /><br /><br />
+                    <input placeholder='What do you think about this product?' type= 'text' name = 'review' /><br /><br />
                     ratings : &nbsp;
-                    <input type= 'number' name = 'rating' /><br />
+                    <input placeholder='review' type= 'number' min='3' max= '5' name = 'rating' /><br />
                     <input type="submit" value="save" />
                   </form>
                 )}

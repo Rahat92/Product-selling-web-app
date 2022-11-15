@@ -36,6 +36,9 @@ export const getAllActiveUserFail = 'GET_ALL_ACTIVE_USER_FAIL';
 export const updateReviewRequest = 'UPDATE_REVIEW_REQUEST';
 export const updateReviewSuccess = 'UPDATE_REVIEW_SUCCESS';
 export const updateReviewFail = 'UPDATE_REVIEW_FAIL';
+export const getSingleUserRequest = 'GET_SINGLE_USER_REQUEST';
+export const getSingleUserSuccess = 'GET_SINGLE_USER_SUCCESS';
+export const getSingleUserFail = 'GET_SINGLE_USER_FAIL';
 
 
 ////// for experiment////////
