@@ -191,7 +191,7 @@ const Main = ({anyFunc}) => {
                       <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)} />
                     </div>
                   :
-                    <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
+                    <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, position:'relative', padding:'.5rem'}}>
                       <h4 style = {{color:user&&el.user._id === user._id?'green':'', fontSize: user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user._id === user._id?700:400}}><Link to = {user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>{el.user.name}</Link></h4>
                       <h1 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.review}</h1>
                       {user&&el.user._id === user._id&&(
@@ -199,6 +199,13 @@ const Main = ({anyFunc}) => {
                           <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
                           {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
                         </div>
+                      )}
+                      {user&&user.role === 'admin'&&(
+                        <div>
+                          <button onClick= {()=>deleteReview(el._id)} style={{position: 'absolute', top: '.5rem', right:'.5rem'}} type='button'>delete</button>
+                          {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
+                        </div>
+                        
                       )}
                     </div>
                 })
