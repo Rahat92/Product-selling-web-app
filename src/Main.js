@@ -2,7 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview, updateReview } from './actions';
+import CreateReviewForm from './CreateReviewForm';
 import Modal from './Modal';
+import UpdateReviewForm from './UpdateReviewForm';
 const Main = ({anyFunc}) => {
   const { isAuthenticated, user, loading } = useSelector(state=>state.user)
   const [ createUserReview, setCreateUserReview ] = useState(false)
@@ -186,15 +188,7 @@ const Main = ({anyFunc}) => {
                 {reviews.length>0&&reviews.map(el=>{
                   return editReviewClick&&user&&el.user._id === user._id?
                     <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
-                        <form onSubmit={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)}>
-                            <span style={{fontWeight:'700'}}>Update comment</span> &nbsp; &nbsp;
-                            <input style={{padding:'.3rem', fontSize:'1.5rem', marginBottom:'1rem'}} type = 'text' name = 'review' defaultValue={editReview.review} /> <br />
-                            <span style={{fontWeight:'700'}}>Update review</span> &nbsp; &nbsp;
-                            <input style={{padding:'.3rem', fontSize:'1.5rem'}} type = 'number' min='3' max= '5' name='rating' defaultValue={editReview.rating}/> <br />
-                            <button type = 'button' onClick={reviewEditCancel}>cancel</button>
-                            <input type = 'submit' value={'update'} />
-                            {/* <button type = 'button' onClick={()=>dispatch(updateReview(el._id, editReview.review, editReview.rating,getProduct))}>update</button> */}
-                          </form> 
+                      <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)} />
                     </div>
                   :
                     <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
@@ -211,13 +205,7 @@ const Main = ({anyFunc}) => {
                 }
                 {user&&user.role === 'user'&&!createUserReview&&
                   (!reviews.find(el=>el.user._id === user._id)&&
-                  <form onSubmit={(e)=>sendReview(e,selector.singleProduct.doc.id)}>
-                    createComment : &nbsp;
-                    <input placeholder='What do you think about this product?' type= 'text' name = 'review' /><br /><br />
-                    ratings : &nbsp;
-                    <input placeholder='review' type= 'number' min='3' max= '5' name = 'rating' /><br />
-                    <input type="submit" value="save" />
-                  </form>
+                  <CreateReviewForm sendReview={(e) => sendReview(e,selector.singleProduct.doc.id)} />
                 )}
             </div>
           </div> 

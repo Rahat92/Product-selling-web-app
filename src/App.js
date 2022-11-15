@@ -34,12 +34,11 @@ const App = () => {
       productRating : productRating
     })
   }
-  console.log(window.location.pathname)
   return(
     <div>
       <Router>
       {user&&<div style={{position: 'fixed', top:'0', right:'3rem'}}><Link to = '/me'><h2>{user.name}(<span style={{color:'red', bold:'bolder'}}>{user.role}</span>)</h2></Link></div>}
-      {<UserState />}
+      <UserState />
       &nbsp;&nbsp;&nbsp;
       <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
       <Link to = '/admin/alluser'>All User</Link>
