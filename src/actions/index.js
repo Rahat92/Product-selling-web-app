@@ -75,10 +75,14 @@ export const getProductReviews = (productId) => {
   return async(dispatch) => {
     try{
       dispatch({type: getProductReviewRequest})
-      const { data } = await requestCreator.get(`/products/${productId}/reviews`)
+      const { data } = await requestCreator.get(`/products/${productId}/reviews`,{
+        params:{
+          page:2
+        }
+      })
       dispatch({
         type: getProductReviewSuccess,
-        payload: data.docs
+        payload: data
       })
     }catch(error){
       dispatch({
@@ -269,7 +273,7 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
       })
       // getProduct(productId)
       dispatch(getSingleProduct(productId))
-      // setCreateUserReview(true)
+      setCreateUserReview(true)
     }catch(error){
       dispatch({
         type: createUserReviewFail,

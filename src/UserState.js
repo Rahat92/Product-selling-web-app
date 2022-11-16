@@ -18,7 +18,6 @@ const UserState = () => {
   //       navigate('/')
   //     }
   // }
-  console.log(window.location.pathname)
   return(
     <>
         {user&&(

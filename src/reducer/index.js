@@ -157,7 +157,10 @@ const reviewReducer = (state = {reviews:[]}, action) => {
       return {
         ...state,
         loading: false,
-        reviews:[...action.payload]
+        numOfDoc: action.payload.docNum,
+        result: action.payload.result,
+        recentNum: action.payload.currentNum,
+        reviews:[...action.payload.docs]
       }
     case getProductReviewFail:
       return {

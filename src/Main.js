@@ -25,10 +25,11 @@ const Main = ({anyFunc}) => {
   // let currentPage = searchParam.get('page')
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
-  const { reviews, userName } = useSelector(state=>state.reviews)
+  const { reviews, numOfDoc, result, recentNum } = useSelector(state=>state.reviews)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
   useEffect(()=>{
+    setCreateUserReview(false)
     setEditReviewClick(false)
     // if(!search){
     //   dispatch(getMe())
@@ -73,7 +74,7 @@ const Main = ({anyFunc}) => {
 
   },[user,selector.deleteproduct.data,reviews, selector.createBrandNewProduct.data,price, selector.currentNum,search])
   
-  
+  console.log(numOfDoc, recentNum)
   const doIncrease = () => {
     dispatch(increase())
   }
@@ -181,19 +182,30 @@ const Main = ({anyFunc}) => {
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মুল্যঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.price}</span><br/>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মোট রেটিংঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.numberOfRatings}</span><br/>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>রেটিংসঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.ratingsAverage.toFixed()}</span>
+              <h3>{selector.singleProduct.doc.review.length} reviews</h3>
             </div>
             <div style={{border: '1px solid black', overflow:'hidden', marginLeft:'1rem', padding:'2rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
                 <h1>Comments:</h1>
-                {reviews.length === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
+                {reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
+                  :
+                <div>
+                  <h4>Total review in this product :{selector.singleProduct.doc.review.length}</h4>
+                  <h4>result per page: {result}</h4>
+                  <h4>recentNum: {recentNum}</h4>
+                </div>
+                }
                 {reviews.length>0&&reviews.map(el=>{
                   return editReviewClick&&user&&el.user._id === user._id?
+
                     <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
                       <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)} />
                     </div>
+
                   :
                     <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, position:'relative', padding:'.5rem'}}>
                       <h4 style = {{color:user&&el.user._id === user._id?'green':'', fontSize: user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user._id === user._id?700:400}}><Link to = {user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>{el.user.name}</Link></h4>
                       <h1 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.review}</h1>
+
                       {user&&el.user._id === user._id&&(
                         <div>
                           <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
@@ -210,8 +222,14 @@ const Main = ({anyFunc}) => {
                     </div>
                 })
                 }
+                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                  {selector.singleProduct.doc.review.length>recentNum&&result!==0&&
+                  <button type='button' style={ {outline:'0', border:'none'} }>more comments</button>}
+                  <h4 style={{marginRight:'3px'}}>{recentNum} of {selector.singleProduct.doc.review.length}</h4>
+                </div>
+                
                 {user&&user.role === 'user'&&!createUserReview&&
-                  (!reviews.find(el=>el.user._id === user._id)&&
+                  (!selector.singleProduct.doc.review.find(el=>el.user._id === user._id)&&
                   <CreateReviewForm sendReview={(e) => sendReview(e,selector.singleProduct.doc.id)} />
                 )}
             </div>
