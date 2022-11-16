@@ -197,7 +197,7 @@ const Main = ({anyFunc}) => {
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>রেটিংসঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.ratingsAverage.toFixed()}</span>
               <h3>{selector.singleProduct.doc.review.length} reviews</h3>
             </div>
-            <div style={{border: '1px solid black', overflow:'hidden', marginLeft:'1rem', padding:'2rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
+            <div style={{border: '1px solid black', overflow:'hidden', marginLeft:'1rem', padding:'2.5rem 1.5rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
                 <h1>Comments:</h1>
                 {reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
                   :
@@ -210,14 +210,14 @@ const Main = ({anyFunc}) => {
                 {reviews.length>0&&reviews.map(el=>{
                   return editReviewClick&&user&&el.user._id === user._id?
 
-                    <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
+                    <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
                       <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)} />
                     </div>
 
                   :
                     <div style = {{border:`${user&&el.user._id === user._id?'4px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, position:'relative', padding:'.5rem'}}>
-                      <h4 style = {{color:user&&el.user._id === user._id?'green':'', fontSize: user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user._id === user._id?700:400}}><Link to = {user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>{el.user.name}</Link></h4>
-                      <h1 style = {{color:user&&el.user._id === user._id?'green':''}}>{el.review}</h1>
+                      <h4 style = {{color:user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user._id === user._id?700:400}}><Link to = {user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>{el.user.name}</Link></h4>
+                      <h2 style = {{color:user&&el.user._id === user._id?'green':'', padding:'0', margin:'0'}}>{el.review}</h2>
 
                       {user&&el.user._id === user._id&&(
                         <div>
@@ -235,10 +235,10 @@ const Main = ({anyFunc}) => {
                     </div>
                 })
                 }
-                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                <div style={{ position:'relative', display:'flex', alignItems:'center', justifyContent:'space-between'}}>
                   {selector.singleProduct.doc.review.length>recentNum&&result!==0&&
-                  <button type='button' style={ {outline:'0', border:'none'} } onClick = {()=>moreCommentButtonClick(selector.singleProduct.doc._id)}>more comments</button>}
-                  <h4 style={{marginRight:'3px'}}>{recentNum} of {selector.singleProduct.doc.review.length}</h4>
+                  <button type='button' style={ {outline:'0', border:'none'} } onClick = {()=>moreCommentButtonClick(selector.singleProduct.doc._id)}>More comments</button>}
+                  <h4 style={{ }}>{recentNum} of {selector.singleProduct.doc.review.length}</h4>
                 </div>
                 
                 {user&&user.role === 'user'&&!createUserReview&&
