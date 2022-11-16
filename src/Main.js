@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
-import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview, updateReview } from './actions';
+import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview, updateReview, getProductReviews } from './actions';
 import CreateReviewForm from './CreateReviewForm';
 import Modal from './Modal';
 import UpdateReviewForm from './UpdateReviewForm';
@@ -19,13 +19,15 @@ const Main = ({anyFunc}) => {
   // const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
+  const { reviews, numOfDoc, result, recentNum, currentPage,totalPage, resPerPage } = useSelector(state=>state.reviews)
+  console.log(resPerPage)
+  const [ reviewPageNo, setReviewPageNo ] = useState(1)
   // const [searchParam, setSearchParams] = useSearchParams();
   // console.log(searchParam.get('page'))
   // let currentPage = new URLSearchParams(location).get('page')
   // let currentPage = searchParam.get('page')
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
-  const { reviews, numOfDoc, result, recentNum } = useSelector(state=>state.reviews)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
   useEffect(()=>{
@@ -73,8 +75,6 @@ const Main = ({anyFunc}) => {
     return ()=> clearTimeout(timer)
 
   },[user,selector.deleteproduct.data,reviews, selector.createBrandNewProduct.data,price, selector.currentNum,search])
-  
-  console.log(numOfDoc, recentNum)
   const doIncrease = () => {
     dispatch(increase())
   }
@@ -83,6 +83,7 @@ const Main = ({anyFunc}) => {
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
+    // setReviewPageNo(1)
   }
   const deleteProduct = (id) => {
     // dispatch(deleteOneProduct(id))
@@ -131,11 +132,23 @@ const Main = ({anyFunc}) => {
   }
   const updateMyReview = (e, id,productId) => {
     e.preventDefault()
-    dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick))
+    dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick, setReviewPageNo, reviewPageNo))
   }
   const sendProductDataToEditForm = (productName, productRating, id) => {
     anyFunc(productName, productRating)
     navigate(`product/${id}`)
+  }
+  // const getReviews = () => {
+  //   console.log(reviewPageNo+1)
+  // }
+  const previousCommentClickButton = (productId) => {
+    setReviewPageNo(reviewPageNo-1);
+    dispatch(getProductReviews(productId, reviewPageNo-1))
+  }
+  const moreCommentButtonClick = (productId) => {
+    setReviewPageNo(reviewPageNo+1);
+    console.log(reviewPageNo+1)
+    dispatch(getProductReviews(productId, reviewPageNo+1))
   }
   const allProduct = () => {
     if(!selector.allProduct.data){
@@ -190,8 +203,8 @@ const Main = ({anyFunc}) => {
                   :
                 <div>
                   <h4>Total review in this product :{selector.singleProduct.doc.review.length}</h4>
-                  <h4>result per page: {result}</h4>
-                  <h4>recentNum: {recentNum}</h4>
+                  <h4>total page: {Math.ceil(selector.singleProduct.doc.review.length/resPerPage)}</h4>
+                  {currentPage>1&&<button type='button' style={{border:'none', marginBottom:'1rem'}} onClick={()=>previousCommentClickButton(selector.singleProduct.doc._id)}>Previous review</button>}
                 </div>
                 }
                 {reviews.length>0&&reviews.map(el=>{
@@ -209,7 +222,7 @@ const Main = ({anyFunc}) => {
                       {user&&el.user._id === user._id&&(
                         <div>
                           <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
-                          {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
+                          {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} setReviewPageNo = {setReviewPageNo} deleteOne = {deleteOneReview} />:''}
                         </div>
                       )}
                       {user&&user.role === 'admin'&&(
@@ -224,7 +237,7 @@ const Main = ({anyFunc}) => {
                 }
                 <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
                   {selector.singleProduct.doc.review.length>recentNum&&result!==0&&
-                  <button type='button' style={ {outline:'0', border:'none'} }>more comments</button>}
+                  <button type='button' style={ {outline:'0', border:'none'} } onClick = {()=>moreCommentButtonClick(selector.singleProduct.doc._id)}>more comments</button>}
                   <h4 style={{marginRight:'3px'}}>{recentNum} of {selector.singleProduct.doc.review.length}</h4>
                 </div>
                 

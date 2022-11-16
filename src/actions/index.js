@@ -71,13 +71,14 @@ export const fetchProducts = (currentPage, sortvalue, searchValue) => {
     })
   }
 }
-export const getProductReviews = (productId) => {
+export const getProductReviews = (productId, pageNo) => {
+  console.log('from action',pageNo)
   return async(dispatch) => {
     try{
       dispatch({type: getProductReviewRequest})
       const { data } = await requestCreator.get(`/products/${productId}/reviews`,{
         params:{
-          page:2
+          page:pageNo
         }
       })
       dispatch({
@@ -92,7 +93,7 @@ export const getProductReviews = (productId) => {
     }
   }
 }
-export const getSingleProduct = (id) => {
+export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
   return async(dispatch) => {
     try{
       const { data } = await requestCreator.get(`/products/${id}`)
@@ -101,6 +102,9 @@ export const getSingleProduct = (id) => {
         payload:data
       })
       dispatch(getProductReviews(id))
+      // if(setReviewPageNo&&currentPage){
+      //   setReviewPageNo(currentPage)
+      // }
     }catch(error){
       dispatch({
         type: 'getAProductFail',
@@ -282,7 +286,7 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
     }
   }
 }
-export const deleteOneReview = (id, setDeleteClick, getProduct,productId) => {
+export const deleteOneReview = (id, setDeleteClick, getProduct,productId, setReviewPageNo) => {
   return async(dispatch) => {
     try{
       dispatch({
@@ -296,6 +300,7 @@ export const deleteOneReview = (id, setDeleteClick, getProduct,productId) => {
       setDeleteClick(false)
       // getProduct()
       dispatch(getSingleProduct(productId))
+      // setReviewPageNo(2)
     }catch(error){
       dispatch({
         type: deleteReviewFail,
@@ -324,7 +329,7 @@ export const getAllUser = () => {
     }
   }
 }
-export const updateReview = (id, review, rating, getProduct, productId, setEditReviewClick) => {
+export const updateReview = (id, review, rating, getProduct, productId, setEditReviewClick, setReviewPageNo,reviewPageNo) => {
   return async (dispatch) => {
     try{
       dispatch({
@@ -339,7 +344,8 @@ export const updateReview = (id, review, rating, getProduct, productId, setEditR
         payload: data.doc 
       })
       // setEditReviewClick(null)
-      dispatch(getSingleProduct(productId))
+      // setReviewPageNo(currentNum)
+      dispatch(getSingleProduct(productId, setReviewPageNo, reviewPageNo+1))
     }catch(error){
       dispatch({
         type: updateReviewFail,
