@@ -83,7 +83,7 @@ const Main = ({anyFunc}) => {
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
-    // setReviewPageNo(1)
+    setReviewPageNo(1)
   }
   const deleteProduct = (id) => {
     // dispatch(deleteOneProduct(id))

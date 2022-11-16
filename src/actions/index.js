@@ -102,8 +102,8 @@ export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
         payload:data
       })
       dispatch(getProductReviews(id))
-      // if(setReviewPageNo&&currentPage){
-      //   setReviewPageNo(currentPage)
+      // if(setReviewPageNo){
+      //   setReviewPageNo(1)
       // }
     }catch(error){
       dispatch({
