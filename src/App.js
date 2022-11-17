@@ -16,6 +16,7 @@ import AllUser from './AllUser';
 import Names from './Names';
 import User from './User';
 import store from './store';
+import './App.css';
 const App = () => {
   const pathName = window.location.pathname
   const [ productData, setProductData ] = useState({
@@ -35,7 +36,7 @@ const App = () => {
     })
   }
   return(
-    <div>
+    <div className='app'>
       <Router>
       {user&&<div style={{position: 'fixed', top:'0', right:'3rem'}}><Link to = '/me'><h2>{user.name}(<span style={{color:'red', bold:'bolder'}}>{user.role}</span>)</h2></Link></div>}
       <UserState />

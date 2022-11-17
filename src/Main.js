@@ -168,6 +168,8 @@ const Main = ({anyFunc}) => {
                 )
               }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}
             </ul>
+            <button onClick={doDecrease} disabled = {selector.currentNum === 1? true:false}>decrease</button>
+            <button onClick={doIncrease} disabled = {selector.allProduct.data&&selector.allProduct.data.docs.length>0?false:true}>increase</button><br/>
             {/* <button type = 'button' onClick={createProduct}>create new Product</button> */}
             {/* {user&&user.role === 'admin'?'hello world':null} */}
             {user&&user.role === 'admin'&&(!selector.createAProduct?
@@ -197,13 +199,11 @@ const Main = ({anyFunc}) => {
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>রেটিংসঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.ratingsAverage.toFixed()}</span>
               <h3>{selector.singleProduct.doc.review.length} reviews</h3>
             </div>
-            <div style={{border: '1px solid black', overflow:'hidden', marginLeft:'1rem', padding:'0rem 1rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)'}}>
-                <h1>Comments:</h1>
+            <div style={{border: '1px solid black', overflow:'hidden', marginLeft:'1rem', padding:'0rem 1rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.3)', minWidth:'300px'}}>
+                <h2>Comments:</h2>
                 {reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
                   :
                 <div>
-                  <h4>Total review in this product :{selector.singleProduct.doc.review.length}</h4>
-                  <h4>total page: {Math.ceil(selector.singleProduct.doc.review.length/resPerPage)}</h4>
                   {currentPage>1&&<button type='button' style={{border:'none', marginBottom:'1rem'}} onClick={()=>previousCommentClickButton(selector.singleProduct.doc._id)}>Previous review</button>}
                 </div>
                 }
@@ -236,9 +236,11 @@ const Main = ({anyFunc}) => {
                 })
                 }
                 <div style={{ position:'relative', display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-                  {selector.singleProduct.doc.review.length>recentNum&&result!==0&&
-                  <button type='button' style={ {outline:'0', border:'none'} } onClick = {()=>moreCommentButtonClick(selector.singleProduct.doc._id)}>More comments</button>}
-                  <h4 style={{ }}>{recentNum} of {selector.singleProduct.doc.review.length}</h4>
+                  {/* {selector.singleProduct.doc.review.length>recentNum&&result!==0&& */}
+                  <button type='button' style={ {outline:'0', border:'none', visibility:`${selector.singleProduct.doc.review.length>recentNum&&result!==0?'visible':'hidden'}`} } onClick = {()=>moreCommentButtonClick(selector.singleProduct.doc._id)}>More comments</button>
+                  {reviews.length>0?(
+                    <h4 style={{ }}>{recentNum} of {selector.singleProduct.doc.review.length}</h4>
+                  ):''}
                 </div>
                 
                 {user&&user.role === 'user'&&!createUserReview&&
@@ -263,19 +265,19 @@ const Main = ({anyFunc}) => {
     })
   }
   return (
-    <div>
-        <input onChange = {searchFor} type = 'text' value={search} name = 'keyword'/>
+    <div className='main'>
+        <input placeholder='Search product by name' onChange = {searchFor} type = 'text' value={search} name = 'keyword'/>
       <br />
-      <button type='button' onClick={gotoParams}>params</button>
+      {/* <button type='button' onClick={gotoParams}>params</button> */}
       <br />
       <h1>Number {selector.currentNum}</h1>
-      <button onClick={doDecrease} disabled = {selector.currentNum === 1? true:false}>decrease</button>
-      <button onClick={doIncrease} disabled = {selector.allProduct.data&&selector.allProduct.data.docs.length>0?false:true}>increase</button><br/>
+      
         <select onChange={trackSortValue}>
           <option>price</option>
           <option>ratingsAverage</option>
         </select>
       {allProduct()}
+      
       {/* { !selector.deleteproduct.data?'':afterDelete() } */}
     </div>
   );
