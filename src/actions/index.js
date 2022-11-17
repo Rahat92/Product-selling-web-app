@@ -102,9 +102,9 @@ export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
         payload:data
       })
       dispatch(getProductReviews(id))
-      // if(setReviewPageNo){
-      //   setReviewPageNo(1)
-      // }
+      if(setReviewPageNo){
+        setReviewPageNo(1)
+      }
     }catch(error){
       dispatch({
         type: 'getAProductFail',
