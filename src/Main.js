@@ -226,13 +226,29 @@ const Main = ({anyFunc}) => {
                         <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)} />
                       </div>
 
-                    :(
-                      <div>
-                        <h4>{el.user?el.user.name:'unknown user'}</h4>
-                        <h4>{el.review}</h4>
+                    :
+                      <div className={`comment ${user&&el.user&&el.user._id === user._id&& 'user_comment'}`} style = {{ position:'relative', padding:'.5rem'}}>
+                        <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user&&el.user._id === user._id?700:400}}>
+                          {el.user?(
+                          <Link to = {user&&el.user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>
+                            {el.user.name}
+                          </Link>
+                          ):'Removed user'}
+                        </h4>
+                        <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':''}}>{el.review}</h4>
+                        {user&&el.user&&el.user._id === user._id&&(
+                          <div>
+                            <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
+                            {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} setReviewPageNo = {setReviewPageNo} deleteOne = {deleteOneReview} />:''}
+                          </div>
+                        )}
+                        {user&&user.role === 'admin'&&(
+                          <div>
+                            <button onClick= {()=>deleteReview(el._id)} style={{position: 'absolute', top: '.5rem', right:'.5rem'}} type='button'>delete</button>
+                            {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
+                          </div>
+                        )}
                       </div>
-
-                    )
                       // <div className={`comment ${user&&el.user._id === user._id&&'user_comment'}`} style = {{ position:'relative', padding:'.5rem'}}>
                       //   <h4 style = {{color:user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user._id === user._id?700:400}}>
                       //     <Link to = {user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>
@@ -254,7 +270,6 @@ const Main = ({anyFunc}) => {
                       //       <button onClick= {()=>deleteReview(el._id)} style={{position: 'absolute', top: '.5rem', right:'.5rem'}} type='button'>delete</button>
                       //       {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
                       //     </div>
-                          
                       //   )}
                       // </div>
                   })
