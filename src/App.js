@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Main from './Main';
 import { BrowserRouter as Router, Routes, Route,Navigate, useNavigate, Link, NavLink } from 'react-router-dom';
+import Register from './Register';
 import Product from './EditProduct';
 import Params from './Params';
 import SearchResult from './SearchResult';
@@ -28,12 +29,15 @@ const App = () => {
   const { user } = useSelector(state=>state.user)
   useEffect(() => {
     store.dispatch(getMe())
-  },[])
+  },[dispatch])
   const anyFunc = (productName, productRating) => {
     setProductData({
       productName : productName,
       productRating : productRating
     })
+  }
+  const sendDeleteData = () => {
+    
   }
   return(
     <div className='app'>
@@ -42,7 +46,7 @@ const App = () => {
       <UserState />
       &nbsp;&nbsp;&nbsp;
       <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
-      <Link to = '/admin/alluser'>All User</Link>
+      <Link to = '/admin/alluser' onClick={sendDeleteData}>All User</Link>
         <Routes>
           <Route path = "/" element = {<Main anyFunc={anyFunc}/>}/>
           <Route path = {`product/:id`} element = {<Product  productName = {productName} productRating = {productRating}/>}/>
@@ -56,6 +60,7 @@ const App = () => {
           <Route path = {`/admin/alluser`} element = {<AllUser />}/>
           <Route path = {`/names/`} element = {<Names />}/>
           <Route path = {`/profile/:userId`} element = {<User />}/>
+          <Route path = {`/register`} element = {<Register />}/>
         </Routes>
       </Router>
     </div>

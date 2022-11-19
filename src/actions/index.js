@@ -41,7 +41,13 @@ import {
   getProductNameAndPrice,
   getSingleUserRequest,
   getSingleUserSuccess,
-  getSingleUserFail, 
+  getSingleUserFail,
+  REGISTER_USER_REQUEST,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_FAIL,
+  DELETEONEUSERREQUEST,
+  DELETEONEUSERSUCCESS,
+  DELETEONEUSERFAIL, 
 } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
@@ -72,7 +78,6 @@ export const fetchProducts = (currentPage, sortvalue, searchValue) => {
   }
 }
 export const getProductReviews = (productId, pageNo) => {
-  console.log('from action',pageNo)
   return async(dispatch) => {
     try{
       dispatch({type: getProductReviewRequest})
@@ -399,5 +404,46 @@ export const getProductsNameAndPrice = () => {
       type: getProductNameAndPrice,
       payload: data.docs
     })
+  }
+}
+export const registerUser = (name, role, email, password, passwordConfirm, navigate) => {
+  return async (dispatch) => {
+    try{
+      dispatch({
+        type: REGISTER_USER_REQUEST
+      })
+      const { data } = await requestCreator.post('/users/signup', {
+        name, role, email, password, passwordConfirm
+      })
+      dispatch({
+        type: REGISTER_USER_SUCCESS,
+        payload: data
+      })
+        navigate('/')
+    }catch(error){
+      dispatch({
+        type: REGISTER_USER_FAIL,
+        payload: error.response.data
+      })
+    }
+  }
+}
+export const deleteOneUser = (userId) => {
+  return async (dispatch) => {
+    try{
+      dispatch({
+        type: DELETEONEUSERREQUEST
+      })
+      await requestCreator.delete(`users/${userId}`)
+      dispatch({
+        type: DELETEONEUSERSUCCESS,
+        payload: userId
+      })
+    }catch(error){
+      dispatch({
+        type: DELETEONEUSERFAIL,
+        payload: error.response.data
+      })
+    }
   }
 }

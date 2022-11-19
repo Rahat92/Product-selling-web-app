@@ -39,7 +39,12 @@ export const updateReviewFail = 'UPDATE_REVIEW_FAIL';
 export const getSingleUserRequest = 'GET_SINGLE_USER_REQUEST';
 export const getSingleUserSuccess = 'GET_SINGLE_USER_SUCCESS';
 export const getSingleUserFail = 'GET_SINGLE_USER_FAIL';
-
+export const REGISTER_USER_REQUEST = 'REGISTER_USER_REQUEST'
+export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS'
+export const REGISTER_USER_FAIL = 'REGISTER_USER_FAIL'
+export const DELETEONEUSERREQUEST = 'DELETE_ONE_USER_REQUEST'
+export const DELETEONEUSERSUCCESS = 'DELETE_ONE_USER_SUCCESS'
+export const DELETEONEUSERFAIL = 'DELETE_ONE_USER_FAIL'
 
 ////// for experiment////////
 export const createProductNameAndPrice = 'CREATE_PRODUCT_NAME_AND_PRICE';

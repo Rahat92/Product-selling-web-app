@@ -1,4 +1,4 @@
-import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, getSingleUserFail, getSingleUserRequest, getSingleUserSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
+import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, DELETEONEUSERFAIL, DELETEONEUSERREQUEST, DELETEONEUSERSUCCESS, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, getSingleUserFail, getSingleUserRequest, getSingleUserSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -61,7 +61,27 @@ const sortValueReducer = (initialState = 'price,-ratingsAverage', action) => {
 }
 
 const userReducer = (initialState = {user:{}}, action)=>{
+  console.log('good',initialState)
   switch(action.type){
+    case REGISTER_USER_REQUEST:
+      return {
+        loading: true,
+        isAuthenticated: false
+      }
+    case REGISTER_USER_SUCCESS:
+      return {
+        ...initialState,
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload
+      }
+    case REGISTER_USER_FAIL:
+      return {
+        loading: false,
+        isAuthenticated: false,
+        user:null,
+        message: action.payload
+      }
     case loginRequest:
       return {
         loading : true,
@@ -80,7 +100,7 @@ const userReducer = (initialState = {user:{}}, action)=>{
         loading : false,
         isAuthenticated : false,
         user:null,
-        error:action.payload
+        message:action.payload
       }
     case logOutRequest:
       return {
@@ -146,6 +166,15 @@ const userReducer = (initialState = {user:{}}, action)=>{
 //   }
 // }
 
+const adminPowerReducer = (state = {users:{}}, action) => {
+  switch(action.type){
+    
+    default:
+      return {
+        state
+      }
+  }
+}
 
 const reviewReducer = (state = {reviews:[]}, action) => {
   switch(action.type){
@@ -231,7 +260,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
   }
 }
 
-const user = (state = {user:{}}, action) => {
+const users = (state = {users:{}}, action) => {
   switch(action.type){
     case getAllActiveUserRequest:
       return {
@@ -239,13 +268,32 @@ const user = (state = {user:{}}, action) => {
       }
     case getAllActiveUserSuccess:
       return {
+        ...state,
+        documentNumber: action.payload.docNum,
         loading:false,
-        user: action.payload
+        users: action.payload
       }
     case getAllActiveUserFail:
       return {
         loading: false,
-        user: null,
+        users: null,
+        message: action.payload
+      }
+    case DELETEONEUSERREQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case DELETEONEUSERSUCCESS:
+      return {
+        ...state,
+        loading: false,
+        users: [...state.users ].filter(el=>el._id!==action.payload)
+      }
+    case DELETEONEUSERFAIL:
+      return {
+        ...state,
+        loading:false,
         message: action.payload
       }
     default:
@@ -322,7 +370,7 @@ export default combineReducers({
   sortValue:sortValueReducer,
   user:userReducer,
   reviews: reviewReducer,
-  users: user,
+  users: users,
   updateReview: updateReviewReducer,
   products: productNameAndpriceReducer,
   normalUser: normalUserReducer
