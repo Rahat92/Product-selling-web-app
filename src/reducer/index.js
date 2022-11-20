@@ -61,7 +61,6 @@ const sortValueReducer = (initialState = 'price,-ratingsAverage', action) => {
 }
 
 const userReducer = (initialState = {user:{}}, action)=>{
-  console.log('good',initialState)
   switch(action.type){
     case REGISTER_USER_REQUEST:
       return {
@@ -260,7 +259,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
   }
 }
 
-const users = (state = {users:{}}, action) => {
+const users = (state = {users:[]}, action) => {
   switch(action.type){
     case getAllActiveUserRequest:
       return {
@@ -271,7 +270,7 @@ const users = (state = {users:{}}, action) => {
         ...state,
         documentNumber: action.payload.docNum,
         loading:false,
-        users: action.payload
+        users: [ ...action.payload]
       }
     case getAllActiveUserFail:
       return {

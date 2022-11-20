@@ -12,8 +12,8 @@ const AllUser = () => {
     dispatch(getAllUser())
   },[])
   const deleteUser = (userId) => {
-    setId(userId)
     setDeleteClick(true)
+    setId(userId)
   }
   if(message){
     return (
@@ -26,7 +26,7 @@ const AllUser = () => {
     <div>
       <h2>Total Users: {documentNumber}</h2>
       <ul style={{listStyle: 'none'}}>
-        {users&&users.docs&&users.docs.map(el=>{
+        {users&&users.map(el=>{
           return(
             <div>
               <li><h3>{el.name} <button>update role</button> <button onClick={()=>deleteUser(el._id)}>delete</button></h3></li>

@@ -324,7 +324,7 @@ export const getAllUser = () => {
       const { data } = await requestCreator.get(`/users`)
       dispatch({
         type:getAllActiveUserSuccess,
-        payload:data
+        payload:data.docs
       })
     }catch(error){
       dispatch({
@@ -417,7 +417,7 @@ export const registerUser = (name, role, email, password, passwordConfirm, navig
       })
       dispatch({
         type: REGISTER_USER_SUCCESS,
-        payload: data
+        payload: data.user
       })
         navigate('/')
     }catch(error){
@@ -428,7 +428,7 @@ export const registerUser = (name, role, email, password, passwordConfirm, navig
     }
   }
 }
-export const deleteOneUser = (userId) => {
+export const deleteOneUser = (userId, setDeleteClick) => {
   return async (dispatch) => {
     try{
       dispatch({
@@ -439,6 +439,7 @@ export const deleteOneUser = (userId) => {
         type: DELETEONEUSERSUCCESS,
         payload: userId
       })
+      setDeleteClick(false)
     }catch(error){
       dispatch({
         type: DELETEONEUSERFAIL,

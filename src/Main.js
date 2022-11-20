@@ -210,12 +210,12 @@ const Main = ({anyFunc}) => {
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>রেটিংসঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.ratingsAverage.toFixed()}</span>
               <h3>{selector.singleProduct.doc.review.length} reviews</h3>
             </div>
-            <div style={{ overflow:'hidden', marginLeft:'1rem', padding:'0rem 1rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px'}}>
+            <div style={{ overflow:'hidden', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px'}}>
                 <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
                 {reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
                   :
                 <div>
-                  <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1?'visible':'hidden'}`}} onClick={()=>previousCommentClickButton(selector.singleProduct.doc._id)}>Previous review</button>
+                  <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(selector.singleProduct.doc._id)}>Previous review</button>
                 </div>
                 }
                 <div style={{borderRadius:'3px', color:'brown', overflow:'hidden'}}>
@@ -233,7 +233,7 @@ const Main = ({anyFunc}) => {
                           <Link to = {user&&el.user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>
                             {el.user.name}
                           </Link>
-                          ):'Removed user'}
+                          ):<h4 style={{color:'white'}}>Removed user</h4>}
                         </h4>
                         <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':''}}>{el.review}</h4>
                         {user&&el.user&&el.user._id === user._id&&(
@@ -276,7 +276,7 @@ const Main = ({anyFunc}) => {
                   }
                 </div>
                 <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-                  <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${selector.singleProduct.doc.review.length>recentNum&&result!==0?'visible':'hidden'}`} } onClick = {()=>moreCommentButtonClick(selector.singleProduct.doc._id)}>More comments</button>
+                  <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${selector.singleProduct.doc.review.length>recentNum&&result!==0?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(selector.singleProduct.doc._id)}>More comments</button>
                   {reviews.length>0?(
                     <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {selector.singleProduct.doc.review.length}</h4>
                   ):''}

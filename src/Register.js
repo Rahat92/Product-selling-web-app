@@ -1,8 +1,16 @@
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "./actions";
+
 const Register = () => {
+  const [ display, setDisplay ] = useState(null)
   const dispatch = useDispatch()
+  const { user, message } = useSelector(state=>state.user)
+  
+  useEffect(()=>{
+    
+  },[dispatch])
   const navigate = useNavigate()
   const registrationValue = (e) => {
     e.preventDefault()
@@ -12,8 +20,14 @@ const Register = () => {
     const password = e.target.password.value;
     const passwordConfirm = e.target.passwordConfirm.value;
     console.log(name, email, password, passwordConfirm)
-    dispatch(registerUser(name, role, email, password, passwordConfirm,navigate ))
+    dispatch(registerUser( name, role, email, password, passwordConfirm,navigate ))
   }
+  let dismiss;
+    if(message){
+      setTimeout(() => {
+        setDisplay('none')
+      }, 2000);
+    }
   return (
     <div>
       <form onSubmit={registrationValue}>
@@ -24,6 +38,7 @@ const Register = () => {
         <input type= 'password' name="passwordConfirm" placeholder="password Confirm"/><br />
         <input type= 'submit' value= 'register'/>
       </form>
+      {message?<div style={{display:display}}>{message.message}</div>:''}
     </div>
   )
 }
