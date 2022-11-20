@@ -122,6 +122,7 @@ const userReducer = (initialState = {user:{}}, action)=>{
       }
     case getMeRequest:
       return{
+        ...initialState,
         loading:true,
         isAuthenticated: false,
       }
@@ -136,7 +137,8 @@ const userReducer = (initialState = {user:{}}, action)=>{
       return {
         loading: false,
         isAuthenticated:false,
-        user:null
+        user:null,
+        message: action.payload
       }
     default:
       return initialState
