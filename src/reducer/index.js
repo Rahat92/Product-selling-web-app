@@ -272,7 +272,7 @@ const users = (state = {users:[]}, action) => {
         ...state,
         documentNumber: action.payload.docNum,
         loading:false,
-        users: [ ...action.payload]
+        users: [ ...action.payload.docs]
       }
     case getAllActiveUserFail:
       return {

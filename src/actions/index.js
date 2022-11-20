@@ -324,7 +324,7 @@ export const getAllUser = () => {
       const { data } = await requestCreator.get(`/users`)
       dispatch({
         type:getAllActiveUserSuccess,
-        payload:data.docs
+        payload:data
       })
     }catch(error){
       dispatch({
