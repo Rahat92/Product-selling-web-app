@@ -266,13 +266,14 @@ const users = (state = {users:[]}, action) => {
   switch(action.type){
     case getAllActiveUserRequest:
       return {
+        ...state,
         loading: true
       }
     case getAllActiveUserSuccess:
       return {
         ...state,
-        documentNumber: action.payload.docNum,
         loading:false,
+        documentNumber: action.payload.docNum,
         users: [ ...action.payload.docs]
       }
     case getAllActiveUserFail:

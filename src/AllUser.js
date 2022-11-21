@@ -5,11 +5,11 @@ import Modal from './Modal';
 const AllUser = () => {
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
+  const { users, message, documentNumber } = useSelector(state => state.users)
   const dispatch = useDispatch()
   useEffect(()=> {
     dispatch(getAllUser())
   },[])
-  const { users, message, documentNumber } = useSelector(state => state.users)
   const deleteUser = (userId) => {
     setDeleteClick(true)
     setId(userId)
