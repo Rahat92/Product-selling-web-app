@@ -36,9 +36,7 @@ const App = () => {
       productRating : productRating
     })
   }
-  const sendDeleteData = () => {
-    
-  }
+  
   return(
     <div className='app'>
       <Router>
@@ -46,7 +44,7 @@ const App = () => {
       <UserState />
       &nbsp;&nbsp;&nbsp;
       <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
-      <Link to = '/admin/alluser' onClick={sendDeleteData}>All User</Link>
+      <Link to = '/admin/alluser'>All User</Link>
         <Routes>
           <Route path = "/" element = {<Main anyFunc={anyFunc}/>}/>
           <Route path = {`product/:id`} element = {<Product  productName = {productName} productRating = {productRating}/>}/>

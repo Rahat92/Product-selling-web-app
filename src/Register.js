@@ -5,12 +5,14 @@ import { registerUser } from "./actions";
 
 const Register = () => {
   const [ display, setDisplay ] = useState(null)
+  const [ msg, setMsg] = useState(false)
   const dispatch = useDispatch()
   const { user, message } = useSelector(state=>state.user)
   
   useEffect(()=>{
     
-  },[dispatch])
+  },[])
+  
   const navigate = useNavigate()
   const registrationValue = (e) => {
     e.preventDefault()
@@ -20,7 +22,10 @@ const Register = () => {
     const password = e.target.password.value;
     const passwordConfirm = e.target.passwordConfirm.value;
     console.log(name, email, password, passwordConfirm)
-    dispatch(registerUser( name, role, email, password, passwordConfirm,navigate ))
+    dispatch(registerUser( name, role, email, password, passwordConfirm,navigate, setMsg ))
+    if(message){
+      console.log(message.message)
+    }
   }
   let dismiss;
     if(message){
@@ -38,7 +43,7 @@ const Register = () => {
         <input type= 'password' name="passwordConfirm" placeholder="password Confirm"/><br />
         <input type= 'submit' value= 'register'/>
       </form>
-      {message?<div style={{display:display}}>{message.message}</div>:''}
+      {message&&msg&&<div>{message.message}</div>}
     </div>
   )
 }

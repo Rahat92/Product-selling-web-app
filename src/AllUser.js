@@ -6,12 +6,10 @@ const AllUser = () => {
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
   const dispatch = useDispatch()
-  const { users, message, documentNumber } = useSelector(state => state.users)
-  
-  console.log(users)
   useEffect(()=> {
     dispatch(getAllUser())
   },[])
+  const { users, message, documentNumber } = useSelector(state => state.users)
   const deleteUser = (userId) => {
     setDeleteClick(true)
     setId(userId)
@@ -23,11 +21,18 @@ const AllUser = () => {
       </div>
     )
   }
+  if(!users){
+    return (
+      <div>
+        <h3>Loading...</h3>
+      </div>
+    )
+  }
   return(
     <div>
       <h2>Total Users: {documentNumber}</h2>
       <ul style={{listStyle: 'none'}}>
-        {users&&users.map(el=>{
+        {users.map(el=>{
           return(
             <div>
               <li><h3>{el.name} <button>update role</button> <button onClick={()=>deleteUser(el._id)}>delete</button></h3></li>

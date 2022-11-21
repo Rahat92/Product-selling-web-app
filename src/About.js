@@ -2,10 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from './actions';
-import Modal from './Modal';
 
 const About = () => {
-  const [ click, setClick ] = useState(false)
   const navigate = useNavigate();
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch()

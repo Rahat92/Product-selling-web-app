@@ -64,6 +64,7 @@ const userReducer = (initialState = {user:{}}, action)=>{
   switch(action.type){
     case REGISTER_USER_REQUEST:
       return {
+        ...initialState,
         loading: true,
         isAuthenticated: false
       }
