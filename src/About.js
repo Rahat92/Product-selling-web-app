@@ -24,9 +24,9 @@ const About = () => {
   return(
     <div>
         <ul style = {{listStyle:'none', fontSize:'25px'}}>
-        <li>Name:{user.name}</li>
-        <li>Email: {user.email}</li>
-        <li>Role: {user.role}</li>
+          <li>Name:{user.name}</li>
+          <li>Email: {user.email}</li>
+          <li>Role: {user.role}</li>
       </ul>
     </div>
 )

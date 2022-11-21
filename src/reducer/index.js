@@ -289,6 +289,7 @@ const users = (state = {users:[]}, action) => {
       return {
         ...state,
         loading: false,
+        documentNumber:state.documentNumber-1,
         users: [...state.users ].filter(el=>el._id!==action.payload)
       }
     case DELETEONEUSERFAIL:

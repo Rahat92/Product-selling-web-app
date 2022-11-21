@@ -439,6 +439,7 @@ export const deleteOneUser = (userId, setDeleteClick) => {
         type: DELETEONEUSERSUCCESS,
         payload: userId
       })
+      // dispatch(getAllUser())
       setDeleteClick(false)
     }catch(error){
       dispatch({

@@ -7,6 +7,7 @@ const AllUser = () => {
   const [ id, setId ] = useState()
   const dispatch = useDispatch()
   const { users, message, documentNumber } = useSelector(state => state.users)
+  
   console.log(users)
   useEffect(()=> {
     dispatch(getAllUser())
