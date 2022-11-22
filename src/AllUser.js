@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteOneUser, getAllUser } from './actions';
+import { deleteOneUser, getAllUser, updateUserRole } from './actions';
 import Modal from './Modal';
 const AllUser = () => {
   const [deleteClick, setDeleteClick] = useState(false);
@@ -21,8 +21,9 @@ const AllUser = () => {
     setNeedUpdateUserId(userId)
     setUpdateRoleClick(true)
   }
-  const setUserRole = (e) => {
+  const setUserRole = (e,userId) => {
     console.log(e.target.value)
+    dispatch(updateUserRole(userId, e.target.value, setUpdateRoleClick))
   }
   if(message){
     return (
@@ -43,12 +44,12 @@ const AllUser = () => {
       <h2>Total Users: {documentNumber}</h2>
       <ul style={{listStyle: 'none'}}>
         {users.map(el=>{
-          if(needUpdateUserId === el._id){
+          if(updateRoleClick&&needUpdateUserId === el._id){
             return (
               <div>
                 <li><h3>{el.name} ({el.role}) &nbsp;
                 <form style={{display: 'inline-block'}}>
-                  <select onChange={setUserRole} defaultValue = {el.role}>
+                  <select onChange={(e) => setUserRole(e, el._id)} defaultValue = {el.role}>
                     <option>user</option>
                     <option>admin</option>
                   </select>

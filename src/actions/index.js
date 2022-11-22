@@ -47,7 +47,10 @@ import {
   REGISTER_USER_FAIL,
   DELETEONEUSERREQUEST,
   DELETEONEUSERSUCCESS,
-  DELETEONEUSERFAIL, 
+  DELETEONEUSERFAIL,
+  UPDATE_USER_ROLE_FAIL,
+  UPDATE_USER_ROLE_REQUEST,
+  UPDATE_USER_ROLE_SUCCESS, 
 } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
@@ -448,6 +451,30 @@ export const deleteOneUser = (userId, setDeleteClick) => {
     }catch(error){
       dispatch({
         type: DELETEONEUSERFAIL,
+        payload: error.response.data
+      })
+    }
+  }
+}
+
+export const updateUserRole = (userId, role, setUpdateRoleClick) => {
+  return async (dispatch) => {
+    try{
+      dispatch({
+        type: UPDATE_USER_ROLE_REQUEST
+      })
+      const { data } = await requestCreator.patch(`users/${userId}`,{
+        role
+      })
+      console.log(data)
+      dispatch({
+        type: UPDATE_USER_ROLE_SUCCESS,
+        payload: data.user
+      })
+      setUpdateRoleClick(false)
+    }catch(error){
+      dispatch({
+        type: UPDATE_USER_ROLE_FAIL,
         payload: error.response.data
       })
     }
