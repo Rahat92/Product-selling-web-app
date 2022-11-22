@@ -8,7 +8,7 @@ import SearchResult from './SearchResult';
 import Login from './Login';
 import About from './About';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMe } from './actions';
+import { getMe, getUser } from './actions';
 import UserState from './UserState';
 import LoginComponent from './LoginComponent';
 import Count from './Count';
@@ -24,6 +24,10 @@ const App = () => {
     productName:'',
     productRating:''
   })
+  const [ userData, setUserData ] = useState({
+    name: '',
+    email: ''
+  })
   const { productName, productRating } = productData;
   const dispatch = useDispatch();
   const { user } = useSelector(state=>state.user)
@@ -36,7 +40,12 @@ const App = () => {
       productRating : productRating
     })
   }
-  
+  const getUserData = (name, email) => {
+    setUserData({
+      name, email
+    })
+  }
+  const { name, email } = userData;
   return(
     <div className='app'>
       <Router>
@@ -55,9 +64,9 @@ const App = () => {
           {/* <Route path = {`product/:id`} element = {<Navigate to = '/'/>}/> */}
           <Route path = {`/count`} element = {<Count />}/>
           <Route path = {`/countmany`} element = {<CountMany />}/>
-          <Route path = {`/admin/alluser`} element = {<AllUser />}/>
+          <Route path = {`/admin/alluser`} element = {<AllUser getUserData = {getUserData} />}/>
           <Route path = {`/names/`} element = {<Names />}/>
-          <Route path = {`/profile/:userId`} element = {<User />}/>
+          <Route path = {`/profile/:userId`} element = {<User name = {name} email = {email} />}/>
           <Route path = {`/register`} element = {<Register />}/>
         </Routes>
       </Router>

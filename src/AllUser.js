@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { deleteOneUser, getAllUser, updateUserRole } from './actions';
 import Modal from './Modal';
-const AllUser = () => {
+const AllUser = ({ getUserData }) => {
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
   const [ needUpdateUserId, setNeedUpdateUserId ] = useState(null)
@@ -26,6 +26,9 @@ const AllUser = () => {
     console.log(e.target.value)
     dispatch(updateUserRole(userId, e.target.value, setUpdateRoleClick))
   }
+  const goProfile = (name, email) => {
+    getUserData(name, email)
+  }
   if(message){
     return (
       <div>
@@ -47,7 +50,7 @@ const AllUser = () => {
         {users.map(el=>{
             return (
               <div>
-                <li><h3><Link to = {`/profile/${el._id}`}>{el.name} ({el.role})</Link> &nbsp;
+                <li onClick={() => goProfile(el.name, el.email)}><h3><Link to = {`/profile/${el._id}`}>{el.name} ({el.role})</Link> &nbsp;
                 {updateRoleClick&&needUpdateUserId === el._id?(
                   <form style={{display: 'inline-block'}}>
                   <select onChange={(e) => setUserRole(e, el._id)} defaultValue = {el.role}>
