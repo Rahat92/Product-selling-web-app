@@ -188,13 +188,13 @@ const reviewReducer = (state = {reviews:[]}, action) => {
       return {
         ...state,
         loading: false,
-        numOfDoc: action.payload.docNum,
+        totalReview: action.payload.productLength,
         result: action.payload.result,
         resPerPage:action.payload.resPerPage,
-        recentNum: action.payload.currentNum,
-        currentPage: action.payload.currentPage,
+        recentNum: action.payload.data.currentNum,
+        currentPage: action.payload.data.currentPage,
         totalPage:action.payload.totalPage,
-        reviews:[...action.payload.docs]
+        reviews:[...action.payload.data.docs]
       }
     case getProductReviewFail:
       return {
@@ -211,8 +211,9 @@ const reviewReducer = (state = {reviews:[]}, action) => {
       return {
         ...state,
         loading: false,
-        userName: action.payload.user.name,
-        reviews: [...state.reviews, action.payload]
+        userName: action.payload.data.user.name,
+        totalReview: state.totalReview+1,
+        reviews: [...state.reviews, action.payload.data]
       }
     case createUserReviewFail:
       return{

@@ -78,7 +78,8 @@ export const fetchProducts = (currentPage, sortvalue, searchValue) => {
   }
 }
 export const getProductReviews = (productId, pageNo) => {
-  return async(dispatch) => {
+  return async(dispatch, getState) => {
+    const productLength = getState().singleProduct.doc.review.length;    
     try{
       dispatch({type: getProductReviewRequest})
       const { data } = await requestCreator.get(`/products/${productId}/reviews`,{
@@ -88,7 +89,7 @@ export const getProductReviews = (productId, pageNo) => {
       })
       dispatch({
         type: getProductReviewSuccess,
-        payload: data
+        payload: {data, productLength}
       })
     }catch(error){
       dispatch({
@@ -267,8 +268,9 @@ export const getLogOut = (navigate) => {
 }
 
 export const createReview = (review, rating,getProduct, productId, setCreateUserReview) => {
-  return async(dispatch) => {
+  return async(dispatch, getState) => {
     try{
+      const productLength = getState().singleProduct.doc.review.length
       dispatch({
         type: createUserReviewRequest
       })
@@ -278,7 +280,7 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
       })
       dispatch({
         type: createUserReviewSuccess,
-        payload: data.doc
+        payload: {data:data.doc,totalReview:productLength}
       })
       // getProduct(productId)
       dispatch(getSingleProduct(productId))

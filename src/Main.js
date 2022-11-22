@@ -11,13 +11,10 @@ const Main = ({anyFunc}) => {
   const moreComment = useRef();
   let styl;
   if(moreComment.current){
-    console.log(moreComment.current.style.visibility)
     if(moreComment.current.style.visibility === 'hidden'){
       styl = '3px'
     }
   }
-  console.log(styl)
-  console.log(padding)
   const { isAuthenticated, user, loading } = useSelector(state=>state.user)
   const [ createUserReview, setCreateUserReview ] = useState(false)
   const navigate = useNavigate()
@@ -31,7 +28,7 @@ const Main = ({anyFunc}) => {
   // const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
-  const { reviews, numOfDoc, result, recentNum, currentPage,totalPage, resPerPage } = useSelector(state=>state.reviews)
+  const { reviews, numOfDoc, result, recentNum, currentPage,totalPage, resPerPage, totalReview } = useSelector(state=>state.reviews)
   const [ reviewPageNo, setReviewPageNo ] = useState(1)
   // const [searchParam, setSearchParams] = useSearchParams();
   // console.log(searchParam.get('page'))
@@ -278,7 +275,7 @@ const Main = ({anyFunc}) => {
                 <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
                   <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${selector.singleProduct.doc.review.length>recentNum&&result!==0?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(selector.singleProduct.doc._id)}>More comments</button>
                   {reviews.length>0?(
-                    <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {selector.singleProduct.doc.review.length}</h4>
+                    <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReview}</h4>
                   ):''}
                 </div>
                 
