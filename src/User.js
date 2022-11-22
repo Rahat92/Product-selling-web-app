@@ -18,17 +18,13 @@ const User = () => {
       </div>
     )
   }
-  if( user ){
-    return (
-      <div>
-        <h3>{user.name}</h3>
-        {user.email}
-      </div>
-    )
+  if( !user ){
+    return <h1>Loading...</h1>
   }
-  return(
+  return (
     <div>
-      user
+      <h3>{user.name}</h3>
+      {user.email}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, DELETEONEUSERFAIL, DELETEONEUSERREQUEST, DELETEONEUSERSUCCESS, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, getSingleUserFail, getSingleUserRequest, getSingleUserSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess } from "../const";
+import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, DELETEONEUSERFAIL, DELETEONEUSERREQUEST, DELETEONEUSERSUCCESS, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, getSingleUserFail, getSingleUserRequest, getSingleUserSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess, UPDATE_USER_ROLE_REQUEST, UPDATE_USER_ROLE_SUCCESS } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -283,6 +283,27 @@ const users = (state = {users:[]}, action) => {
         users: null,
         message: action.payload
       }
+    case UPDATE_USER_ROLE_REQUEST:
+      return {
+        ...state,
+        loading: true
+      }
+    case UPDATE_USER_ROLE_SUCCESS:
+      const copiedList = [...state.users]
+      let index;
+      copiedList.find((el,i)=>{
+        if(el._id===action.payload._id){
+          index = i;
+        }
+      })
+      console.log(index)
+      copiedList[index] = action.payload;
+      console.log(copiedList)
+      return{
+        // ...state,
+        loading: false,
+        users: copiedList
+      }
     case DELETEONEUSERREQUEST:
       return {
         ...state,
@@ -346,6 +367,7 @@ const normalUserReducer = (state = {user: {}}, action) => {
   switch(action.type){
     case getSingleUserRequest:
       return {
+        ...state,
         loading: true,
       }
     case getSingleUserSuccess:

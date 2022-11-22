@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { deleteOneUser, getAllUser, updateUserRole } from './actions';
 import Modal from './Modal';
 const AllUser = () => {
@@ -44,27 +45,24 @@ const AllUser = () => {
       <h2>Total Users: {documentNumber}</h2>
       <ul style={{listStyle: 'none'}}>
         {users.map(el=>{
-          if(updateRoleClick&&needUpdateUserId === el._id){
             return (
               <div>
-                <li><h3>{el.name} ({el.role}) &nbsp;
-                <form style={{display: 'inline-block'}}>
+                <li><h3><Link to = {`/profile/${el._id}`}>{el.name} ({el.role})</Link> &nbsp;
+                {updateRoleClick&&needUpdateUserId === el._id?(
+                  <form style={{display: 'inline-block'}}>
                   <select onChange={(e) => setUserRole(e, el._id)} defaultValue = {el.role}>
                     <option>user</option>
                     <option>admin</option>
                   </select>
-                </form>&nbsp;
+                </form>
+                ):(
+                  <button onClick={()=>updateRoleButtonClick(el._id)}>Update User Role</button>
+                )}
+                &nbsp;
                 <button onClick={()=>deleteUser(el._id)}>delete</button></h3></li>
-                
+                {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneUser} />:''}
               </div>
             )
-          }
-          return(
-            <div>
-                <li><h3>{el.name} ({el.role}) <button onClick={()=>updateRoleButtonClick(el._id)}>update role</button> <button onClick={()=>deleteUser(el._id)}>delete</button></h3></li>
-              {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneUser} />:''}
-            </div>
-          )
         })}
       </ul>
     </div>
