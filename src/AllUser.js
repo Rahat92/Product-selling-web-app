@@ -26,8 +26,8 @@ const AllUser = ({ getUserData }) => {
     console.log(e.target.value)
     dispatch(updateUserRole(userId, e.target.value, setUpdateRoleClick))
   }
-  const goProfile = (name, email) => {
-    getUserData(name, email)
+  const goProfile = (name, email, role) => {
+    getUserData(name, email, role)
   }
   if(message){
     return (
@@ -50,7 +50,7 @@ const AllUser = ({ getUserData }) => {
         {users.map(el=>{
             return (
               <div>
-                <li onClick={() => goProfile(el.name, el.email)}><h3><Link to = {`/profile/${el._id}`}>{el.name} ({el.role})</Link> &nbsp;
+                <li onClick={() => goProfile(el.name, el.email, el.role)}><h3><Link to = {`/profile/${el._id}`}>{el.name} ({el.role})</Link> &nbsp;
                 {updateRoleClick&&needUpdateUserId === el._id?(
                   <form style={{display: 'inline-block'}}>
                   <select onChange={(e) => setUserRole(e, el._id)} defaultValue = {el.role}>

@@ -26,7 +26,8 @@ const App = () => {
   })
   const [ userData, setUserData ] = useState({
     name: '',
-    email: ''
+    email: '',
+    role: ''
   })
   const { productName, productRating } = productData;
   const dispatch = useDispatch();
@@ -40,12 +41,12 @@ const App = () => {
       productRating : productRating
     })
   }
-  const getUserData = (name, email) => {
+  const getUserData = (name, email, role) => {
     setUserData({
-      name, email
+      name, email, role
     })
   }
-  const { name, email } = userData;
+  const { name, email, role } = userData;
   return(
     <div className='app'>
       <Router>
@@ -66,7 +67,7 @@ const App = () => {
           <Route path = {`/countmany`} element = {<CountMany />}/>
           <Route path = {`/admin/alluser`} element = {<AllUser getUserData = {getUserData} />}/>
           <Route path = {`/names/`} element = {<Names />}/>
-          <Route path = {`/profile/:userId`} element = {<User name = {name} email = {email} />}/>
+          <Route path = {`/profile/:userId`} element = {<User name = {name} email = {email} role = {role} />}/>
           <Route path = {`/register`} element = {<Register />}/>
         </Routes>
       </Router>
