@@ -25,9 +25,9 @@ const User = ({name, email, role}) => {
   }
   return (
     <div>
-      <h3>{userId === user._id?user.name:name}</h3>
-      <h2>{userId === user._id?user.email:email}</h2>
-      <h2>{userId === user._id?user.role:role}</h2>
+      <h3>Name: {userId === user._id?user.name:name}</h3>
+      <h2>Email: {userId === user._id?user.email:email}</h2>
+      <h2>Role: {userId === user._id?user.role:role}</h2>
     </div>
   )
 }

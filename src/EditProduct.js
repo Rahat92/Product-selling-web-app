@@ -8,19 +8,20 @@ const Product = ({ productName, productRating }) => {
   const parameter = useParams()
   const dispatch = useDispatch()
   const selector = useSelector(state => state.singleProduct)
-  const { editedProduct, user }  = useSelector(state=>state)
-
+  const { user } = useSelector(state=>state.user)
+  const { editedProduct } = useSelector(state=>state)
   useEffect(()=> {
     if(!productName&&!productRating){
       dispatch(getSingleProduct(parameter.id))    
     }
-    dispatch(getMe())
+    // dispatch(getMe())
   },[parameter.id, editedProduct.data])
+  // if(user&&user.role !== 'admin'){
+  //   navigate('/good/book')
+  // }
+  console.log(user&&user.role)
   if(user.user === null){
     navigate('/login')
-  }
-  if(user.user&&user.user.role !== 'admin'){
-    navigate('/')
   }
   console.log(user)
   const onsubmit = (e) => {
@@ -43,14 +44,18 @@ const Product = ({ productName, productRating }) => {
   }
   return(
     <div>
-      <h2>Edit Product</h2>
-      <form onSubmit={onsubmit}>
-        product Name: <br />
-        <input type = "text" name = 'product' defaultValue = {!productName?selector.doc._id === parameter.id?selector.doc.name:'':productName} /><br />
-        Product Rating: <br />
-        <input type= 'number' name = 'rating' defaultValue = {!productRating?selector.doc._id === parameter.id?selector.doc.ratingsAverage:'':productRating}/>
-        <input type= 'submit' value={'update'} />
-      </form>
+      {user&&user.role==='admin'?(
+        <div>
+          <h2>Edit Product</h2>
+          <form onSubmit={onsubmit}>
+            product Name: <br />
+            <input type = "text" name = 'product' defaultValue = {!productName?selector.doc._id === parameter.id?selector.doc.name:'':productName} /><br />
+            Product Rating: <br />
+            <input type= 'number' name = 'rating' defaultValue = {!productRating?selector.doc._id === parameter.id?selector.doc.ratingsAverage:'':productRating}/>
+            <input type= 'submit' value={'update'} />
+          </form>
+        </div>
+      ):navigate('/')}
     </div>
   )
 }
