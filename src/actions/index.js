@@ -51,9 +51,9 @@ import {
   UPDATE_USER_ROLE_FAIL,
   UPDATE_USER_ROLE_REQUEST,
   UPDATE_USER_ROLE_SUCCESS,
-  UPDATE_MY_NAME_REQUEST,
-  UPDATE_MY_NAME_SUCCESS,
-  UPDATE_MY_NAME_FAIL, 
+  UPDATE_MY_PROFILE_REQUEST,
+  UPDATE_MY_PROFILE_SUCCESS,
+  UPDATE_MY_PROFILE_FAIL, 
 } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
@@ -484,11 +484,11 @@ export const updateUserRole = (userId, role, setUpdateRoleClick) => {
     }
   }
 }
-export const updateMyName = (needUpdateData, type, updateMe) => {
+export const updateMyName = (needUpdateData, type, updateMe, setMsg) => {
   return async(dispatch) => {
     try{
       dispatch({
-        type: UPDATE_MY_NAME_REQUEST
+        type: UPDATE_MY_PROFILE_REQUEST
       })
       const { data } = await requestCreator.patch(`users/updateme`,{
          name: type === 'name'? needUpdateData:undefined,
@@ -496,17 +496,19 @@ export const updateMyName = (needUpdateData, type, updateMe) => {
       })
 
       dispatch({
-        type: UPDATE_MY_NAME_SUCCESS,
+        type: UPDATE_MY_PROFILE_SUCCESS,
         payload: data.user
       })
       updateMe({
         click: false
       })
+      
     }catch(error){
       dispatch({
-        type: UPDATE_MY_NAME_FAIL,
+        type: UPDATE_MY_PROFILE_FAIL,
         payload: error.response.data
       })
+      setMsg(true)
     }
   }
 }

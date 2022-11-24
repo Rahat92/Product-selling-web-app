@@ -3,9 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getUser } from './actions';
 const User = ({name, email, role}) => {
-  console.log(name, email)
   const { userId } = useParams();
-  console.log(userId)
   const { loading, user, message } = useSelector(state => state.normalUser)
   const dispatch = useDispatch();
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, DELETEONEUSERFAIL, DELETEONEUSERREQUEST, DELETEONEUSERSUCCESS, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, getSingleUserFail, getSingleUserRequest, getSingleUserSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess, UPDATE_MY_NAME_FAIL, UPDATE_MY_NAME_REQUEST, UPDATE_MY_NAME_SUCCESS, UPDATE_USER_ROLE_REQUEST, UPDATE_USER_ROLE_SUCCESS } from "../const";
+import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, DELETEONEUSERFAIL, DELETEONEUSERREQUEST, DELETEONEUSERSUCCESS, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, getSingleUserFail, getSingleUserRequest, getSingleUserSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess, UPDATE_MY_PROFILE_FAIL, UPDATE_MY_PROFILE_REQUEST, UPDATE_MY_PROFILE_SUCCESS, UPDATE_USER_ROLE_REQUEST, UPDATE_USER_ROLE_SUCCESS } from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -141,20 +141,19 @@ const userReducer = (initialState = {user:{}}, action)=>{
         user:null,
         message: action.payload
       }
-    case UPDATE_MY_NAME_REQUEST:
+    case UPDATE_MY_PROFILE_REQUEST:
       return {
         ...initialState,
         loading: true,
       }
-    case UPDATE_MY_NAME_SUCCESS:
-      console.log(action.payload)
+    case UPDATE_MY_PROFILE_SUCCESS:
       return {
         ...initialState,
         loading: false,
         isAuthenticated: true,
         user:action.payload
       }
-    case UPDATE_MY_NAME_FAIL:
+    case UPDATE_MY_PROFILE_FAIL:
       return {
         ...initialState,
         loading: false,
