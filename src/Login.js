@@ -5,25 +5,26 @@ import { getMe, loginUser } from './actions';
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [ msg, setMmsg ] = useState(false)
   const { isAuthenticated, user, loading, message } = useSelector(state=>state.user)
   const [ display, setDisplay ] = useState(null)
   console.log(user)
   let setDisplayTime;
   useEffect(()=>{
-    
-  },[])
-  if(message){
-    setDisplayTime = setTimeout(()=>{
-      setDisplay('none')
-    },5000)
-  }
+    if(message&&msg){
+      setDisplayTime = setTimeout(()=>{
+        return setDisplay('none')
+      },2000)
+    }
+    return ()=>clearTimeout(setDisplayTime)
+  },[message])
+  
   const loginuser = (e) => {
     e.preventDefault()
+    setDisplay(null)
       const email = e.target.email.value;
       const password = e.target.password.value;
-    dispatch(loginUser(email, password, navigate))
-    setDisplay(null)
-    clearTimeout(setDisplayTime)
+    dispatch(loginUser(email, password, navigate, setMmsg))
   }
   if(user!==null&&isAuthenticated){
     navigate('/')
@@ -38,7 +39,7 @@ const Login = () => {
         <input type = 'submit' value = 'Log in'/>
       </form>
       Not an account? <Link to = "/register">Register</Link>
-      <p style={{color:'red', display:display}}>{message?message.message:''}</p>
+      <p style={{color:'red', display:display}}>{msg&&message&&message.message}</p>
     </div>
   )
 }

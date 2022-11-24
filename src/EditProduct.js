@@ -39,7 +39,13 @@ const Product = ({ productName, productRating }) => {
   return(
     <div>
       {user&&user.role==='admin'?(
-        <EditProductInfo onSubmit = { onSubmit } productName = {productName} selector = {selector} parameter = {parameter} productRating = {productRating} />
+        <EditProductInfo
+          onSubmit = { onSubmit }
+          productName = {productName} 
+          selector = {selector} 
+          parameter = {parameter} 
+          productRating = {productRating} 
+        />
       ):navigate('/')}
     </div>
   )

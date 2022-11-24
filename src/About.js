@@ -8,7 +8,7 @@ const About = () => {
   const { user } = useSelector(state => state.user);
   const dispatch = useDispatch()
   useEffect(()=>{
-    dispatch(getMe())
+    // dispatch(getMe())
   },[])
   if(user === null||user==={}){
     navigate('/login')

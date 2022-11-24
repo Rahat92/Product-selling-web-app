@@ -200,7 +200,7 @@ export const trackSortedValue = (value) => {
   }
 }
 
-export const loginUser = (email, password, navigate) => {
+export const loginUser = (email, password, navigate, setMsg) => {
   return async(dispatch) => {
     try{
       dispatch({
@@ -225,6 +225,7 @@ export const loginUser = (email, password, navigate) => {
         type:loginFail,
         payload:error.response.data
       })
+      setMsg(true)
     }
   }
 }
