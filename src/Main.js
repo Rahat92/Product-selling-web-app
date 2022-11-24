@@ -142,8 +142,8 @@ const Main = ({anyFunc}) => {
     e.preventDefault()
     dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick, setReviewPageNo, reviewPageNo))
   }
-  const sendProductDataToEditForm = (productName, productRating, id) => {
-    anyFunc(productName, productRating)
+  const sendProductDataToEditForm = (productName, productPrice, id) => {
+    anyFunc(productName, productPrice)
     navigate(`product/${id}`)
   }
   // const getReviews = () => {
@@ -170,7 +170,7 @@ const Main = ({anyFunc}) => {
               {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
                 return (
                   <div>
-                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><button onClick={()=>sendProductDataToEditForm(el.name, el.ratingsAverage, el.id)}>edit product</button></>)}</li>
+                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><button onClick={()=>sendProductDataToEditForm(el.name, el.price, el.id)}>edit product</button></>)}</li>
                     {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
                   </div>
                 )
@@ -178,8 +178,6 @@ const Main = ({anyFunc}) => {
             </ul>
             <button onClick={doDecrease} disabled = {selector.currentNum === 1? true:false}>decrease</button>
             <button onClick={doIncrease} disabled = {selector.allProduct.data&&selector.allProduct.data.docs.length>0?false:true}>increase</button><br/>
-            {/* <button type = 'button' onClick={createProduct}>create new Product</button> */}
-            {/* {user&&user.role === 'admin'?'hello world':null} */}
             {user&&user.role === 'admin'&&(!selector.createAProduct?
             (
               <button type = 'button' onClick={createProduct}>create new Product</button>

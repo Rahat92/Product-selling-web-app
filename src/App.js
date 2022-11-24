@@ -22,23 +22,23 @@ const App = () => {
   const pathName = window.location.pathname
   const [ productData, setProductData ] = useState({
     productName:'',
-    productRating:''
+    productPrice:0
   })
   const [ userData, setUserData ] = useState({
     name: '',
     email: '',
     role: ''
   })
-  const { productName, productRating } = productData;
+  const { productName, productPrice } = productData;
   const dispatch = useDispatch();
   const { user } = useSelector(state=>state.user)
   useEffect(() => {
     store.dispatch(getMe())
   },[dispatch])
-  const anyFunc = (productName, productRating) => {
+  const anyFunc = (productName, productPrice) => {
     setProductData({
       productName : productName,
-      productRating : productRating
+      productPrice : productPrice
     })
   }
   const getUserData = (name, email, role) => {
@@ -57,7 +57,7 @@ const App = () => {
       <Link to = '/admin/alluser'>All User</Link>
         <Routes>
           <Route path = "/" element = {<Main anyFunc={anyFunc}/>}/>
-          <Route path = {`product/:id`} element = {<Product  productName = {productName} productRating = {productRating}/>}/>
+          <Route path = {`product/:id`} element = {<Product  productName = {productName} productPrice = {productPrice}/>}/>
           <Route path = {`/params`} element = {<Params/>}/>
           <Route path = {`/search/:keyword`} element = {<Main />}/>
           <Route path = {`/login`} element = {<Login/>}/>

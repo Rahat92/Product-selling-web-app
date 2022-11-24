@@ -136,12 +136,12 @@ export const deleteOneProduct = (id, setDeleteClick) => {
     setDeleteClick(false)
   }
 }
-export const editProduct =(id, name, rating, navigate) => {
+export const editProduct =(id, name, price, navigate) => {
   let response;
   return async (dispatch) => {
     await requestCreator.patch(`/products/${id}`,{
       name:name,
-      rating:rating
+      price:price
     }).then(data=>response = data).catch(err => response = err)
     dispatch({
       type: editSingleProduct,

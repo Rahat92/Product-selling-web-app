@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { editProduct, getMe, getSingleProduct, handleChange } from './actions';
+import { editProduct, getSingleProduct } from './actions';
 import EditProductInfo from './EditProductInfo';
-const Product = ({ productName, productRating }) => {
-  console.log(productName, productRating)
+const Product = ({ productName, productPrice }) => {
   const navigate = useNavigate()
   const parameter = useParams()
   const dispatch = useDispatch()
@@ -12,7 +11,7 @@ const Product = ({ productName, productRating }) => {
   const { user } = useSelector(state=>state.user)
   const { editedProduct } = useSelector(state=>state)
   useEffect(()=> {
-    if(!productName&&!productRating){
+    if(!productName&&!productPrice){
       dispatch(getSingleProduct(parameter.id))    
     }
     // dispatch(getMe())
@@ -20,18 +19,16 @@ const Product = ({ productName, productRating }) => {
   // if(user&&user.role !== 'admin'){
   //   navigate('/good/book')
   // }
-  console.log(user&&user.role)
   if(user === null){
     navigate('/login')
   }
-  console.log(user)
   const onSubmit = (e) => {
     e.preventDefault();
     const productName = e.target.product.value;
-    const rating = e.target.rating.value;
-    dispatch(editProduct(parameter.id,productName, rating,navigate))
+    const price = e.target.price.value;
+    dispatch(editProduct(parameter.id,productName, price,navigate))
   }
-  if(!productName&&!productRating){
+  if(!productName&&!productPrice){
     if(!selector.doc){
       return <h1>loading...</h1>
     }
@@ -44,7 +41,7 @@ const Product = ({ productName, productRating }) => {
           productName = {productName} 
           selector = {selector} 
           parameter = {parameter} 
-          productRating = {productRating} 
+          productPrice = {productPrice} 
         />
       ):navigate('/')}
     </div>
