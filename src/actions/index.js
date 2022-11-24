@@ -484,26 +484,23 @@ export const updateUserRole = (userId, role, setUpdateRoleClick) => {
     }
   }
 }
-export const updateMyName = (name, updateMe) => {
+export const updateMyName = (needUpdateData, type, updateMe) => {
   return async(dispatch) => {
     try{
       dispatch({
         type: UPDATE_MY_NAME_REQUEST
       })
       const { data } = await requestCreator.patch(`users/updateme`,{
-        name
+         name: type === 'name'? needUpdateData:undefined,
+         email: type === 'email'? needUpdateData: undefined
       })
 
       dispatch({
         type: UPDATE_MY_NAME_SUCCESS,
         payload: data.user
       })
-      updateMe(prev=>{
-        return {
-          click: false,
-          name:name,
-          email:prev.email
-        }
+      updateMe({
+        click: false
       })
     }catch(error){
       dispatch({

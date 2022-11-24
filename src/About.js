@@ -7,6 +7,7 @@ const About = () => {
   const navigate = useNavigate();
   const [ me, updateMe ] = useState({
     click: false,
+    type: '',
     name: '',
     email: ''
   })
@@ -18,26 +19,29 @@ const About = () => {
   if(user === null||user==={}){
     navigate('/login')
   }
-  const editName = (name) => {
+  const editMyData = (data, type) => {
     updateMe(prev=>{
       return {
         click:true,
-        name: name,
-        email: prev.email
+        type: type,
+        name: type === 'name'? data:prev.name,
+        email: type === 'email'? data:prev.email
       }
     })
   }
   console.log(me.name)
-  const changeMyName = (e) => {
+  const changeMyData = (e, type) => {
     updateMe(prev=>{
       return {
-        click: prev.click, 
-        name: e.target.value
+        click: true,
+        type: type, 
+        name: type === 'name'?e.target.value:prev.name,
+        email: type === 'email'?e.target.value:prev.email
       }
     })
   }
-  const updateName = (name) => {
-    dispatch(updateMyName(name, updateMe))
+  const updateMyData = (data, type) => {
+    dispatch(updateMyName(data, type, updateMe))
   }
   // if(user){
     // const {name, email, role} = user;
@@ -48,8 +52,8 @@ const About = () => {
   return(
     <div>
         <ul style = {{listStyle:'none', fontSize:'25px'}}>
-          <li>Name:{me.click?<input style={{width: '100px'}} onChange={changeMyName} type = 'text' defaultValue={me.name}/>: user.name} <button onClick={me.click?()=>updateName(me.name):()=>editName(user.name)}>{me.click?'update':'eidt'}</button></li>
-          <li>Email: {user.email}</li>
+          <li>Name:{me.click&&me.type === 'name'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'name')} type = 'text' defaultValue={me.name}/>: user.name} <button onClick={me.click&&me.type === 'name'?()=>updateMyData(me.name, 'name'):()=>editMyData(user.name,'name')}>{me.click&&me.type === 'name'?'update':'edit'}</button></li>
+          <li>Email:{me.click&&me.type === 'email'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'email')} type = 'text' defaultValue={me.email}/>: user.email} <button onClick={me.click&&me.type === 'email'?()=>updateMyData(me.email, 'email'):()=>editMyData(user.email,'email')}>{me.click&&me.type === 'email'?'update':'edit'}</button></li>
           <li>Role: {user.role}</li>
       </ul>
     </div>
