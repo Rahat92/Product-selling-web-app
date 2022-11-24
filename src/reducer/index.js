@@ -159,7 +159,6 @@ const userReducer = (initialState = {user:{}}, action)=>{
         ...initialState,
         loading: false,
         isAuthenticated: false,
-        user:null,
         message: action.payload
       }
     default:
