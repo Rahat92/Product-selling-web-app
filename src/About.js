@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMe, updateMyName } from './actions';
+import { getMe, updateCurrentUserData } from './actions';
 
 const About = () => {
   const [ display, setDisplay ] = useState(null)
@@ -10,6 +10,7 @@ const About = () => {
     click: false,
     type: '',
     name: '',
+    photo:'',
     email: ''
   })
   const { user, message } = useSelector(state => state.user);
@@ -34,24 +35,43 @@ const About = () => {
         click:true,
         type: type,
         name: type === 'name'? data:prev.name,
+        photo: type === 'photo'? data:prev.photo,
         email: type === 'email'? data:prev.email
       }
     })
   }
   const changeMyData = (e, type) => {
+    let photo;
+    if(type === 'photo'){
+      photo = e.target.files[0]
+    }
     updateMe(prev=>{
       return {
         click: true,
         type: type, 
         name: type === 'name'?e.target.value:prev.name,
+        photo: type === 'photo'?photo:prev.photo,
         email: type === 'email'?e.target.value:prev.email
       }
     })
   }
   const updateMyData = (data, type) => {
+    if(!data) return
     setDisplay('block')  
-    dispatch(updateMyName(data, type, updateMe, setMsg))
+    dispatch(updateCurrentUserData(data, type, updateMe, setMsg))
   }
+
+  const updateMyPhoto = (e, type) => {
+    e.preventDefault()
+    let formData = new FormData();
+    formData.append('photo', me.photo)
+    console.log(formData)
+    dispatch(updateCurrentUserData(formData, type, updateMe, setMsg))
+  }
+  // const savePhoto = (e) => {
+  //   e.preventDefault()
+  //   console.log(e.target.photo.value.split('\\')[2])
+  // }
   // if(user){
     // const {name, email, role} = user;
 
@@ -60,9 +80,15 @@ const About = () => {
   }
   return(
     <div>
+      <img style={{width:'100px', height: '100px', borderRadius:'50%'}} src = {`/public/img/users/${user.photo}`} />
+        <form onSubmit={(e)=>updateMyPhoto(e, 'photo')}>
+          <input type='file' onChange={(e)=>changeMyData(e,'photo')} name = 'photo' />
+          <input type = 'submit' value = 'save' />
+        </form>
+        {/* <img style={{width:'100px', height: '100px'}} src = {me.photo&&URL.createObjectURL(me.photo)} alt = 'profile review pic' /> */}
         <ul style = {{listStyle:'none', fontSize:'25px'}}>
-          <li>Name:{me.click&&me.type === 'name'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'name')} type = 'text' defaultValue={me.name}/>: user.name} <button onClick={me.click&&me.type === 'name'?()=>updateMyData(me.name, 'name'):()=>editMyData(user.name,'name')}>{me.click&&me.type === 'name'?'update':'edit'}</button></li>
-          <li>Email:{me.click && me.type === 'email'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'email')} type = 'text' defaultValue={me.email}/>: user.email} <button onClick={me.click&&me.type === 'email'?()=>updateMyData(me.email, 'email'):()=>editMyData(user.email,'email')}>{me.click&&me.type === 'email'?'update':'edit'}</button></li>
+          <li>Name:{me.click&&me.type === 'name'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'name')} type = 'text' defaultValue={me.name}/>: user.name} <button type = 'submit' onClick={me.click&&me.type === 'name'?()=>updateMyData(me.name, 'name'):()=>editMyData(user.name,'name')}>{me.click&&me.type === 'name'?'update':'edit'}</button></li>
+          <li>Email:{me.click && me.type === 'email'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'email')} type = 'text' defaultValue={me.email}/>: user.email} <button type = 'submit' onClick={me.click&&me.type === 'email'?()=>updateMyData(me.email, 'email'):()=>editMyData(user.email,'email')}>{me.click&&me.type === 'email'?'update':'edit'}</button></li>
             {me.type === 'email'&& message&&message.message.includes('E11000')?<h3 style={{color:'red', margin: '0', padding: '0', display: display }}>duplicate field error</h3>:''}
           <li>Role: {user.role}</li>
       </ul>

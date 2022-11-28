@@ -484,17 +484,22 @@ export const updateUserRole = (userId, role, setUpdateRoleClick) => {
     }
   }
 }
-export const updateMyName = (needUpdateData, type, updateMe, setMsg) => {
+export const updateCurrentUserData = (needUpdateData, type, updateMe, setMsg) => {
+  console.log(needUpdateData)
   return async(dispatch) => {
     try{
       dispatch({
         type: UPDATE_MY_PROFILE_REQUEST
       })
-      const { data } = await requestCreator.patch(`users/updateme`,{
+      let responseData
+      if(type === 'photo'){
+        responseData = await requestCreator.patch(`users/updateme`,needUpdateData)
+      }
+       responseData = await requestCreator.patch(`users/updateme`,{
          name: type === 'name'? needUpdateData:undefined,
-         email: type === 'email'? needUpdateData: undefined
+         email: type === 'email'? needUpdateData: undefined,
       })
-
+      const { data } = responseData
       dispatch({
         type: UPDATE_MY_PROFILE_SUCCESS,
         payload: data.user

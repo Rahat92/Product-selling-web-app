@@ -193,7 +193,7 @@ const Main = ({anyFunc}) => {
             <br />
           </div>
           { !selector.singleProduct.doc?(
-            <h2 style={{background:'green', position:'absolute', padding:'.5rem', color:'white', borderRadius:'5px'}}>Click On a single Product to see detail here</h2>)
+            <h3 style={{background:'green', position:'absolute', padding:'.5rem', color:'white', borderRadius:'5px'}}>Click On a single Product to see detail here</h3>)
             :
           <div style = {{display:'flex'}}>
             <div>

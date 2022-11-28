@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Main from './Main';
+import LoggedInUser from './LoggedInUser';
 import { BrowserRouter as Router, Routes, Route,Navigate, useNavigate, Link, NavLink } from 'react-router-dom';
 import Register from './Register';
 import Product from './EditProduct';
@@ -50,7 +51,7 @@ const App = () => {
   return(
     <div className='app'>
       <Router>
-      {user&&user.name&&user.role&&<div style={{position: 'fixed', top:'0', right:'3rem'}}><Link to = '/me'><h2>{user.name}(<span style={{color:'red', bold:'bolder'}}>{user.role}</span>)</h2></Link></div>}
+      {user&&user.name&&user.role&& <LoggedInUser user = {user} />}
       <UserState />
       &nbsp;&nbsp;&nbsp;
       <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
