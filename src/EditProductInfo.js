@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { editProduct } from "./actions";
 
 const EditProductInfo = ({ onSubmit, productName, productPrice, productCategory, selector, parameter, productPhoto}) => {
+  console.log(productName, productCategory)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [ photo, setPhoto ] = useState('')
@@ -16,10 +17,6 @@ const EditProductInfo = ({ onSubmit, productName, productPrice, productCategory,
     const newProductName = e.target.product.value;
     const newPrice = e.target.price.value;
     const newCategory = e.target.category.value;
-    // // let formData = new FormData();
-    // // formData.append('name', e.target.product.value)
-    // // formData.append('price', e.target.price.value)
-    // // formData.append('photo', photo )
     let formData = new FormData();
     formData.append('name', newProductName );
     formData.append('price',newPrice);
@@ -37,7 +34,8 @@ const EditProductInfo = ({ onSubmit, productName, productPrice, productCategory,
         <input type = "text" name = 'category' defaultValue = {!productCategory?selector.doc._id === parameter.id?selector.doc.category:'':productCategory} /><br />
         Product Price: <br />
         <input type= 'number' name = 'price' defaultValue = {!productPrice?selector.doc._id === parameter.id?selector.doc.price:'':productPrice}/>
-        <input type= 'file' onChange = {changeUpdateFileInput} name = 'photo'/>
+        <input id = 'img' type= 'file' onChange = {changeUpdateFileInput} name = 'photo'/>
+        {console.log(document.getElementById('img'))}
         <input type= 'submit' value={'update'} />
       </form>
     </div>

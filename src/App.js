@@ -23,16 +23,16 @@ const App = () => {
   const pathName = window.location.pathname
   const [ productData, setProductData ] = useState({
     productName:'',
+    productCategory: '',
     productPrice:0,
     productPhoto: '',
-    productCategory: ''
   })
   const [ userData, setUserData ] = useState({
     name: '',
     email: '',
     role: ''
   })
-  const { productName, productPrice, productPhoto } = productData;
+  const { productName, productPrice, productPhoto, productCategory } = productData;
   const dispatch = useDispatch();
   const { user } = useSelector(state=>state.user)
   useEffect(() => {
@@ -41,9 +41,9 @@ const App = () => {
   const anyFunc = (productName, productPrice, productPhoto, productCategory) => {
     setProductData({
       productName : productName,
+      productCategory: productCategory,
       productPrice : productPrice,
       productPhoto: productPhoto,
-      productCategory: productCategory
     })
   }
   const getUserData = (name, email, role) => {
@@ -62,7 +62,7 @@ const App = () => {
       <Link to = '/admin/alluser'>All User</Link>
         <Routes>
           <Route path = "/" element = {<Main anyFunc={anyFunc}/>}/>
-          <Route path = {`product/:id`} element = {<Product  productName = {productName} productPrice = {productPrice} productPhoto = {productPhoto} />}/>
+          <Route path = {`product/:id`} element = {<Product  productName = {productName} productPrice = {productPrice} productPhoto = {productPhoto} productCategory = {productCategory} />}/>
           <Route path = {`/params`} element = {<Params/>}/>
           <Route path = {`/search/:keyword`} element = {<Main />}/>
           <Route path = {`/login`} element = {<Login/>}/>

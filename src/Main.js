@@ -30,7 +30,7 @@ const Main = ({anyFunc}) => {
   // const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
-  const { reviews, numOfDoc, result, recentNum, currentPage,totalPage, resPerPage, totalReview } = useSelector(state=>state.reviews)
+  const { reviews, result, recentNum, currentPage, totalReview } = useSelector(state=>state.reviews)
   const [ reviewPageNo, setReviewPageNo ] = useState(1)
   // const [searchParam, setSearchParams] = useSearchParams();
   // console.log(searchParam.get('page'))
@@ -124,6 +124,7 @@ const Main = ({anyFunc}) => {
     selector.createAProduct = false;
     let formData = new FormData();
     formData.append('name', e.target.productName.value)
+    formData.append('category', e.target.productCategory.value)
     formData.append('price', e.target.price.value)
     formData.append('photo', photo)
     for (var pair of formData.entries()) {
@@ -199,6 +200,8 @@ const Main = ({anyFunc}) => {
               <form onSubmit={postProduct}>
                 ProductName &nbsp;:&nbsp;
                 <input type = 'text' name = 'productName' /><br /><br />
+                ProductCategory &nbsp;:&nbsp;
+                <input type = 'text' name = 'productCategory' /> <br /> <br />
                 Price &nbsp;:&nbsp;
                 <input type = 'number' name = 'price' /><br />
                 <input type = 'file' onChange={changeProductPhoto} name = 'photo' />
@@ -221,7 +224,7 @@ const Main = ({anyFunc}) => {
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>রেটিংসঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.ratingsAverage.toFixed()}</span>
               <h3>{selector.singleProduct.doc.review.length} reviews</h3>
             </div>
-            <div style={{ overflow:'hidden', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', marginBottom:'3rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px'}}>
+            <div style={{ overflow:'hidden', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px'}}>
                 <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
                 {reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
                   :
