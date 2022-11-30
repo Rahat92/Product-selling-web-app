@@ -25,6 +25,8 @@ const Main = ({anyFunc}) => {
     review:'',
     rating:''
   })
+  const [ photo, setPhoto ] = useState('')
+
   // const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
@@ -118,8 +120,16 @@ const Main = ({anyFunc}) => {
   }
   const postProduct = (e) => {
     e.preventDefault();
-    selector.createAProduct = false
-    dispatch(createAProduct(e.target.productName.value,e.target.price.value, navigate))
+    console.log(photo)
+    selector.createAProduct = false;
+    let formData = new FormData();
+    formData.append('name', e.target.productName.value)
+    formData.append('price', e.target.price.value)
+    formData.append('photo', photo)
+    for (var pair of formData.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+  }
+    dispatch(createAProduct(formData, navigate))
   }
   const trackSortValue =(e)=> {
     dispatch(trackSortedValue(e.target.value))
@@ -138,12 +148,12 @@ const Main = ({anyFunc}) => {
   const reviewEditCancel = () => {
     setEditReviewClick(false)  
   }
-  const updateMyReview = (e, id,productId) => {
+  const updateMyReview = (e, id, productId) => {
     e.preventDefault()
     dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick, setReviewPageNo, reviewPageNo))
   }
-  const sendProductDataToEditForm = (productName, productPrice, id) => {
-    anyFunc(productName, productPrice)
+  const sendProductDataToEditForm = (productName, productPrice, productPhoto, productCategory, id) => {
+    anyFunc(productName, productPrice, productPhoto, productCategory)
     navigate(`product/${id}`)
   }
   // const getReviews = () => {
@@ -158,6 +168,9 @@ const Main = ({anyFunc}) => {
     console.log(reviewPageNo+1)
     dispatch(getProductReviews(productId, reviewPageNo+1))
   }
+  const changeProductPhoto = (e) => {
+    setPhoto(e.target.files[0])
+  }
   const allProduct = () => {
     if(!selector.allProduct.data){
       return <p>Loading data, Please wait...</p>
@@ -168,9 +181,10 @@ const Main = ({anyFunc}) => {
             <h1>Total Documents: {selector.allProduct.data.docNum}</h1>
             <ul style={{listStyle: 'none'}}>
               {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
+                {console.log(el.photo)}
                 return (
                   <div>
-                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><button onClick={()=>sendProductDataToEditForm(el.name, el.price, el.id)}>edit product</button></>)}</li>
+                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><button onClick={()=>sendProductDataToEditForm(el.name, el.price, el.photo, el.category, el.id)}>edit product</button></>)}</li>
                     {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
                   </div>
                 )
@@ -187,6 +201,7 @@ const Main = ({anyFunc}) => {
                 <input type = 'text' name = 'productName' /><br /><br />
                 Price &nbsp;:&nbsp;
                 <input type = 'number' name = 'price' /><br />
+                <input type = 'file' onChange={changeProductPhoto} name = 'photo' />
                 <input type= 'submit' value= 'create'/>
               </form>
             ) )}
@@ -199,6 +214,7 @@ const Main = ({anyFunc}) => {
             <div>
               <h2><span style = {{background:'grey', padding:'.3rem', borderRadius:'3px'}}>{selector.singleProduct.doc.name}</span>'s details</h2>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>নামঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.name}</span><br/>
+              <img style={{width:'200px', height: '200px'}} src = { `/public/img/users/${selector.singleProduct.doc.photo}` } /><br />
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>কেটাগরিঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.category}</span><br/>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মুল্যঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.price}</span><br/>
               <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মোট রেটিংঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.numberOfRatings}</span><br/>

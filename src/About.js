@@ -65,7 +65,6 @@ const About = () => {
     e.preventDefault()
     let formData = new FormData();
     formData.append('photo', me.photo)
-    console.log(formData)
     dispatch(updateCurrentUserData(formData, type, updateMe, setMsg))
   }
   // const savePhoto = (e) => {

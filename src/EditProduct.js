@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { editProduct, getSingleProduct } from './actions';
 import EditProductInfo from './EditProductInfo';
-const Product = ({ productName, productPrice }) => {
+const Product = ({ productName, productPrice, productPhoto, productCategory }) => {
   const navigate = useNavigate()
   const parameter = useParams()
   const dispatch = useDispatch()
@@ -22,11 +22,15 @@ const Product = ({ productName, productPrice }) => {
   if(user === null){
     navigate('/login')
   }
-  const onSubmit = (e) => {
-    e.preventDefault();
-    const productName = e.target.product.value;
-    const price = e.target.price.value;
-    dispatch(editProduct(parameter.id,productName, price,navigate))
+  const onSubmit = (formData) => {
+    // e.preventDefault();
+    // const newProductName = e.target.product.value;
+    // const newPrice = e.target.price.value;
+    // const formData = new FormData()
+    // formData.append('name', newProductName)
+    // formData.append('price', newPrice)
+    // formData.append('photo', photo )
+    dispatch(editProduct(parameter.id,formData,navigate))
   }
   if(!productName&&!productPrice){
     if(!selector.doc){
@@ -37,11 +41,13 @@ const Product = ({ productName, productPrice }) => {
     <div>
       {user&&user.role==='admin'?(
         <EditProductInfo
-          onSubmit = { onSubmit }
+          // onSubmit = { onSubmit }
           productName = {productName} 
           selector = {selector} 
           parameter = {parameter} 
           productPrice = {productPrice} 
+          productPhoto = { productPhoto }
+          productCategory = { productCategory }
         />
       ):navigate('/')}
     </div>

@@ -54,6 +54,9 @@ import {
   UPDATE_MY_PROFILE_REQUEST,
   UPDATE_MY_PROFILE_SUCCESS,
   UPDATE_MY_PROFILE_FAIL, 
+  EDIT_PRODUCT_REQUEST,
+  EDIT_PRODUCT_SUCCESS,
+  EDIT_PRODUCT_FAIL,
 } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
@@ -139,18 +142,24 @@ export const deleteOneProduct = (id, setDeleteClick) => {
     setDeleteClick(false)
   }
 }
-export const editProduct =(id, name, price, navigate) => {
-  let response;
+export const editProduct = (formData, id, navigate) => {
   return async (dispatch) => {
-    await requestCreator.patch(`/products/${id}`,{
-      name:name,
-      price:price
-    }).then(data=>response = data).catch(err => response = err)
-    dispatch({
-      type: editSingleProduct,
-      payload:response
-    })
-    navigate('/')
+    try{
+      dispatch({
+        type: EDIT_PRODUCT_REQUEST
+      })
+      const { data } = await requestCreator.patch(`/products/${id}`,formData)
+      dispatch({
+        type: EDIT_PRODUCT_SUCCESS,
+        payload: data
+      })
+      navigate('/')
+    }catch(error){
+      dispatch({
+        type: EDIT_PRODUCT_FAIL,
+        payload: error.response.data
+      })
+    }
   }
 }
 
@@ -168,11 +177,9 @@ export const createNewProduct = () => {
 }
 export const createAProduct = (product, price, navigate) => {
   return async (dispatch) => {
+    console.log(product)
     try{
-      const response = await requestCreator.post(`products`,{
-        name: product,
-        price: price    
-      })
+      const response = await requestCreator.post(`/products`,product)
       dispatch({
         type:createASingleProduct,
         payload: response
