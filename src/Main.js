@@ -34,13 +34,16 @@ const Main = ({anyFunc}) => {
   const { reviews, result, recentNum, currentPage, totalReview } = useSelector(state=>state.reviews)
   const [ reviewPageNo, setReviewPageNo ] = useState(1)
   const [searchParam, setSearchParams] = useSearchParams();
-  const yourpage = searchParam.get('page')
+  let yourpage = searchParam.get('page')
   const myPage = new URLSearchParams().get('page')
   console.log('mypage', myPage)
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
+  if(yourpage === null){
+    yourpage = 1
+  }
   useEffect(()=>{
     console.log(yourpage)
     setCreateUserReview(false)
@@ -48,7 +51,7 @@ const Main = ({anyFunc}) => {
     // if(!search){
     //   dispatch(getMe())
     // }
-
+    
     if(yourpage){
       selector.currentNum = yourpage
     }
@@ -207,7 +210,7 @@ const Main = ({anyFunc}) => {
               }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}
             </ul>
             {console.log(yourpage)}
-            <button onClick={doDecrease} disabled = {yourpage*1 === 1? true:false}>decrease</button>
+            <button onClick={doDecrease} disabled = {yourpage*1 === 1||selector.currentNum ===1 ? true:false}>decrease</button>
             <button onClick={doIncrease} disabled = {selector.allProduct.data&&selector.allProduct.data.docs.length>0?false:true}>increase</button><br/>
             {user&&user.role === 'admin'&&(!selector.createAProduct?
             (
