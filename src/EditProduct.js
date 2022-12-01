@@ -11,7 +11,7 @@ const Product = ({ productName, productPrice, productPhoto, productCategory }) =
   const { user } = useSelector(state=>state.user)
   const { editedProduct } = useSelector(state=>state)
   useEffect(()=> {
-    if(!productName&&!productPrice){
+    if(!productName||!productPrice || !productPhoto || !productCategory ){
       dispatch(getSingleProduct(parameter.id))    
     }
     // dispatch(getMe())

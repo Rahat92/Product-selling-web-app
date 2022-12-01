@@ -7,6 +7,7 @@ import Modal from './Modal';
 import UpdateReviewForm from './UpdateReviewForm';
 import './Main.css';
 const Main = ({anyFunc}) => {
+
   const [padding, setPadding] = useState('bad')
   const moreComment = useRef();
   let styl;
@@ -32,23 +33,27 @@ const Main = ({anyFunc}) => {
   const [ id, setId ] = useState()
   const { reviews, result, recentNum, currentPage, totalReview } = useSelector(state=>state.reviews)
   const [ reviewPageNo, setReviewPageNo ] = useState(1)
-  // const [searchParam, setSearchParams] = useSearchParams();
-  // console.log(searchParam.get('page'))
-  // let currentPage = new URLSearchParams(location).get('page')
-  // let currentPage = searchParam.get('page')
+  const [searchParam, setSearchParams] = useSearchParams();
+  const yourpage = searchParam.get('page')
+  const myPage = new URLSearchParams().get('page')
+  console.log('mypage', myPage)
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
   useEffect(()=>{
+    console.log(yourpage)
     setCreateUserReview(false)
     setEditReviewClick(false)
     // if(!search){
     //   dispatch(getMe())
     // }
 
+    if(yourpage){
+      selector.currentNum = yourpage
+    }
     const request = () => {
-      dispatch(fetchProducts(selector.currentNum,price, search))
+      dispatch(fetchProducts(selector.currentNum || myPage,price, search))
     }
 
     // selector.currentNum = selector.currentNum
@@ -87,9 +92,15 @@ const Main = ({anyFunc}) => {
   },[user,selector.deleteproduct.data,reviews, selector.createBrandNewProduct.data,price, selector.currentNum,search])
   const doIncrease = () => {
     dispatch(increase())
+    setSearchParams({
+      page: yourpage*1+1
+    })
   }
   const doDecrease = () => {
     dispatch(decrease());
+    setSearchParams({
+      page: yourpage*1-1
+    })
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
@@ -134,6 +145,9 @@ const Main = ({anyFunc}) => {
   }
   const trackSortValue =(e)=> {
     dispatch(trackSortedValue(e.target.value))
+    setSearchParams({
+      sort: e.target.value
+    })
   }
   
   const searchFor = (e) => {
@@ -151,6 +165,7 @@ const Main = ({anyFunc}) => {
   }
   const updateMyReview = (e, id, productId) => {
     e.preventDefault()
+    console.log('should update')
     dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick, setReviewPageNo, reviewPageNo))
   }
   const sendProductDataToEditForm = (productName, productPrice, productPhoto, productCategory, id) => {
@@ -191,7 +206,8 @@ const Main = ({anyFunc}) => {
                 )
               }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}
             </ul>
-            <button onClick={doDecrease} disabled = {selector.currentNum === 1? true:false}>decrease</button>
+            {console.log(yourpage)}
+            <button onClick={doDecrease} disabled = {yourpage*1 === 1? true:false}>decrease</button>
             <button onClick={doIncrease} disabled = {selector.allProduct.data&&selector.allProduct.data.docs.length>0?false:true}>increase</button><br/>
             {user&&user.role === 'admin'&&(!selector.createAProduct?
             (
@@ -323,9 +339,7 @@ const Main = ({anyFunc}) => {
         <input placeholder='Search product by name' onChange = {searchFor} type = 'text' value={search} name = 'keyword'/>
       <br />
       {/* <button type='button' onClick={gotoParams}>params</button> */}
-      <br />
-      <h1>Number {selector.currentNum}</h1>
-      
+      <br />      
         <select onChange={trackSortValue}>
           <option>price</option>
           <option>ratingsAverage</option>
