@@ -1,4 +1,59 @@
-import { createASingleProduct, createMyReviewFail, createMyReviewRequest, createMyReviewSuccess, createProduct, createProductNameAndPrice, createReviewError, createUserReviewFail, createUserReviewRequest, createUserReviewSuccess, decreaseNum, deleteAProduct, DELETEONEUSERFAIL, DELETEONEUSERREQUEST, DELETEONEUSERSUCCESS, deleteReviewFail, deleteReviewRequest, deleteReviewSuccess, editSingleProduct, fetchAllProduct, getAllActiveUserFail, getAllActiveUserRequest, getAllActiveUserSuccess, getAProduct, getMeFail, getMeRequest, getMeSuccess, getProductNameAndPrice, getProductReviewFail, getProductReviewRequest, getProductReviewSuccess, getSingleUserFail, getSingleUserRequest, getSingleUserSuccess, handleInputChange, increaseNum, loginFail, loginRequest, loginSuccess, logOutFail, logOutRequest, logOutSuccess, REGISTER_USER_FAIL, REGISTER_USER_REQUEST, REGISTER_USER_SUCCESS, tracsortvalue, updateReviewFail, updateReviewRequest, updateReviewSuccess, UPDATE_MY_PROFILE_FAIL, UPDATE_MY_PROFILE_REQUEST, UPDATE_MY_PROFILE_SUCCESS, UPDATE_USER_ROLE_REQUEST, UPDATE_USER_ROLE_SUCCESS } from "../const";
+import { 
+  createASingleProduct, 
+  createMyReviewFail, 
+  createMyReviewRequest, 
+  createMyReviewSuccess, 
+  createProduct, 
+  createProductNameAndPrice, 
+  createReviewError, 
+  createUserReviewFail, 
+  createUserReviewRequest, 
+  createUserReviewSuccess, 
+  decreaseNum, 
+  deleteAProduct, 
+  DELETE_ONE_USER_FAIL, 
+  DELETE_ONE_USER_REQUEST, 
+  DELETE_ONE_USER_SUCCESS, 
+  deleteReviewFail, 
+  deleteReviewRequest, 
+  deleteReviewSuccess, 
+  editSingleProduct, 
+  fetchAllProduct, 
+  getAllActiveUserFail, 
+  getAllActiveUserRequest, 
+  getAllActiveUserSuccess, 
+  getAProduct, 
+  getMeFail, 
+  getMeRequest, 
+  getMeSuccess, 
+  getProductNameAndPrice, 
+  getProductReviewFail, 
+  getProductReviewRequest, 
+  getProductReviewSuccess, 
+  GET_SINGLE_USER_FAIL, 
+  GET_SINGLE_USER_REQUEST, 
+  GET_SINGLE_USER_SUCCESS, 
+  handleInputChange, 
+  increaseNum, 
+  LOG_IN_FAIL, 
+  LOG_IN_REQUEST, 
+  LOG_IN_SUCCESS, 
+  LOG_OUT_FAIL, 
+  LOG_OUT_REQUEST, 
+  LOG_OUT_SUCCESS, 
+  REGISTER_USER_FAIL, 
+  REGISTER_USER_REQUEST, 
+  REGISTER_USER_SUCCESS, 
+  tracsortvalue, 
+  updateReviewFail, 
+  updateReviewRequest, 
+  updateReviewSuccess,
+  UPDATE_MY_PROFILE_FAIL, 
+  UPDATE_MY_PROFILE_REQUEST, 
+  UPDATE_MY_PROFILE_SUCCESS, 
+  UPDATE_USER_ROLE_REQUEST, 
+  UPDATE_USER_ROLE_SUCCESS 
+} from "../const";
 import { combineReducers } from 'redux'
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
@@ -82,19 +137,19 @@ const userReducer = (initialState = {user:{}}, action)=>{
         user:null,
         message: action.payload
       }
-    case loginRequest:
+    case LOG_IN_REQUEST:
       return {
         loading : true,
         isAuthenticated : false,
       }
-    case loginSuccess:
+    case LOG_IN_SUCCESS:
       return {
         ...initialState,
         loading : false,
         isAuthenticated : true,
         user : action.payload
       }
-    case loginFail:
+    case LOG_IN_FAIL:
       return {
         ...initialState,
         loading : false,
@@ -102,20 +157,20 @@ const userReducer = (initialState = {user:{}}, action)=>{
         user:null,
         message:action.payload
       }
-    case logOutRequest:
+    case LOG_OUT_REQUEST:
       return {
         ...initialState,
         loading:true,
         isAuthenticated:true,
       }
-    case logOutSuccess:
+    case LOG_OUT_SUCCESS:
       return {
         ...initialState,
         loading:false,
         isAuthenticated:false,
         user:null
       }
-    case logOutFail:
+    case LOG_OUT_FAIL:
       return {
         ...initialState,
         loading: false,
@@ -166,18 +221,18 @@ const userReducer = (initialState = {user:{}}, action)=>{
 }
 // const logOutReducer = (initialState = {}, action) => {
 //   switch(action.type){
-//     case logOutRequest:
+//     case LOG_OUT_REQUEST:
 //       return {
 //         loading:true,
 //         isAuthenticated:true,
 //       }
-//     case logOutSuccess:
+//     case LOG_OUT_SUCCESS:
 //       return {
 //         loading:false,
 //         isAuthenticated:false,
 //         user:null
 //       }
-//     case logOutFail:
+//     case LOG_OUT_FAIL:
 //       return {
 //         loading: false,
 //         isAuthenticated: true
@@ -323,19 +378,19 @@ const users = (state = {users:[]}, action) => {
         loading: false,
         users: copiedList
       }
-    case DELETEONEUSERREQUEST:
+    case DELETE_ONE_USER_REQUEST:
       return {
         ...state,
         loading: true,
       }
-    case DELETEONEUSERSUCCESS:
+    case DELETE_ONE_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         documentNumber:state.documentNumber-1,
         users: [...state.users ].filter(el=>el._id!==action.payload)
       }
-    case DELETEONEUSERFAIL:
+    case DELETE_ONE_USER_FAIL:
       return {
         ...state,
         loading:false,
@@ -384,18 +439,18 @@ const productNameAndpriceReducer = (state = [], action) => {
 
 const normalUserReducer = (state = {user: {}}, action) => {
   switch(action.type){
-    case getSingleUserRequest:
+    case GET_SINGLE_USER_REQUEST:
       return {
         ...state,
         loading: true,
       }
-    case getSingleUserSuccess:
+    case GET_SINGLE_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         user: action.payload
       }
-    case getSingleUserFail:
+    case GET_SINGLE_USER_FAIL:
       return {
         loading: false,
         message: action.payload

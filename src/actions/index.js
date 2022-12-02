@@ -13,14 +13,13 @@ import {
   increaseNum, 
   editSingleProduct, 
   loginRequest, 
-  loginSuccess, 
   loginFail, 
   getMeSuccess, 
   getMeRequest, 
   getMeFail, 
-  logOutRequest, 
-  logOutSuccess, 
-  logOutFail, 
+  LOG_OUT_REQUEST, 
+  LOG_OUT_SUCCESS, 
+  LOG_OUT_FAIL, 
   createMyReviewRequest, 
   createReviewError, 
   createMyReviewSuccess, 
@@ -39,15 +38,15 @@ import {
   updateReviewFail,
   createProductNameAndPrice,
   getProductNameAndPrice,
-  getSingleUserRequest,
-  getSingleUserSuccess,
-  getSingleUserFail,
+  GET_SINGLE_USER_REQUEST,
+  GET_SINGLE_USER_SUCCESS,
+  GET_SINGLE_USER_FAIL,
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_FAIL,
-  DELETEONEUSERREQUEST,
-  DELETEONEUSERSUCCESS,
-  DELETEONEUSERFAIL,
+  DELETE_ONE_USER_REQUEST,
+  DELETE_ONE_USER_SUCCESS,
+  DELETE_ONE_USER_FAIL,
   UPDATE_USER_ROLE_FAIL,
   UPDATE_USER_ROLE_REQUEST,
   UPDATE_USER_ROLE_SUCCESS,
@@ -57,6 +56,9 @@ import {
   EDIT_PRODUCT_REQUEST,
   EDIT_PRODUCT_SUCCESS,
   EDIT_PRODUCT_FAIL,
+  LOG_IN_REQUEST,
+  LOG_IN_SUCCESS,
+  LOG_IN_FAIL,
 } from "../const"
 import requestCreator from '../axios.js';
 export const increase = () => {
@@ -214,7 +216,7 @@ export const loginUser = (email, password, navigate, setMsg) => {
   return async(dispatch) => {
     try{
       dispatch({
-        type: loginRequest
+        type: LOG_IN_REQUEST
       })
       // const config = {
       //   headers: {
@@ -226,13 +228,13 @@ export const loginUser = (email, password, navigate, setMsg) => {
         password
       })
       dispatch({
-        type: loginSuccess,
+        type: LOG_IN_SUCCESS,
         payload:data.user
       })
       navigate('/')
     }catch(error){
       dispatch({
-        type:loginFail,
+        type:LOG_IN_FAIL,
         payload:error.response.data
       })
       setMsg(true)
@@ -264,17 +266,17 @@ export const getLogOut = (navigate) => {
   return async (dispatch) => {
     try{
       dispatch({
-        type: logOutRequest
+        type: LOG_OUT_REQUEST
       })
       const response = await requestCreator.get('/users/logout')
       dispatch({
-        type:logOutSuccess,
+        type:LOG_OUT_SUCCESS,
         payload:response
       })
       navigate('/login')
     }catch(error){
       dispatch({
-        type:logOutFail,
+        type:LOG_OUT_FAIL,
         payload:error.response
       })
     }
@@ -380,16 +382,16 @@ export const getUser = (userId) => {
   return async (dispatch) => {
     try{
       dispatch({
-        type: getSingleUserRequest,
+        type: GET_SINGLE_USER_REQUEST,
       })
       const { data } = await requestCreator.get(`/users/${userId}`);
       dispatch({
-        type: getSingleUserSuccess,
+        type: GET_SINGLE_USER_SUCCESS,
         payload: data.doc
       })
     }catch(error){
       dispatch({
-        type: getSingleUserFail,
+        type: GET_SINGLE_USER_FAIL,
         payload: error.response.data
       })
     }
@@ -449,11 +451,11 @@ export const deleteOneUser = (userId, setDeleteClick) => {
   return async (dispatch) => {
     try{
       dispatch({
-        type: DELETEONEUSERREQUEST
+        type: DELETE_ONE_USER_REQUEST
       })
       await requestCreator.delete(`users/${userId}`)
       dispatch({
-        type: DELETEONEUSERSUCCESS,
+        type: DELETE_ONE_USER_SUCCESS,
         payload: userId
       })
       // dispatch(getAllUser())
@@ -461,7 +463,7 @@ export const deleteOneUser = (userId, setDeleteClick) => {
       dispatch(getMe())
     }catch(error){
       dispatch({
-        type: DELETEONEUSERFAIL,
+        type: DELETE_ONE_USER_FAIL,
         payload: error.response.data
       })
     }

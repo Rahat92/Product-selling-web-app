@@ -211,7 +211,7 @@ const Main = ({anyFunc}) => {
             </ul>
             {console.log(yourpage)}
             <button onClick={doDecrease} disabled = {yourpage*1 === 1||selector.currentNum ===1 ? true:false}>decrease</button>
-            <button onClick={doIncrease} disabled = {selector.allProduct.data&&selector.allProduct.data.docs.length>0?false:true}>increase</button><br/>
+            <button onClick={doIncrease} disabled = {selector.allProduct.data&& yourpage >= selector.allProduct.data.totalPage?true:false}>increase</button><br/>
             {user&&user.role === 'admin'&&(!selector.createAProduct?
             (
               <button type = 'button' onClick={createProduct}>create new Product</button>
@@ -339,7 +339,7 @@ const Main = ({anyFunc}) => {
   }
   return (
     <div className='main'>
-        <input placeholder='Search product by name' onChange = {searchFor} type = 'text' value={search} name = 'keyword'/>
+        <input style={{marginTop:'1.5rem'}} placeholder='Search product by name' onChange = {searchFor} type = 'text' value={search} name = 'keyword'/>
       <br />
       {/* <button type='button' onClick={gotoParams}>params</button> */}
       <br />      
