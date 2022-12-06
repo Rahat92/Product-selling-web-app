@@ -6,7 +6,7 @@ import { getLogOut, getMe } from './actions';
 const UserState = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const {user} = useSelector(state=>state.user)
+  const {user, isAuthenticated, loading} = useSelector(state=>state.user)
   const {logOut} = useSelector(state=>state)
   useEffect(()=>{
     dispatch(getMe())
@@ -20,13 +20,13 @@ const UserState = () => {
   // }
   return(
     <>
-        {user&&(
+        {isAuthenticated&&(
           <button type = 'button' onClick={()=>{
             dispatch(getLogOut(navigate))
             // setTimeout(()=>goLogin(),500)
           }}>Log out</button>
         )}
-        {!user&&!window.location.pathname.includes('/login')&&(
+        {!isAuthenticated&&!window.location.pathname.includes('/login')&&(
             <button type = 'button' onClick={()=>navigate('/login')}>Login</button>
         )}
     </>

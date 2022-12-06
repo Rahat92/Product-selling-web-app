@@ -19,6 +19,7 @@ import Names from './Names';
 import User from './User';
 import store from './store';
 import './App.css';
+import ProtectedRoute from './ProtectedRoute';
 const App = () => {
   const pathName = window.location.pathname
   const [ productData, setProductData ] = useState({
@@ -34,7 +35,7 @@ const App = () => {
   })
   const { productName, productPrice, productPhoto, productCategory } = productData;
   const dispatch = useDispatch();
-  const { user } = useSelector(state=>state.user)
+  const { user, isAuthenticated } = useSelector(state=>state.user)
   useEffect(() => {
     store.dispatch(getMe())
   },[dispatch])
@@ -55,7 +56,7 @@ const App = () => {
   return(
     <div className='app'>
       <Router>
-      {user&&user.name&&user.role&& <LoggedInUser user = {user} />}
+      {(isAuthenticated||user)&&user.name&&user.role&& <LoggedInUser user = {user} />}
       <UserState />
       &nbsp;&nbsp;&nbsp;
       <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
@@ -70,10 +71,13 @@ const App = () => {
           {/* <Route path = {`product/:id`} element = {<Navigate to = '/'/>}/> */}
           <Route path = {`/count`} element = {<Count />}/>
           <Route path = {`/countmany`} element = {<CountMany />}/>
-          <Route path = {`/admin/alluser`} element = {<AllUser getUserData = {getUserData} />}/>
           <Route path = {`/names/`} element = {<Names />}/>
           <Route path = {`/profile/:userId`} element = {<User name = {name} email = {email} role = {role} />}/>
           <Route path = {`/register`} element = {<Register />}/>
+          <Route element = {<ProtectedRoute />}>
+            <Route element = {<h1>Hello world! this route is protected.only for admin</h1>} path = '/admin/dashboard'/>
+            <Route element = {<AllUser getUserData = {getUserData} />} path = {`/admin/alluser`} />
+          </Route>
         </Routes>
       </Router>
     </div>

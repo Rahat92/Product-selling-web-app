@@ -29,20 +29,20 @@ const AllUser = ({ getUserData }) => {
   const goProfile = (name, email, role) => {
     getUserData(name, email, role)
   }
-  if(message){
-    return (
-      <div>
-        <h3 style = { { color: 'red' } }>{message.message}</h3>
-      </div>
-    )
-  }
-  if(!users){
-    return (
-      <div>
-        <h3>Loading...</h3>
-      </div>
-    )
-  }
+  // if(message){
+  //   return (
+  //     <div>
+  //       <h3 style = { { color: 'red' } }>{message.message}</h3>
+  //     </div>
+  //   )
+  // }
+  // if(!users){
+  //   return (
+  //     <div>
+  //       <h3>Loading...</h3>
+  //     </div>
+  //   )
+  // }
   return(
     <div>
       <h2>Total Users: {documentNumber}</h2>
