@@ -7,7 +7,7 @@ const EditProductInfo = ({ onSubmit, productName, productPrice, productCategory,
   console.log(productPhoto)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [ photo, setPhoto ] = useState(productPhoto)
+  const [ photo, setPhoto ] = useState('')
   const changeUpdateFileInput = (e) => {
     setPhoto(e.target.files[0])
   }
@@ -20,14 +20,16 @@ const EditProductInfo = ({ onSubmit, productName, productPrice, productCategory,
     let formData = new FormData();
     formData.append('name', newProductName );
     formData.append('price',newPrice);
-    formData.append('photo', photo)
+    if(photo){
+      formData.append('photo', photo)
+    }
     formData.append('category', newCategory)
     dispatch(editProduct(formData, parameter.id, navigate))
   }
   return (
     <div>
       <h2>Edit Product</h2>
-      <img style={{width:'200px', height: '200px'}} src= {`/public/img/users/${productPhoto||selector.doc.photo}`} alt="product pic" />
+      <img style={{width:'200px', height: '200px'}} src= {photo?URL.createObjectURL(photo):`/public/img/users/${productPhoto||selector.doc.photo}`} alt="product pic" />
       <form onSubmit={(e)=>onFormSubmit(e)}>
         product Name: <br />
         <input type = "text" name = 'product' defaultValue = {!productName?selector.doc._id === parameter.id?selector.doc.name:'':productName} /><br />
