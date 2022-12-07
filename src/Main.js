@@ -257,7 +257,6 @@ const Main = ({anyFunc}) => {
                    <div style={{borderRadius:'3px', color:'brown', overflow:'hidden'}}>
                      {reviews.length>0&&reviews.map(el=>{
                        return el.user&&editReviewClick&&user&&el.user._id === user._id?
-   
                          <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
                            <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,product._id)} />
                          </div>
@@ -296,7 +295,7 @@ const Main = ({anyFunc}) => {
                    </div>
                    
                    {user&&user.role === 'user'&&!createUserReview&&
-                     (product&&product.review&&product.review.find(el=>el.user&&el.user._id === user._id)&&
+                     (product&&product.review&&!product.review.find(el=>el.user&&el.user._id === user._id)&&
                      <CreateReviewForm sendReview={(e) => sendReview(e,product&&product.id)} />
                    )}
    

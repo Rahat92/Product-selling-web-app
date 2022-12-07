@@ -92,6 +92,7 @@ export const fetchProducts = (currentPage, sortvalue, searchValue) => {
 export const getProductReviews = (productId, pageNo) => {
   return async(dispatch, getState) => {
     const productLength = getState().singleProduct.product.review.length;    
+    
     try{
       dispatch({type: getProductReviewRequest})
       const { data } = await requestCreator.get(`/products/${productId}/reviews`,{
@@ -290,7 +291,7 @@ export const getLogOut = (navigate) => {
 export const createReview = (review, rating,getProduct, productId, setCreateUserReview) => {
   return async(dispatch, getState) => {
     try{
-      const productLength = getState().singleProduct.doc.review.length
+      const productLength = getState().singleProduct.product.review.length
       dispatch({
         type: createUserReviewRequest
       })

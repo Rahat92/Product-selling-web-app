@@ -298,6 +298,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
         loading: true
       }
     case createUserReviewSuccess:
+      console.log(action.payload.data.user.name)
       return {
         ...state,
         loading: false,
