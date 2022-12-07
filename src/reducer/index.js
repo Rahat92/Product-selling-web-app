@@ -270,14 +270,14 @@ const adminPowerReducer = (state = {users:{}}, action) => {
 
 const reviewReducer = (state = {reviews:[]}, action) => {
   switch(action.type){
-    // case getProductReviewRequest:
-    //   return{
-    //     loading:true,
-    //   }
+    case getProductReviewRequest:
+      return{
+        isLoading:true,
+      }
     case getProductReviewSuccess:
       return {
         ...state,
-        loading: false,
+        isLoading: false,
         totalReview: action.payload.productLength,
         result: action.payload.result,
         resPerPage:action.payload.resPerPage,
@@ -289,7 +289,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
     case getProductReviewFail:
       return {
         ...state,
-        loading: false,
+        isLoading: false,
         reviews: null
       }
     case createUserReviewRequest:

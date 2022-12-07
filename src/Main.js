@@ -31,7 +31,7 @@ const Main = ({anyFunc}) => {
   // const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
-  const { reviews, result, recentNum, currentPage, totalReview } = useSelector(state=>state.reviews)
+  const { reviews, result, recentNum, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
   const [ reviewPageNo, setReviewPageNo ] = useState(1)
   const [searchParam, setSearchParams] = useSearchParams();
   let yourpage = searchParam.get('page')
@@ -198,7 +198,7 @@ const Main = ({anyFunc}) => {
       return <p>Loading data, Please wait...</p>
     }
     return(
-        <div>
+        <div style={{display:'flex'}}>
           <div>
             <h1>Total Documents: {selector.allProduct.data.docNum}</h1>
             <ul style={{listStyle: 'none'}}>
@@ -233,29 +233,28 @@ const Main = ({anyFunc}) => {
             <br />
           </div>
           {
-             !clickProduct?<h1>Hello world</h1>:
-             product&&product.photo&&
-             <div style = {{display:'flex'}}>
+             clickProduct&&product&&product.photo&&
+             <div style = {{display:'flex', margin: '3rem'}}>
                <div>
                  <h2><span style = {{background:'grey', padding:'.3rem', borderRadius:'3px'}}>{product&&product.name}</span>'s details</h2>
                  <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Name: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.name}</span><br/>
-                 <img style={{width:'200px', height: '200px'}} src = { `/public/img/users/${!Loading&&product?product.photo:'loading'}` } /><br />
-                 <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Category: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.category}</span><br/>
-                 <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Price: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.price}</span><br/>
-                 <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Total ratings: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.numberOfRatings}</span><br/>
-                 <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Ratings: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.ratingsAverage&&product.ratingsAverage.toFixed()}</span>
+                 <img style={{width:'200px', height: '200px', borderRadius:'5px'}} src = { `/public/img/users/${!Loading&&product?product.photo:'loading'}` } /><br />
+                 <span style={{color:'red', fontSize:'20px', fontWeight:'bolder'}}>Category: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.category}</span><br/>
+                 <span style={{color:'red', fontSize:'20px', fontWeight:'bolder'}}>Price: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.price}</span><br/>
+                 <span style={{color:'red', fontSize:'20px', fontWeight:'bolder'}}>Total ratings: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.numberOfRatings}</span><br/>
+                 <span style={{color:'red', fontSize:'20px', fontWeight:'bolder'}}>Ratings: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.ratingsAverage&&product.ratingsAverage.toFixed()}</span>
                  <h3>{product&&product.review&&product.review.length} reviews</h3>
                </div>
                <div style={{ overflow:'hidden', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px'}}>
                    <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
-                   {reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
+                   {!isLoading&&reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
                      :
                    <div>
                      <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
                    </div>
                    }
                    <div style={{borderRadius:'3px', color:'brown', overflow:'hidden'}}>
-                     {reviews.length>0&&reviews.map(el=>{
+                     {!isLoading&&reviews&&reviews.length>0&&reviews.map(el=>{
                        return el.user&&editReviewClick&&user&&el.user._id === user._id?
                          <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
                            <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,product._id)} />
@@ -288,8 +287,8 @@ const Main = ({anyFunc}) => {
                      }
                    </div>
                    <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-                     <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${product&&product.review&&product.review.length>recentNum&&result!==0?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
-                     {reviews.length>0?(
+                     <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${product&&product.review&&product.review.length>recentNum&&result!==0&&!Loading?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
+                     {!isLoading&&reviews.length>0?(
                        <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReview}</h4>
                      ):''}
                    </div>
