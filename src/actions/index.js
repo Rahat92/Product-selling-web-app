@@ -61,6 +61,7 @@ import {
   LOG_IN_FAIL,
 } from "../const"
 import requestCreator from '../axios.js';
+import { GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS } from "../const/productConsts";
 export const increase = () => {
   return {
     type: increaseNum,
@@ -113,10 +114,13 @@ export const getProductReviews = (productId, pageNo) => {
 export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
   return async(dispatch) => {
     try{
+      dispatch({
+        type: GET_A_PRODUCT_REQUEST
+      })
       const { data } = await requestCreator.get(`/products/${id}`)
       dispatch({
-        type:getAProduct,
-        payload:data
+        type:GET_A_PRODUCT_SUCCESS,
+        payload:data.doc
       })
       dispatch(getProductReviews(id))
       if(setReviewPageNo){
@@ -124,7 +128,7 @@ export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
       }
     }catch(error){
       dispatch({
-        type: 'getAProductFail',
+        type: GET_A_PRODUCT_FAIL,
         payload:error.response.data
       })
     }

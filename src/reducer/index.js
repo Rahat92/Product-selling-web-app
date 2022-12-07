@@ -55,6 +55,7 @@ import {
   UPDATE_USER_ROLE_SUCCESS 
 } from "../const";
 import { combineReducers } from 'redux'
+import { GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS } from "../const/productConsts";
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
     case increaseNum:
@@ -71,11 +72,26 @@ const allProduct = (initialState = {}, action) => {
   }
   return initialState
 }
-const getProductReducer = (initialState = {},action) => {
-  if(action.type === getAProduct){
-    return initialState = action.payload
+const getProductReducer = (state = {product:{}},action) => {
+  switch(action.type){
+    case GET_A_PRODUCT_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case GET_A_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        product: action.payload
+      }
+    case GET_A_PRODUCT_FAIL:
+      return {
+        loading: false,
+        product:null
+      }
+    default: 
+      return state
   }
-  return initialState
 }
 const deleteProductReducer = (initialState = {}, action)=>{
   if(action.type === deleteAProduct){
