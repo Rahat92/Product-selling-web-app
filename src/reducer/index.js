@@ -77,16 +77,16 @@ const getProductReducer = (state = {product:{}},action) => {
     case GET_A_PRODUCT_REQUEST:
       return {
         ...state,
-        loading: true,
+        Loading: true,
       }
     case GET_A_PRODUCT_SUCCESS:
       return {
-        loading: false,
+        Loading: false,
         product: action.payload
       }
     case GET_A_PRODUCT_FAIL:
       return {
-        loading: false,
+        Loading: false,
         product:null
       }
     default: 
@@ -457,7 +457,7 @@ const normalUserReducer = (state = {user: {}}, action) => {
   switch(action.type){
     case GET_SINGLE_USER_REQUEST:
       return {
-        ...state,
+        // ...state,
         loading: true,
       }
     case GET_SINGLE_USER_SUCCESS:

@@ -91,7 +91,7 @@ export const fetchProducts = (currentPage, sortvalue, searchValue) => {
 }
 export const getProductReviews = (productId, pageNo) => {
   return async(dispatch, getState) => {
-    const productLength = getState().singleProduct.doc.review.length;    
+    const productLength = getState().singleProduct.product.review.length;    
     try{
       dispatch({type: getProductReviewRequest})
       const { data } = await requestCreator.get(`/products/${productId}/reviews`,{

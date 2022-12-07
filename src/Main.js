@@ -7,7 +7,7 @@ import Modal from './Modal';
 import UpdateReviewForm from './UpdateReviewForm';
 import './Main.css';
 const Main = ({anyFunc}) => {
-
+  const [ clickProduct, setClickProduct ] = useState();
   const [padding, setPadding] = useState('bad')
   const moreComment = useRef();
   let styl;
@@ -39,6 +39,8 @@ const Main = ({anyFunc}) => {
   console.log('mypage', myPage)
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
+  const { product,Loading } = useSelector(state=> state.singleProduct)
+  console.log(product)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
   if(yourpage === null){
@@ -107,6 +109,7 @@ const Main = ({anyFunc}) => {
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
+    setClickProduct(true)
     setReviewPageNo(1)
   }
   const deleteProduct = (id) => {
@@ -229,99 +232,76 @@ const Main = ({anyFunc}) => {
             ) )}
             <br />
           </div>
-          { !selector.singleProduct.doc?(
-            <h3 style={{background:'green', position:'absolute', padding:'.5rem', color:'white', borderRadius:'5px'}}>Click On a single Product to see detail here</h3>)
-            :
-          <div style = {{display:'flex'}}>
-            <div>
-              <h2><span style = {{background:'grey', padding:'.3rem', borderRadius:'3px'}}>{selector.singleProduct.doc.name}</span>'s details</h2>
-              <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>নামঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.name}</span><br/>
-              <img style={{width:'200px', height: '200px'}} src = { `/public/img/users/${selector.singleProduct.doc.photo}` } /><br />
-              <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>কেটাগরিঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.category}</span><br/>
-              <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মুল্যঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.price}</span><br/>
-              <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>মোট রেটিংঃ</span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.numberOfRatings}</span><br/>
-              <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>রেটিংসঃ </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{selector.singleProduct.doc.ratingsAverage.toFixed()}</span>
-              <h3>{selector.singleProduct.doc.review.length} reviews</h3>
-            </div>
-            <div style={{ overflow:'hidden', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px'}}>
-                <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
-                {reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
-                  :
-                <div>
-                  <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(selector.singleProduct.doc._id)}>Previous review</button>
-                </div>
-                }
-                <div style={{borderRadius:'3px', color:'brown', overflow:'hidden'}}>
-                  {reviews.length>0&&reviews.map(el=>{
-                    return el.user&&editReviewClick&&user&&el.user._id === user._id?
-
-                      <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
-                        <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,selector.singleProduct.doc._id)} />
-                      </div>
-
-                    :
-                      <div className={`comment ${user&&el.user&&el.user._id === user._id&& 'user_comment'}`} style = {{ position:'relative', padding:'.5rem'}}>
-                        <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user&&el.user._id === user._id?700:400}}>
-                          {el.user?(
-                          <Link to = {user&&el.user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>
-                            {el.user.name}
-                          </Link>
-                          ):<h4 style={{color:'white'}}>Removed user</h4>}
-                        </h4>
-                        <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':''}}>{el.review}</h4>
-                        {user&&el.user&&el.user._id === user._id&&(
-                          <div>
-                            <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
-                            {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} setReviewPageNo = {setReviewPageNo} deleteOne = {deleteOneReview} />:''}
-                          </div>
-                        )}
-                        {user&&user.role === 'admin'&&(
-                          <div>
-                            <button onClick= {()=>deleteReview(el._id)} style={{position: 'absolute', top: '.5rem', right:'.5rem'}} type='button'>delete</button>
-                            {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
-                          </div>
-                        )}
-                      </div>
-                      // <div className={`comment ${user&&el.user._id === user._id&&'user_comment'}`} style = {{ position:'relative', padding:'.5rem'}}>
-                      //   <h4 style = {{color:user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user._id === user._id?700:400}}>
-                      //     <Link to = {user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>
-                      //       {el.user?el.user.name:'unknown user'}
-                      //     </Link>
-                      //   </h4>
-                      //   <h2 style = {{color:user&&el.user._id === user._id?'green':'', padding:'0', margin:'0'}}>
-                      //     {el.review}
-                      //   </h2>
-
-                      //   {user&&el.user._id === user._id&&(
-                      //     <div>
-                      //       <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
-                      //       {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} setReviewPageNo = {setReviewPageNo} deleteOne = {deleteOneReview} />:''}
-                      //     </div>
-                      //   )}
-                      //   {user&&user.role === 'admin'&&(
-                      //     <div>
-                      //       <button onClick= {()=>deleteReview(el._id)} style={{position: 'absolute', top: '.5rem', right:'.5rem'}} type='button'>delete</button>
-                      //       {deleteClick? <Modal productId={selector.singleProduct.doc.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
-                      //     </div>
-                      //   )}
-                      // </div>
-                  })
-                  }
-                </div>
-                <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-                  <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${selector.singleProduct.doc.review.length>recentNum&&result!==0?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(selector.singleProduct.doc._id)}>More comments</button>
-                  {reviews.length>0?(
-                    <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReview}</h4>
-                  ):''}
-                </div>
-                
-                {user&&user.role === 'user'&&!createUserReview&&
-                  (!selector.singleProduct.doc.review.find(el=>el.user&&el.user._id === user._id)&&
-                  <CreateReviewForm sendReview={(e) => sendReview(e,selector.singleProduct.doc.id)} />
-                )}
-
-            </div>
-          </div> 
+          {
+             !clickProduct?<h1>Hello world</h1>:
+             product&&product.photo&&
+             <div style = {{display:'flex'}}>
+               <div>
+                 <h2><span style = {{background:'grey', padding:'.3rem', borderRadius:'3px'}}>{product&&product.name}</span>'s details</h2>
+                 <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Name: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.name}</span><br/>
+                 <img style={{width:'200px', height: '200px'}} src = { `/public/img/users/${!Loading&&product?product.photo:'loading'}` } /><br />
+                 <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Category: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.category}</span><br/>
+                 <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Price: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.price}</span><br/>
+                 <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Total ratings: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.numberOfRatings}</span><br/>
+                 <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Ratings: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.ratingsAverage&&product.ratingsAverage.toFixed()}</span>
+                 <h3>{product&&product.review&&product.review.length} reviews</h3>
+               </div>
+               <div style={{ overflow:'hidden', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px'}}>
+                   <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
+                   {reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
+                     :
+                   <div>
+                     <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
+                   </div>
+                   }
+                   <div style={{borderRadius:'3px', color:'brown', overflow:'hidden'}}>
+                     {reviews.length>0&&reviews.map(el=>{
+                       return el.user&&editReviewClick&&user&&el.user._id === user._id?
+   
+                         <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
+                           <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,product._id)} />
+                         </div>
+   
+                       :
+                         <div className={`comment ${user&&el.user&&el.user._id === user._id&& 'user_comment'}`} style = {{ position:'relative', padding:'.5rem'}}>
+                           <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user&&el.user._id === user._id?700:400}}>
+                             {el.user?(
+                             <Link to = {user&&el.user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>
+                               {el.user.name}
+                             </Link>
+                             ):<h4 style={{color:'white'}}>Removed user</h4>}
+                           </h4>
+                           <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':''}}>{el.review}</h4>
+                           {user&&el.user&&el.user._id === user._id&&(
+                             <div>
+                               <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
+                               {deleteClick? <Modal productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} setReviewPageNo = {setReviewPageNo} deleteOne = {deleteOneReview} />:''}
+                             </div>
+                           )}
+                           {user&&user.role === 'admin'&&(
+                             <div>
+                               <button onClick= {()=>deleteReview(el._id)} style={{position: 'absolute', top: '.5rem', right:'.5rem'}} type='button'>delete</button>
+                               {deleteClick? <Modal productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
+                             </div>
+                           )}
+                         </div>
+                     })
+                     }
+                   </div>
+                   <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
+                     <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${product&&product.review&&product.review.length>recentNum&&result!==0?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
+                     {reviews.length>0?(
+                       <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReview}</h4>
+                     ):''}
+                   </div>
+                   
+                   {user&&user.role === 'user'&&!createUserReview&&
+                     (product&&product.review&&product.review.find(el=>el.user&&el.user._id === user._id)&&
+                     <CreateReviewForm sendReview={(e) => sendReview(e,product&&product.id)} />
+                   )}
+   
+               </div>
+             </div> 
           }
       </div>
     )
