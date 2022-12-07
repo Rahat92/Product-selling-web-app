@@ -203,9 +203,8 @@ const Main = ({anyFunc}) => {
             <h1>Total Documents: {selector.allProduct.data.docNum}</h1>
             <ul style={{listStyle: 'none'}}>
               {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
-                {console.log(el.photo)}
                 return (
-                  <div>
+                  <div className= {clickProduct&& el.id === product.id?'active_product':''}>
                     <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><button onClick={()=>sendProductDataToEditForm(el.name, el.price, el.photo, el.category, el.id)}>edit product</button></>)}</li>
                     {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
                   </div>
@@ -236,7 +235,7 @@ const Main = ({anyFunc}) => {
              clickProduct&&product&&product.photo&&
              <div style = {{display:'flex', margin: '3rem'}}>
                <div>
-                 <h2><span style = {{background:'grey', padding:'.3rem', borderRadius:'3px'}}>{product&&product.name}</span>'s details</h2>
+                 <h3 style={{borderBottom: '3px solid black', paddingBottom:'1rem'}}><span style = {{background:'grey', padding:'.3rem', borderRadius:'3px'}}>{product&&product.name}</span>'s details</h3>
                  <span style={{color:'red', fontSize:'30px', fontWeight:'bolder'}}>Name: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.name}</span><br/>
                  <img style={{width:'200px', height: '200px', borderRadius:'5px'}} src = { `/public/img/users/${!Loading&&product?product.photo:'loading'}` } /><br />
                  <span style={{color:'red', fontSize:'20px', fontWeight:'bolder'}}>Category: </span><span style={{color:'green', fontWeight:'bolder', fontSize:'30px'}}>{product&&product.category}</span><br/>
