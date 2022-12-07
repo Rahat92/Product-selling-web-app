@@ -1,6 +1,6 @@
 const CreateReviewForm = ({ sendReview }) => {
   return (
-    <div style={{padding:'0 2rem 1.5rem', marginTop:'0rem'}}>
+    <div style={{paddingBottom:'1.2rem', marginTop:'-2rem'}}>
       <form onSubmit={sendReview}>
       <table>
         <tr>
