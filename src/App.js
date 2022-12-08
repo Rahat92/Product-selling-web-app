@@ -56,11 +56,13 @@ const App = () => {
   return(
     <div className='app'>
       <Router>
-      {(isAuthenticated||user)&&user.name&&user.role&& <LoggedInUser user = {user} />}
-      <UserState />
-      &nbsp;&nbsp;&nbsp;
-      <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
-      <Link to = '/admin/alluser'>All User</Link>
+      <div className='nav_bar'>
+        <div style={{order:1, marginLeft: 'auto',flex: '0 20%'}}>{(isAuthenticated||user)&&user.name&&user.role&& <LoggedInUser user = {user} />}</div>
+          <UserState />
+        &nbsp;&nbsp;&nbsp;
+        <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
+        <Link to = '/admin/alluser'>All User</Link>      
+      </div>
         <Routes>
           <Route path = "/" element = {<Main anyFunc={anyFunc}/>}/>
           <Route path = {`product/:id`} element = {<Product  productName = {productName} productPrice = {productPrice} productPhoto = {productPhoto} productCategory = {productCategory} />}/>

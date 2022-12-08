@@ -5,7 +5,7 @@ import UpdateReviewForm from "./UpdateReviewForm"
 
 const ReviewSection = ({user,sendReview, createUserReview,result, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,currentPage,previousCommentClickButton, totalReview, moreComment,moreCommentButtonClick,Loading, recentNum, product, reviewEditCancel, editReview, updateMyReview, isLoading, reviews}) => {
   return(
-    <div style={{ color:'red', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px', marginTop: '-7rem'}}>
+    <div style={{ color:'red', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px', marginTop: '-7rem', flex: '1 0 33%'}}>
       <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
       {!isLoading&&reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
         :
@@ -15,7 +15,9 @@ const ReviewSection = ({user,sendReview, createUserReview,result, deleteOneRevie
       }
     
       <div style={{borderRadius:'3px', color:'brown', overflow:'hidden'}}>
-        {!isLoading&&reviews&&reviews.length>0&&reviews.map(el=>{
+        {isLoading?'Loading...':(
+
+        reviews&&reviews.length>0&&reviews.map(el=>{
           return el.user&&editReviewClick&&user&&el.user._id === user._id?
             <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
               <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,product._id)} />
@@ -45,7 +47,8 @@ const ReviewSection = ({user,sendReview, createUserReview,result, deleteOneRevie
               )}
             </div>
         })
-        }
+        
+        )}
       </div>
       <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
         <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${product&&product.review&&product.review.length>recentNum&&result!==0&&!Loading?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>

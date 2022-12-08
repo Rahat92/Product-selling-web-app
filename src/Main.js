@@ -202,7 +202,7 @@ const Main = ({anyFunc}) => {
     return(
         <div style={{display:'flex'}}>
           <div>
-            <h1>Total Documents: {selector.allProduct.data.docNum}</h1>
+            <h1>Products: {selector.allProduct.data.docNum}</h1>
             <ul style={{listStyle: 'none'}}>
               {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
                 return (
