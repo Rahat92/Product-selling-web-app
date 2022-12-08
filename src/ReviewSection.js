@@ -57,7 +57,7 @@ const ReviewSection = ({user,sendReview, createUserReview,result, deleteOneRevie
         ):''}
       </div>
       {user&&user.role === 'user'&&!createUserReview&&
-        (product&&product.review&&!product.review.find(el=>el.user&&el.user._id === user._id)&&
+        (!isLoading&&product&&product.review&&!product.review.find(el=>el.user&&el.user._id === user._id)&&
         <CreateReviewForm sendReview={(e) => sendReview(e,product&&product.id)} />
       )}
   </div>
