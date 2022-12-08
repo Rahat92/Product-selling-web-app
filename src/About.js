@@ -89,7 +89,9 @@ const About = () => {
           </ul>
         </div>
         <div>
+          {!user.photo?<div style={{width: '300px',height: '300px',position: 'relative', top:'50%', left: '50%', transform: 'translate(-50% -50%)'}}><h1>Loading...</h1></div>:(
           <img style={{width:'300px', height: '300px', borderRadius:'3px', marginTop: '3rem'}} src = {me.photo?URL.createObjectURL(me.photo):`/public/img/users/${user.photo}`} />
+          )}
           <form onSubmit={(e)=>updateMyPhoto(e, 'photo')}>
             <input type='file' onChange={(e)=>changeMyData(e,'photo')} name = 'photo' />
             <input type = 'submit' value = 'save' />
