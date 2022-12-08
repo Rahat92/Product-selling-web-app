@@ -5,7 +5,7 @@ import UpdateReviewForm from "./UpdateReviewForm"
 
 const ReviewSection = ({user,sendReview, createUserReview,result, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,currentPage,previousCommentClickButton, totalReview, moreComment,moreCommentButtonClick,Loading, recentNum, product, reviewEditCancel, editReview, updateMyReview, isLoading, reviews}) => {
   return(
-    <div style={{ overflow:'hidden', color:'red', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px'}}>
+    <div style={{ color:'red', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px', marginTop: '-7rem'}}>
       <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
       {!isLoading&&reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
         :
