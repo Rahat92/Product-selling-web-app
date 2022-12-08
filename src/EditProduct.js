@@ -7,8 +7,8 @@ const Product = ({ productName, productPrice, productPhoto, productCategory }) =
   const navigate = useNavigate()
   const parameter = useParams()
   const dispatch = useDispatch()
-  const selector = useSelector(state => state.singleProduct)
-  const { user } = useSelector(state=>state.user)
+  const {product} = useSelector(state => state.singleProduct)
+  const { user, loading } = useSelector(state=>state.user)
   const { editedProduct } = useSelector(state=>state)
   useEffect(()=> {
     if(!productName||!productPrice || !productPhoto || !productCategory ){
@@ -32,18 +32,19 @@ const Product = ({ productName, productPrice, productPhoto, productCategory }) =
     // formData.append('photo', photo )
     dispatch(editProduct(parameter.id,formData,navigate))
   }
-  if(!productName&&!productPrice){
-    if(!selector.doc){
+  if(!productName||!productPrice||!productCategory||!productPhoto){
+    if(!product){
       return <h1>loading...</h1>
     }
   }
   return(
+    !loading&&
     <div>
       {user&&user.role==='admin'?(
         <EditProductInfo
           // onSubmit = { onSubmit }
           productName = {productName} 
-          selector = {selector} 
+          product = {product} 
           parameter = {parameter} 
           productPrice = {productPrice} 
           productPhoto = { productPhoto }

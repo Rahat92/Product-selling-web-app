@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { editProduct } from "./actions";
 
-const EditProductInfo = ({ onSubmit, productName, productPrice, productCategory, selector, parameter, productPhoto}) => {
+const EditProductInfo = ({ onSubmit, productName, productPrice, productCategory, product, parameter, productPhoto}) => {
   console.log(productPhoto)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -29,14 +29,14 @@ const EditProductInfo = ({ onSubmit, productName, productPrice, productCategory,
   return (
     <div>
       <h2>Edit Product</h2>
-      <img style={{width:'200px', height: '200px'}} src= {photo?URL.createObjectURL(photo):`/public/img/users/${productPhoto||selector.doc.photo}`} alt="product pic" />
+      <img style={{width:'200px', height: '200px'}} src= {photo?URL.createObjectURL(photo):`/public/img/users/${productPhoto||product.photo}`} alt="product pic" />
       <form onSubmit={(e)=>onFormSubmit(e)}>
         product Name: <br />
-        <input type = "text" name = 'product' defaultValue = {!productName?selector.doc._id === parameter.id?selector.doc.name:'':productName} /><br />
+        <input type = "text" name = 'product' defaultValue = {!productName?product._id === parameter.id?product.name:'':productName} /><br />
         product Category: <br />
-        <input type = "text" name = 'category' defaultValue = {!productCategory?selector.doc._id === parameter.id?selector.doc.category:'':productCategory} /><br />
+        <input type = "text" name = 'category' defaultValue = {!productCategory?product._id === parameter.id?product.category:'':productCategory} /><br />
         Product Price: <br />
-        <input type= 'number' name = 'price' defaultValue = {!productPrice?selector.doc._id === parameter.id?selector.doc.price:'':productPrice}/><br />
+        <input type= 'number' name = 'price' defaultValue = {!productPrice?product._id === parameter.id?product.price:'':productPrice}/><br />
         Upload photo: <br />
         <input id = 'img' type= 'file' onChange = {changeUpdateFileInput} name = 'photo'  /><br />
         {/* <img src= {photo&&URL.createObjectURL(photo)} alt = 'user photo' /> */}
