@@ -1,11 +1,12 @@
+import React, {memo} from "react"
 import { Link } from "react-router-dom"
 import CreateReviewForm from "./CreateReviewForm"
 import Modal from "./Modal"
 import UpdateReviewForm from "./UpdateReviewForm"
-
-const ReviewSection = ({user,sendReview, createUserReview,result, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,currentPage,previousCommentClickButton, totalReview, moreComment,moreCommentButtonClick,Loading, recentNum, product, reviewEditCancel, editReview, updateMyReview, isLoading, reviews}) => {
+import './ReviewSection.css';
+const ReviewSection = memo(({user,sendReview, createUserReview,result, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,currentPage,previousCommentClickButton, totalReview, moreComment,moreCommentButtonClick,Loading, recentNum, product, reviewEditCancel, editReview, updateMyReview, isLoading, reviews}) => {
   return(
-    <div style={{ color:'red', borderRadius:'7px', marginLeft:'1rem', padding:'0rem 1rem', boxShadow: '0px 0px 10px 3px rgba(0,0,0,.2)', minWidth:'300px', marginTop: '-7rem', flex: '1 0 33%'}}>
+    <div className="super_div">
       <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
       {!isLoading&&reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
         :
@@ -18,7 +19,7 @@ const ReviewSection = ({user,sendReview, createUserReview,result, deleteOneRevie
         {isLoading?'Loading...':(
 
         reviews&&reviews.length>0&&reviews.map(el=>{
-          return el.user&&editReviewClick&&user&&el.user._id === user._id?
+          return editReviewClick&&user&&el.user._id === user._id?
             <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
               <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,product._id)} />
             </div>
@@ -28,7 +29,7 @@ const ReviewSection = ({user,sendReview, createUserReview,result, deleteOneRevie
               <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user&&el.user._id === user._id?700:400}}>
                 {el.user?(
                 <Link to = {user&&el.user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>
-                  {el.user.name}
+                  {el.user&&el.user.name}
                 </Link>
                 ):<h4 style={{color:'white'}}>Removed user</h4>}
               </h4>
@@ -62,5 +63,5 @@ const ReviewSection = ({user,sendReview, createUserReview,result, deleteOneRevie
       )}
   </div>
   )
-}
+})
 export default ReviewSection

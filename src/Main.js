@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview, updateReview, getProductReviews } from './actions';
-import CreateReviewForm from './CreateReviewForm';
 import Modal from './Modal';
 import UpdateReviewForm from './UpdateReviewForm';
 import './Main.css';
 import ProductDetail from './ProductDetail';
 import ReviewSection from './ReviewSection';
-const Main = ({anyFunc}) => {
+import CreateProduct from './CreateProduct';
+const Main = memo(({anyFunc}) => {
   const [ clickProduct, setClickProduct ] = useState();
   const [padding, setPadding] = useState('bad')
   const moreComment = useRef();
@@ -200,7 +200,7 @@ const Main = ({anyFunc}) => {
       return <p>Loading data, Please wait...</p>
     }
     return(
-        <div style={{display:'flex'}}>
+        <div>
           <div>
             <h1>Products: {selector.allProduct.data.docNum}</h1>
             <ul style={{listStyle: 'none'}}>
@@ -213,29 +213,22 @@ const Main = ({anyFunc}) => {
                 )
               }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}
             </ul>
-            {console.log(yourpage)}
             <button onClick={doDecrease} disabled = {yourpage*1 === 1||selector.currentNum ===1 ? true:false}>decrease</button>
             <button onClick={doIncrease} disabled = {selector.allProduct.data&& yourpage >= selector.allProduct.data.totalPage?true:false}>increase</button><br/>
             {user&&user.role === 'admin'&&(!selector.createAProduct?
             (
               <button type = 'button' onClick={createProduct}>create new Product</button>
             ):(
-              <form onSubmit={postProduct}>
-                ProductName &nbsp;:&nbsp;
-                <input type = 'text' name = 'productName' /><br /><br />
-                ProductCategory &nbsp;:&nbsp;
-                <input type = 'text' name = 'productCategory' /> <br /> <br />
-                Price &nbsp;:&nbsp;
-                <input type = 'number' name = 'price' /><br />
-                <input type = 'file' onChange={changeProductPhoto} name = 'photo' />
-                <input type= 'submit' value= 'create'/>
-              </form>
+              <CreateProduct 
+                postProduct={ postProduct } 
+                changeProductPhoto = {changeProductPhoto} 
+              />
             ) )}
             <br />
           </div>
           {
-             clickProduct&&product&&product.photo&&
-             <div style = {{display:'flex',alignItems:'flex-start', margin: '3rem'}}>
+             product.photo&&
+             <div style = {{display:'flex',alignItems:'flex-start', margin: '3rem', justifyContent: 'space-between'}}>
               <ProductDetail product = {product} Loading = {Loading} />
               <ReviewSection 
                 product = {product} 
@@ -283,19 +276,22 @@ const Main = ({anyFunc}) => {
   }
   return (
     <div className='main'>
-        <input style={{marginTop:'1.5rem'}} placeholder='Search product by name' onChange = {searchFor} type = 'text' value={search} name = 'keyword'/>
-      <br />
-      {/* <button type='button' onClick={gotoParams}>params</button> */}
-      <br />      
-        <select onChange={trackSortValue}>
-          <option>price</option>
-          <option>ratingsAverage</option>
-        </select>
-      {allProduct()}
-      
-      {/* { !selector.deleteproduct.data?'':afterDelete() } */}
+      <div>
+        <div>
+          <input style={{marginTop:'1.5rem'}} placeholder='Search product by name' onChange = {searchFor} type = 'text' value={search} name = 'keyword'/>
+        </div>
+        <div>
+          <select onChange={trackSortValue}>
+            <option>price</option>
+            <option>ratingsAverage</option>
+          </select> 
+        </div>
+      </div>
+      <div>
+        {allProduct()} 
+      </div>     
     </div>
   );
-}
+})
 
 export default Main;

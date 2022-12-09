@@ -1,7 +1,8 @@
+import React, {memo} from 'react';
 import './ProductDetail.css';
-const ProductDetail = ({product, Loading}) => {
+const ProductDetail = memo(({product, Loading}) => {
   return (
-    <div style = {{marginTop: '-8rem', flex: '1 0 33%'}}>
+    <div className='super_div'>
         {/* <h3 style={{borderBottom: '3px solid black', paddingBottom:'1rem'}}><span>{product&&product.name}</span>'s details</h3> */}
         <h3><span>Name: </span><span>{product&&product.name}</span><br/></h3>
         {Loading?<div style ={{width:'300px', height: '300px'}}></div>:(
@@ -14,5 +15,5 @@ const ProductDetail = ({product, Loading}) => {
         <h3>{product&&product.review&&product.review.length} reviews</h3>
     </div>
   )
-}
+})
 export default ProductDetail;

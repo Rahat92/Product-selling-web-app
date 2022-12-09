@@ -35,3 +35,8 @@
   color:red;
   left: -1rem;
 }
+.main{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
