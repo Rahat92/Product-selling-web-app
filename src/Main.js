@@ -8,6 +8,7 @@ import './Main.css';
 import ProductDetail from './ProductDetail';
 import ReviewSection from './ReviewSection';
 import CreateProduct from './CreateProduct';
+import Products from './Products';
 const Main = memo(({anyFunc}) => {
   const [ clickProduct, setClickProduct ] = useState();
   const [padding, setPadding] = useState('bad')
@@ -201,31 +202,25 @@ const Main = memo(({anyFunc}) => {
     }
     return(
         <div>
-          <div>
-            <h1>Products: {selector.allProduct.data.docNum}</h1>
-            <ul style={{listStyle: 'none'}}>
-              {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{
-                return (
-                  <div className= {clickProduct&& el.id === product.id?'active_product':''}>
-                    <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><button onClick={()=>sendProductDataToEditForm(el.name, el.price, el.photo, el.category, el.id)}>edit product</button></>)}</li>
-                    {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
-                  </div>
-                )
-              }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}
-            </ul>
-            <button onClick={doDecrease} disabled = {yourpage*1 === 1||selector.currentNum ===1 ? true:false}>decrease</button>
-            <button onClick={doIncrease} disabled = {selector.allProduct.data&& yourpage >= selector.allProduct.data.totalPage?true:false}>increase</button><br/>
-            {user&&user.role === 'admin'&&(!selector.createAProduct?
-            (
-              <button type = 'button' onClick={createProduct}>create new Product</button>
-            ):(
-              <CreateProduct 
-                postProduct={ postProduct } 
-                changeProductPhoto = {changeProductPhoto} 
-              />
-            ) )}
-            <br />
-          </div>
+          <Products 
+            yourpage = {yourpage}
+            deleteOneProduct = {deleteOneProduct} 
+            createProduct = {createProduct}
+            postProduct = {postProduct}
+            changeProductPhoto = {changeProductPhoto}
+            doDecrease = {doDecrease}
+            doIncrease = {doIncrease} 
+            selector = {selector}
+            clickProduct = {clickProduct}
+            id = {id}
+            product = {product}
+            setDeleteClick = {setDeleteClick}
+            deleteClick = {deleteClick}
+            getProduct = {getProduct}
+            user = {user}
+            deleteProduct = {deleteProduct}
+            sendProductDataToEditForm = {sendProductDataToEditForm}
+          />
           {
              product.photo&&
              <div style = {{display:'flex',alignItems:'flex-start', margin: '3rem', justifyContent: 'space-between'}}>
