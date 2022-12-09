@@ -1,3 +1,6 @@
+import styled from "styled-components";
+
+const Container = styled.div`
 .super_div{
   /* color:red; */
   border-radius:7px; 
@@ -6,3 +9,5 @@
   min-width:300px;
   flex:0 90% 
 }
+`
+export default Container;
