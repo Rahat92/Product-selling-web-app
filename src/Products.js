@@ -3,7 +3,7 @@ import Modal from "./Modal";
 
 const Products = ({ yourpage,deleteOneProduct, createProduct, postProduct, changeProductPhoto, doDecrease, doIncrease, selector,clickProduct,id,product,setDeleteClick, deleteClick, getProduct, user, deleteProduct,sendProductDataToEditForm }) => {
   return (
-    <div>
+    <div style={{flex: '0 0 20%'}}>
       <h1>Products: {selector.allProduct.data.docNum}</h1>
       <ul style={{listStyle: 'none'}}>
         {selector.allProduct.data.docs.length>0?selector.allProduct.data.docs.map(el=>{

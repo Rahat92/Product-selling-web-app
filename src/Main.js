@@ -173,7 +173,7 @@ const Main = memo(({anyFunc}) => {
       return <p>Loading data, Please wait...</p>
     }
     return(
-        <div>
+        <div style={{display:'flex'}}>
           <Products 
             yourpage = {yourpage}
             deleteOneProduct = {deleteOneProduct} 
@@ -194,8 +194,8 @@ const Main = memo(({anyFunc}) => {
             sendProductDataToEditForm = {sendProductDataToEditForm}
           />
           {
-             product.photo&&
-             <div style = {{display:'flex',alignItems:'flex-start', margin: '3rem', justifyContent: 'space-between'}}>
+            product.photo&&
+            <div style = {{display:'flex', boxSizing:'border-box', flex: '0 0 75%' , alignItems:'flex-start', margin: '3rem', justifyContent: 'space-around'}}>
               <ProductDetail product = {product} Loading = {Loading} />
               <ReviewSection 
                 product = {product} 
@@ -225,7 +225,7 @@ const Main = memo(({anyFunc}) => {
                 createUserReview = {createUserReview}
                 sendReview = {sendReview}
               />
-             </div> 
+            </div> 
           }
       </div>
     )

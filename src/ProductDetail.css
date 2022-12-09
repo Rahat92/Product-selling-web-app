@@ -1,13 +1,19 @@
 .super_div{
-  /* margin-top: -8rem; */
+  margin-top: -5rem;
+  /* box-sizing: border-box;  */
 }
-img{
+.main_div{
+}
+.main_div img{
   height:300px;
   width: 100%;
+  box-sizing: border-box;
+  padding: 1rem 0;
 }
 h3{
   margin: 0;
   font-weight: 400;
-  font-size: 25px;
+  font-size: 18px;
   letter-spacing: 2px;
+
 }
