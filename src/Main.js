@@ -2,16 +2,13 @@ import React, { useEffect, useState, useRef, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSearchParams, useSearchParams, useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview, updateReview, getProductReviews } from './actions';
-import Modal from './Modal';
-import UpdateReviewForm from './UpdateReviewForm';
 import './Main.css';
 import ProductDetail from './ProductDetail';
 import ReviewSection from './ReviewSection';
-import CreateProduct from './CreateProduct';
 import Products from './Products';
+import FilterProduct from './FilterProduct';
 const Main = memo(({anyFunc}) => {
   const [ clickProduct, setClickProduct ] = useState();
-  const [padding, setPadding] = useState('bad')
   const moreComment = useRef();
   let styl;
   if(moreComment.current){
@@ -53,23 +50,12 @@ const Main = memo(({anyFunc}) => {
     console.log(yourpage)
     setCreateUserReview(false)
     setEditReviewClick(false)
-    // if(!search){
-    //   dispatch(getMe())
-    // }
-    
     if(yourpage){
       selector.currentNum = yourpage
     }
     const request = () => {
       dispatch(fetchProducts(selector.currentNum || myPage,price, search))
     }
-
-    // selector.currentNum = selector.currentNum
-    // if(selector.allProduct.data){
-    //   if(selector.allProduct.data.result<4 && search.length>0){
-    //     selector.currentNum = 1
-    //   }
-    // }
     let timer;
     
     if(selector.allProduct.data){
@@ -81,14 +67,6 @@ const Main = memo(({anyFunc}) => {
     }
     if(search){
       timer = setTimeout(()=>{
-        // if(selector.allProduct.data.result>4){
-        //   console.log('hello world')
-        //   selector.currentNum = selector.currentNum
-        // }
-        // if(selector.allProduct.data.result<=4){
-        //   selector.currentNum = 1
-        // }
-        
         request()
       },500)
     }
@@ -116,15 +94,12 @@ const Main = memo(({anyFunc}) => {
     setReviewPageNo(1)
   }
   const deleteProduct = (id) => {
-    // dispatch(deleteOneProduct(id))
     setDeleteClick(true)
     setId(id)
   } 
   const deleteReview = (id) => {
-  // const deleteReview = (id) => {
     setDeleteClick(true)
     setId(id)
-    // dispatch(deleteOneReview(id))
   }
   const editProduct = (id) => {
     dispatch(editProduct(id))
@@ -181,9 +156,6 @@ const Main = memo(({anyFunc}) => {
     anyFunc(productName, productPrice, productPhoto, productCategory)
     navigate(`product/${id}`)
   }
-  // const getReviews = () => {
-  //   console.log(reviewPageNo+1)
-  // }
   const previousCommentClickButton = (productId) => {
     setReviewPageNo(reviewPageNo-1);
     dispatch(getProductReviews(productId, reviewPageNo-1))
@@ -263,25 +235,19 @@ const Main = memo(({anyFunc}) => {
     age:30,
     hobby:'gardening'
   }
-  const gotoParams = () => {
-    navigate({
-      pathname:'/params',
-      search:`?${createSearchParams(params)}`
-    })
-  }
+  // const gotoParams = () => {
+  //   navigate({
+  //     pathname:'/params',
+  //     search:`?${createSearchParams(params)}`
+  //   })
+  // }
   return (
     <div className='main'>
-      <div>
-        <div>
-          <input style={{marginTop:'1.5rem'}} placeholder='Search product by name' onChange = {searchFor} type = 'text' value={search} name = 'keyword'/>
-        </div>
-        <div>
-          <select onChange={trackSortValue}>
-            <option>price</option>
-            <option>ratingsAverage</option>
-          </select> 
-        </div>
-      </div>
+      <FilterProduct 
+        search={search} 
+        searchFor = {searchFor}
+        trackSortValue = {trackSortValue}
+      />
       <div>
         {allProduct()} 
       </div>     
