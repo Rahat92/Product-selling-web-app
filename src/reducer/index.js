@@ -77,7 +77,7 @@ const getProductReducer = (state = {product:{}},action) => {
     case GET_A_PRODUCT_REQUEST:
       return {
         ...state,
-        // Loading: true,
+        Loading: true,
       }
     case GET_A_PRODUCT_SUCCESS:
       return {
