@@ -4,7 +4,11 @@ import CreateReviewForm from "./CreateReviewForm"
 import Modal from "./Modal"
 import UpdateReviewForm from "./UpdateReviewForm"
 import './ReviewSection.css';
-const ReviewSection = memo(({user,sendReview, createUserReview,result, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,currentPage,previousCommentClickButton, totalReview, moreComment,moreCommentButtonClick,Loading, recentNum, product, reviewEditCancel, editReview, updateMyReview, isLoading, reviews}) => {
+import { useSelector } from "react-redux"
+
+const ReviewSection = memo(({sendReview, createUserReview,result, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,currentPage,previousCommentClickButton, totalReview, moreComment,moreCommentButtonClick,Loading, recentNum, product, reviewEditCancel, editReview, updateMyReview, isLoading, reviews}) => {
+  
+  const {user} = useSelector(state=>state.user)
   return(
     <div className="super_div">
       <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>

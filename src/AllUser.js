@@ -26,8 +26,8 @@ const AllUser = ({ getUserData }) => {
     console.log(e.target.value)
     dispatch(updateUserRole(userId, e.target.value, setUpdateRoleClick))
   }
-  const goProfile = (name, email, role) => {
-    getUserData(name, email, role)
+  const goProfile = (name, email, role, photo) => {
+    getUserData(name, email, role, photo)
   }
   // if(message){
   //   return (
@@ -51,7 +51,7 @@ const AllUser = ({ getUserData }) => {
             return (
               <div style={{display:'flex', alignItems:'center'}}>
                 <img style={{width:'50px', height: '50px', borderRadius:'50%', marginRight:'.6rem'}} src= {`/public/img/users/${el.photo}`} alt = 'profile pic' />
-                <li onClick={() => goProfile(el.name, el.email, el.role)}><h3><Link to = {`/profile/${el._id}`}>{el.name} ({el.role})</Link> &nbsp;
+                <li onClick={() => goProfile(el.name, el.email, el.role, el.photo)}><h3><Link to = {`/profile/${el._id}`}>{el.name} ({el.role})</Link> &nbsp;
                 {updateRoleClick&&needUpdateUserId === el._id?(
                   <form style={{display: 'inline-block'}}>
                   <select onChange={(e) => setUserRole(e, el._id)} defaultValue = {el.role}>

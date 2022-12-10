@@ -31,11 +31,12 @@ const App = () => {
   const [ userData, setUserData ] = useState({
     name: '',
     email: '',
-    role: ''
+    role: '',
+    photo: ''
   })
   const { productName, productPrice, productPhoto, productCategory } = productData;
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useSelector(state=>state.user)
+  const { user, isAuthenticated, loading } = useSelector(state=>state.user)
   useEffect(() => {
     store.dispatch(getMe())
   },[dispatch])
@@ -47,17 +48,17 @@ const App = () => {
       productPhoto: productPhoto,
     })
   }
-  const getUserData = (name, email, role) => {
+  const getUserData = (name, email, role, photo) => {
     setUserData({
-      name, email, role
+      name, email, role, photo
     })
   }
-  const { name, email, role } = userData;
+  const { name, email, role, photo } = userData;
   return(
     <div className='app'>
       <Router>
       <div className='nav_bar'>
-        <div style={{order:1, marginLeft: 'auto',flex: '0 20%'}}>{(isAuthenticated||user)&&user.name&&user.role&& <LoggedInUser user = {user} />}</div>
+        <div style={{order:1, marginLeft: 'auto',flex: '0 20%'}}>{<LoggedInUser/>}</div>
           <UserState />
         &nbsp;&nbsp;&nbsp;
         <Link to = '/'>Home</Link> &nbsp;&nbsp;&nbsp; 
@@ -74,7 +75,7 @@ const App = () => {
           <Route path = {`/count`} element = {<Count />}/>
           <Route path = {`/countmany`} element = {<CountMany />}/>
           <Route path = {`/names/`} element = {<Names />}/>
-          <Route path = {`/profile/:userId`} element = {<User name = {name} email = {email} role = {role} />}/>
+          <Route path = {`/profile/:userId`} element = {<User name = {name} email = {email} role = {role} photo = {photo} />}/>
           <Route path = {`/register`} element = {<Register />}/>
           <Route element = {<ProtectedRoute />}>
             <Route element = {<h1>Hello world! this route is protected.only for admin</h1>} path = '/admin/dashboard'/>

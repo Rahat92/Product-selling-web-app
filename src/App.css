@@ -1,12 +1,15 @@
 .app{
   margin:1rem 6rem;
   padding: 1rem 2rem;
-  /* display: flex;
-  align-items: flex-start; */
+  position: relative;
+  /* display: flex; */
+  /* align-items: flex-start; */
 }
 .nav_bar{
   display: flex;
   background-color: aqua;
   justify-content: space-between;
   align-items: center;
+  padding: 0 2rem;
+  border-radius: .4rem;
 }

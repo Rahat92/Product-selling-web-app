@@ -4,6 +4,7 @@ import { createSearchParams, useSearchParams, useParams, Link, useLocation, useN
 import { trackSortedValue,decrease, increase, fetchProducts, getSingleProduct, deleteOneProduct, editProduct, createNewProduct, createAProduct, getMe, createReview, deleteOneReview, updateReview, getProductReviews } from './actions';
 import './Main.css';
 import ProductDetail from './ProductDetail';
+import Container from './Container';
 import ReviewSection from './ReviewSection';
 import Products from './Products';
 import FilterProduct from './FilterProduct';
@@ -196,14 +197,15 @@ const Main = memo(({anyFunc}) => {
           {
             product.photo&&
             <div style = {{display:'flex', boxSizing:'border-box', flex: '0 0 75%' , alignItems:'flex-start', margin: '3rem', justifyContent: 'space-around'}}>
-              <ProductDetail product = {product} Loading = {Loading} />
+              <Container>
+                <ProductDetail product = {product} Loading = {Loading} />
+              </Container>
               <ReviewSection 
                 product = {product} 
                 editReview = {editReview} 
                 updateMyReview = {updateMyReview} 
                 isLoading = {isLoading} 
                 reviews = {reviews} 
-                user = {user} 
                 reviewEditCancel = {reviewEditCancel}
                 recentNum = {recentNum}
                 totalReview = {totalReview}
@@ -243,11 +245,11 @@ const Main = memo(({anyFunc}) => {
   // }
   return (
     <div className='main'>
-      <FilterProduct 
-        search={search} 
-        searchFor = {searchFor}
-        trackSortValue = {trackSortValue}
-      />
+        <FilterProduct 
+          search={search} 
+          searchFor = {searchFor}
+          trackSortValue = {trackSortValue}
+        />
       <div>
         {allProduct()} 
       </div>     

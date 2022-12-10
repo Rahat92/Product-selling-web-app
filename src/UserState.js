@@ -19,17 +19,17 @@ const UserState = () => {
   //     }
   // }
   return(
-    <>
-        {isAuthenticated&&(
+    <div style={{width:'100px'}}>
+        {!loading&&isAuthenticated&&(
           <button type = 'button' onClick={()=>{
             dispatch(getLogOut(navigate))
             // setTimeout(()=>goLogin(),500)
           }}>Log out</button>
         )}
-        {!isAuthenticated&&!window.location.pathname.includes('/login')&&(
+        {!loading&&!isAuthenticated&&!window.location.pathname.includes('/login')&&(
             <button type = 'button' onClick={()=>navigate('/login')}>Login</button>
         )}
-    </>
+    </div>
   )
 }
 export default UserState;

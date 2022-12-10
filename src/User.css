@@ -1,0 +1,14 @@
+.imgDiv{
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+img{
+  width: 100%;
+  height: auto;
+}
+.imgLoadDiv{
+  width: 200px;
+  height: 200px;
+  background-color: red;
+}
