@@ -6,14 +6,19 @@ import UpdateReviewForm from "./UpdateReviewForm"
 import './ReviewSection.css';
 import { useSelector } from "react-redux"
 
-const ReviewSection = memo(({sendReview, createUserReview, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,previousCommentClickButton, moreComment,moreCommentButtonClick,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
-  const { reviews, result, recentNum, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
+const ReviewSection = memo(({sendReview, productChange,clickProduct, createUserReview, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,previousCommentClickButton, moreComment,moreCommentButtonClick,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
+  console.log(productChange)
+  
+  const { reviews, result, recentNum, currentPage, totalReview, isLoading:isLoading } = useSelector(state=>state.reviews)
+  // if(!productChange){
+  //   isLoading = false;
+  //   Loading = false;
+  // }
   const {user} = useSelector(state=>state.user)
-  console.log(createUserReview)
   return(
     <div className="super_div">
       <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
-      {!isLoading&&reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
+      {reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
         :
       <div>
         <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
@@ -21,7 +26,7 @@ const ReviewSection = memo(({sendReview, createUserReview, deleteOneReview,setRe
       }
     
       <div style={{borderRadius:'3px', color:'brown', overflow:'hidden'}}>
-        {isLoading?'Loading...':(
+        {
 
         reviews&&reviews.length>0&&reviews.map(el=>{
           return editReviewClick&&user&&el.user._id === user._id?
@@ -30,7 +35,7 @@ const ReviewSection = memo(({sendReview, createUserReview, deleteOneReview,setRe
             </div>
 
           :
-            <div className={`comment ${user&&el.user&&el.user._id === user._id&& 'user_comment'}`} style = {{ position:'relative', padding:'.5rem'}}>
+            <div className={`comment ${user&&el.user&&el.user._id === user._id&& 'user_comment'}`} style = {{ position:'relative', padding:'.5rem', opacity: isLoading&&productChange&&'.5'}}>
               <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user&&el.user._id === user._id?700:400}}>
                 {el.user?(
                 <Link to = {user&&el.user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>
@@ -54,16 +59,16 @@ const ReviewSection = memo(({sendReview, createUserReview, deleteOneReview,setRe
             </div>
         })
         
-        )}
+        }
       </div>
       <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${product&&product.review&&product.review.length>recentNum&&result!==0&&!Loading?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
-        {!isLoading&&reviews.length>0?(
+        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!isLoading&&totalReview>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
+        {!isLoading&&reviews&&reviews.length>0?(
           <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReview}</h4>
         ):''}
       </div>
       {user&&user.role === 'user'&&!createUserReview&&
-        (!isLoading&&product&&product.review&&!product.review.find(el=>el.user&&el.user._id === user._id)&&
+        (product&&product.review&&!product.review.find(el=>el.user&&el.user._id === user._id)&&!isLoading&&
         <CreateReviewForm sendReview={(e) => sendReview(e,product&&product.id, createUserReview)} />
       )}
   </div>

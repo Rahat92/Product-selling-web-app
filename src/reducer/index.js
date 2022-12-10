@@ -77,7 +77,7 @@ const getProductReducer = (state = {product:{}},action) => {
     case GET_A_PRODUCT_REQUEST:
       return {
         ...state,
-        Loading: true,
+        // Loading: true,
       }
     case GET_A_PRODUCT_SUCCESS:
       return {
@@ -272,7 +272,9 @@ const reviewReducer = (state = {reviews:[]}, action) => {
   switch(action.type){
     case getProductReviewRequest:
       return{
+        ...state,
         isLoading:true,
+        // result: 0
       }
     case getProductReviewSuccess:
       return {
@@ -295,13 +297,13 @@ const reviewReducer = (state = {reviews:[]}, action) => {
     case createUserReviewRequest:
       return {
         ...state,
-        loading: true
+        isLoading: true
       }
     case createUserReviewSuccess:
       console.log(action.payload.data.user.name)
       return {
         ...state,
-        loading: false,
+        isLoading: false,
         userName: action.payload.data.user.name,
         totalReview: state.totalReview+1,
         reviews: [...state.reviews, action.payload.data]
@@ -309,18 +311,18 @@ const reviewReducer = (state = {reviews:[]}, action) => {
     case createUserReviewFail:
       return{
         ...state,
-        loading:false,
+        isLoading:false,
         error:action.payload
       }
     case deleteReviewRequest:
       return {
         ...state,
-        loading:true,
+        isLoading:true,
       }
     case deleteReviewSuccess:
       return {
         ...state,
-        loading:false,
+        isLoading:false,
         reviews: [...state.reviews ].filter(el=>el._id!==action.payload)
       }
     // case deleteReviewFail:
@@ -331,7 +333,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
     case updateReviewRequest:
       return {
         ...state,
-        loading: true,
+        isLoading: true,
       }
     case updateReviewSuccess:
       const copiedList = [...state.reviews]
@@ -341,12 +343,10 @@ const reviewReducer = (state = {reviews:[]}, action) => {
           index = i;
         }
       })
-      console.log(index)
       copiedList[index] = action.payload;
-      console.log(copiedList)
       return{
         // ...state,
-        loading: false,
+        isLoading: false,
         reviews: copiedList
       }
     default:

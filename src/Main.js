@@ -32,6 +32,10 @@ const Main = memo(({anyFunc}) => {
   // const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
   const [ id, setId ] = useState()
+  const [productClick, setProductClick] = useState({
+    id:'',
+    isChange: false
+  })
   const { reviews, result, recentNum, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
   const [ reviewPageNo, setReviewPageNo ] = useState(1)
   const [searchParam, setSearchParams] = useSearchParams();
@@ -93,7 +97,14 @@ const Main = memo(({anyFunc}) => {
     dispatch(getSingleProduct(id))
     setClickProduct(true)
     setReviewPageNo(1)
+    setProductClick(prev=>{
+      return{
+        id:id,
+        isChange:prev.id !== id?true:false
+      }
+    })
   }
+  console.log(productClick)
   const deleteProduct = (id) => {
     setDeleteClick(true)
     setId(id)
@@ -212,7 +223,8 @@ const Main = memo(({anyFunc}) => {
                 moreComment = {moreComment}
                 moreCommentButtonClick = {moreCommentButtonClick}
                 Loading = {Loading}
-
+                productChange = {productClick.isChange}
+                clickProduct = {clickProduct}
                 currentPage = {currentPage}
                 previousCommentClickButton = {previousCommentClickButton}
                 editReviewClick = {editReviewClick}
