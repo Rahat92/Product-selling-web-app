@@ -113,7 +113,7 @@ export const getProductReviews = (productId, pageNo) => {
   }
 }
 export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
-  return async(dispatch) => {
+  return async(dispatch, getState) => {
     try{
       dispatch({
         type: GET_A_PRODUCT_REQUEST
@@ -304,7 +304,7 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
         payload: {data:data.doc,totalReview:productLength}
       })
       getProduct(productId)
-      dispatch(getSingleProduct(productId))
+      // dispatch(getSingleProduct(productId))
       setCreateUserReview(true)
     }catch(error){
       dispatch({
@@ -429,14 +429,14 @@ export const getProductsNameAndPrice = () => {
     })
   }
 }
-export const registerUser = (name, role, email, password, passwordConfirm, navigate, setMsg) => {
+export const registerUser = (name, email, password, passwordConfirm, navigate, setMsg) => {
   return async (dispatch) => {
     try{
       dispatch({
         type: REGISTER_USER_REQUEST
       })
       const { data } = await requestCreator.post('/users/signup', {
-        name, role, email, password, passwordConfirm
+        name, email, password, passwordConfirm
       })
       dispatch({
         type: REGISTER_USER_SUCCESS,

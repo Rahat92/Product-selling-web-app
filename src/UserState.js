@@ -19,7 +19,7 @@ const UserState = () => {
   //     }
   // }
   return(
-    <div style={{width:'100px'}}>
+    <div style={{width:'100px', display:'flex', justifyContent:'center'}}>
         {!loading&&isAuthenticated&&(
           <button type = 'button' onClick={()=>{
             dispatch(getLogOut(navigate))

@@ -78,25 +78,25 @@ const About = () => {
     return <p>Loading...</p>
   }
   return(
-    <div style={{display: 'flex', justifyContent: 'space-around'}}>
-        <div>
-          {/* <img style={{width:'100px', height: '100px'}} src = {me.photo&&URL.createObjectURL(me.photo)} alt = 'profile review pic' /> */}
-          <ul style = {{listStyle:'none', fontSize:'25px'}}>
-            <li>Name:{me.click&&me.type === 'name'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'name')} type = 'text' defaultValue={user.name}/>: user.name} <button type = 'submit' onClick={me.click&&me.type === 'name'?()=>updateMyData(me.name, 'name'):()=>editMyData(user.name,'name')}>{me.click&&me.type === 'name'?'update':'edit'}</button></li>
-            <li>Email:{me.click && me.type === 'email'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'email')} type = 'text' defaultValue={user.email}/>: user.email} <button type = 'submit' onClick={me.click&&me.type === 'email'?()=>updateMyData(me.email, 'email'):()=>editMyData(user.email,'email')}>{me.click&&me.type === 'email'?'update':'edit'}</button></li>
-              {me.type === 'email'&& message&&message.message.includes('E11000')?<h3 style={{color:'red', margin: '0', padding: '0', display: display }}>duplicate field error</h3>:''}
-            <li>Role: {user.role}</li>
-          </ul>
-        </div>
-        <div>
-          {!user.photo?<div style={{width: '300px',height: '300px',position: 'relative', top:'50%', left: '50%', transform: 'translate(-50% -50%)'}}><h1>Loading...</h1></div>:(
-          <img style={{width:'300px', height: '300px', borderRadius:'3px', marginTop: '3rem'}} src = {me.photo?URL.createObjectURL(me.photo):`/public/img/users/${user.photo}`} />
-          )}
-          <form onSubmit={(e)=>updateMyPhoto(e, 'photo')}>
-            <input type='file' onChange={(e)=>changeMyData(e,'photo')} name = 'photo' />
-            <input type = 'submit' value = 'save' />
-          </form>
-        </div>
+    <div style={{display: 'flex', justifyContent: 'space-between', alignItems:'center'}}>
+      <div>
+        {/* <img style={{width:'100px', height: '100px'}} src = {me.photo&&URL.createObjectURL(me.photo)} alt = 'profile review pic' /> */}
+        <ul style = {{listStyle:'none', fontSize:'25px'}}>
+          <li>Name:{me.click&&me.type === 'name'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'name')} type = 'text' defaultValue={user.name}/>: user.name} <button type = 'submit' onClick={me.click&&me.type === 'name'?()=>updateMyData(me.name, 'name'):()=>editMyData(user.name,'name')}>{me.click&&me.type === 'name'?'update':'edit'}</button></li>
+          <li>Email:{me.click && me.type === 'email'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'email')} type = 'text' defaultValue={user.email}/>: user.email} <button type = 'submit' onClick={me.click&&me.type === 'email'?()=>updateMyData(me.email, 'email'):()=>editMyData(user.email,'email')}>{me.click&&me.type === 'email'?'update':'edit'}</button></li>
+            {me.type === 'email'&& message&&message.message.includes('E11000')?<h3 style={{color:'red', margin: '0', padding: '0', display: display }}>duplicate field error</h3>:''}
+          <li>Role: {user.role}</li>
+        </ul>
+      </div>
+      <div>
+        {!user.photo?<div style={{width: '300px',height: '300px',position: 'relative', top:'50%', left: '50%', transform: 'translate(-50% -50%)'}}><h1>Loading...</h1></div>:(
+        <img style={{width:'300px', height: '300px', borderRadius:'3px', marginTop: '3rem'}} src = {me.photo?URL.createObjectURL(me.photo):`/public/img/users/${user.photo}`} />
+        )}
+        <form onSubmit={(e)=>updateMyPhoto(e, 'photo')}>
+          <input type='file' onChange={(e)=>changeMyData(e,'photo')} name = 'photo' />
+          <input type = 'submit' value = 'save' />
+        </form>
+      </div>
     </div>
 )
 }

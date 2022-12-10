@@ -9,6 +9,7 @@ import { useSelector } from "react-redux"
 const ReviewSection = memo(({sendReview, createUserReview, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,previousCommentClickButton, moreComment,moreCommentButtonClick,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
   const { reviews, result, recentNum, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
   const {user} = useSelector(state=>state.user)
+  console.log(createUserReview)
   return(
     <div className="super_div">
       <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
@@ -63,7 +64,7 @@ const ReviewSection = memo(({sendReview, createUserReview, deleteOneReview,setRe
       </div>
       {user&&user.role === 'user'&&!createUserReview&&
         (!isLoading&&product&&product.review&&!product.review.find(el=>el.user&&el.user._id === user._id)&&
-        <CreateReviewForm sendReview={(e) => sendReview(e,product&&product.id)} />
+        <CreateReviewForm sendReview={(e) => sendReview(e,product&&product.id, createUserReview)} />
       )}
   </div>
   )

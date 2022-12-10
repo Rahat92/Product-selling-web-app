@@ -2,6 +2,10 @@
   width: 200px;
   height: 200px;
   position: relative;
+  margin:1rem 0;
+  border-radius: .3rem;
+  box-shadow: 0px 0px 5px 2px rgba(0,0,0,.2);
+  overflow: hidden;
 }
 img{
   width: 100%;
@@ -10,5 +14,4 @@ img{
 .imgLoadDiv{
   width: 200px;
   height: 200px;
-  background-color: red;
 }
