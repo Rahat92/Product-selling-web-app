@@ -6,8 +6,8 @@ import UpdateReviewForm from "./UpdateReviewForm"
 import './ReviewSection.css';
 import { useSelector } from "react-redux"
 
-const ReviewSection = memo(({sendReview, createUserReview,result, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,currentPage,previousCommentClickButton, totalReview, moreComment,moreCommentButtonClick,Loading, recentNum, product, reviewEditCancel, editReview, updateMyReview, isLoading, reviews}) => {
-  
+const ReviewSection = memo(({sendReview, createUserReview, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,previousCommentClickButton, moreComment,moreCommentButtonClick,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
+  const { reviews, result, recentNum, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
   const {user} = useSelector(state=>state.user)
   return(
     <div className="super_div">

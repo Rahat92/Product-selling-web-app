@@ -304,7 +304,7 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
         payload: {data:data.doc,totalReview:productLength}
       })
       getProduct(productId)
-      // dispatch(getSingleProduct(productId))
+      dispatch(getSingleProduct(productId))
       setCreateUserReview(true)
     }catch(error){
       dispatch({
