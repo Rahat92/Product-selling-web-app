@@ -20,7 +20,7 @@ const ReviewSection = memo(({sendReview, getProduct, productChange,clickProduct,
   return(
     <div className="super_div">
       <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
-      {reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
+      {!myLoading&&reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
         :
       <div>
         <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
@@ -64,8 +64,8 @@ const ReviewSection = memo(({sendReview, getProduct, productChange,clickProduct,
         }
       </div>
       <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&totalReview>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
-        {!myLoading&&reviews&&reviews.length>0?(
+        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&recentNum !==0&&totalReview>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
+        {recentNum !==0&&totalReview&&!myLoading&&reviews&&reviews.length>0?(
           <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReview}</h4>
         ):''}
       </div>
