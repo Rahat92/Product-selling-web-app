@@ -6,7 +6,7 @@ import UpdateReviewForm from "./UpdateReviewForm"
 import './ReviewSection.css';
 import { useSelector } from "react-redux"
 
-const ReviewSection = memo(({sendReview, productChange,clickProduct, createUserReview, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,previousCommentClickButton, moreComment,moreCommentButtonClick,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
+const ReviewSection = memo(({sendReview, getProduct, productChange,clickProduct, createUserReview, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,previousCommentClickButton, moreComment,moreCommentButtonClick,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
   console.log(productChange)
   
   const { reviews, result, recentNum, currentPage, totalReview, isLoading:isLoading } = useSelector(state=>state.reviews);
@@ -49,7 +49,7 @@ const ReviewSection = memo(({sendReview, productChange,clickProduct, createUserR
               {user&&el.user&&el.user._id === user._id&&(
                 <div>
                   <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
-                  {deleteClick? <Modal productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} setReviewPageNo = {setReviewPageNo} deleteOne = {deleteOneReview} />:''}
+                  {deleteClick? <Modal productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} setReviewPageNo = {setReviewPageNo} getProduct = {getProduct} deleteOne = {deleteOneReview} />:''}
                 </div>
               )}
               {user&&user.role === 'admin'&&(

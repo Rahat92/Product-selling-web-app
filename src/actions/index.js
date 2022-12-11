@@ -325,8 +325,9 @@ export const deleteOneReview = (id, setDeleteClick, getProduct,productId, setRev
         type: deleteReviewSuccess,
         payload: id
       })
+      // console.log(getProduct)
       setDeleteClick(false)
-      // getProduct()
+      getProduct(productId)
       dispatch(getSingleProduct(productId))
       // setReviewPageNo(2)
     }catch(error){

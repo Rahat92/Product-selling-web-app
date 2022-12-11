@@ -213,6 +213,7 @@ const Main = memo(({anyFunc}) => {
               </Container>
               <ReviewSection 
                 product = {product} 
+                getProduct = {getProduct}
                 editReview = {editReview} 
                 updateMyReview = {updateMyReview} 
                 isLoading = {isLoading} 
