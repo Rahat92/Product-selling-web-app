@@ -12,7 +12,7 @@ const Products = ({ yourpage,deleteOneProduct, createProduct, postProduct, chang
           return (
             <div className= {clickProduct&& el.id === product.id?'active_product':''}>
               <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><button onClick={()=>sendProductDataToEditForm(el.name, el.price, el.photo, el.category, el.id)}>edit product</button></>)}</li>
-              {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
+              {deleteClick? <Modal id = {el._id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
             </div>
           )
         }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}

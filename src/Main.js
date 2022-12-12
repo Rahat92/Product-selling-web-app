@@ -193,7 +193,7 @@ const Main = memo(({anyFunc}) => {
             product.photo&&
             <div style = {{display:'flex', boxSizing:'border-box', flex: '0 0 75%' , alignItems:'flex-start', margin: '3rem', justifyContent: 'space-around'}}>
               <Container>
-                <ProductDetail product = {product} Loading = {Loading} productChange = {productClick.isChange} />
+                <ProductDetail productChange = {productClick.isChange} />
               </Container>
               <ReviewSection 
                 product = {product} 

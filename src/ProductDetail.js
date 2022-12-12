@@ -1,6 +1,13 @@
-import React, {memo} from 'react';
+import React, {memo, useEffect} from 'react';
+import { useSelector } from 'react-redux';
 import './ProductDetail.css';
-const ProductDetail = memo(({product, Loading, productChange}) => {
+const ProductDetail = memo(({productChange}) => {
+
+  useEffect(()=>{
+
+  },[])
+
+  const { product, Loading } = useSelector(state=>state.singleProduct)
   let myLoading = false;
 
   if(productChange){
