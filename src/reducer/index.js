@@ -335,7 +335,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
         ...state,
         isLoading: false,
         userName: action.payload.data.user.name,
-        totalReview: state.totalReview+1,
+        totalReview: state.totalReview,
         reviews: [...state.reviews, action.payload.data]
       }
     case createUserReviewFail:

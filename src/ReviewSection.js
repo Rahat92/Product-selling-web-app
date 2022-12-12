@@ -91,7 +91,7 @@ const ReviewSection = memo(({ getProduct, setId,id, productChange,clickProduct, 
         }
       </div>
       <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&recentNum !==0&&totalReview>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
+        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&!Loading&&recentNum !==0&&totalReview>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
         {recentNum !==0&&totalReview&&!myLoading&&reviews&&reviews.length>0?(
           <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReview}</h4>
         ):''}
