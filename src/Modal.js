@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const Modal = ({ setDeleteClick, userId, deleteClick, id, deleteOne, getProduct, productId, setReviewPageNo }) => {
+  console.log(id)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const dismiss = () => {

@@ -25,7 +25,7 @@ const App = () => {
   const [ productData, setProductData ] = useState({
     productName:'',
     productCategory: '',
-    productPrice:0,
+    productPrice:'',
     productPhoto: '',
   })
   const [ userData, setUserData ] = useState({
