@@ -77,7 +77,7 @@ const allProduct = (state = {products:{}}, action) => {
   switch(action.type){
     case GET_PRODUCTS_REQUEST:
       return{
-        ...state,
+        // ...state,
         productsLoading:true,
       }
     case GET_PRODUCTS_SUCCESS:

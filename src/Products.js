@@ -15,10 +15,14 @@ const Products = ({ yourpage,deleteOneProduct, createProduct, postProduct, chang
               {deleteClick? <Modal id = {el._id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
             </div>
           )
-        }):<div><h1 style={{color:'red'}}>No more document found</h1></div>}
+        }):products.length === 0&&<div><h1 style={{color:'red'}}>No document found</h1></div>}
       </ul>
-      <button onClick={doDecrease} disabled = {yourpage*1 === 1||selector.currentNum ===1 ? true:false}>decrease</button>
-      <button onClick={doIncrease} disabled = {!productsLoading&& yourpage >= totalPage?true:false}>increase</button><br/>
+      {totalPage&&totalPage>1&&(
+        <div>
+          <button onClick={doDecrease} disabled = {yourpage*1 === 1||selector.currentNum ===1 ? true:false}>decrease</button>
+          <button onClick={doIncrease} disabled = {!productsLoading&& yourpage >= totalPage?true:false}>increase</button>
+        </div>
+      )}
       {user&&user.role === 'admin'&&(!selector.createAProduct?
       (
         <button type = 'button' onClick={createProduct}>create new Product</button>
