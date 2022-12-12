@@ -97,9 +97,9 @@ export const fetchProducts = (currentPage, sortvalue, searchValue) => {
       })
       const {data} = await requestCreator.get('/products',{
         params:{
-          page:currentPage,
-          sort:sortvalue,
-          keyword:searchValue
+          page:currentPage?currentPage:undefined,
+          sort:sortvalue?sortvalue:undefined,
+          keyword:searchValue?searchValue:undefined
         }
       })
       dispatch({

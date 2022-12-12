@@ -9,7 +9,7 @@ import ReviewSection from './ReviewSection';
 import Products from './Products';
 import FilterProduct from './FilterProduct';
 const Main = memo(({anyFunc}) => {
-  const [ clickProduct, setClickProduct ] = useState();
+  const [ clickProduct, setClickProduct ] = useState(false);
   const [ id, setId ] = useState()
   const moreComment = useRef();
   let styl;
@@ -51,10 +51,11 @@ const Main = memo(({anyFunc}) => {
   if(yourpage === null){
     yourpage = 1
   }
+  console.log(clickProduct)
   useEffect(()=>{
-    console.log(yourpage)
     setCreateUserReview(false)
     setEditReviewClick(false)
+    setClickProduct(false)
     if(yourpage){
       selector.currentNum = yourpage
     }
@@ -190,7 +191,7 @@ const Main = memo(({anyFunc}) => {
             sendProductDataToEditForm = {sendProductDataToEditForm}
           />
           {
-            product.photo&&
+            product.photo&&clickProduct&&
             <div style = {{display:'flex', boxSizing:'border-box', flex: '0 0 75%' , alignItems:'flex-start', margin: '3rem', justifyContent: 'space-around'}}>
               <Container>
                 <ProductDetail productChange = {productClick.isChange} />
