@@ -1,15 +1,42 @@
-import React, {memo} from "react"
+import React, {memo, useEffect, useState} from "react"
 import { Link } from "react-router-dom"
 import CreateReviewForm from "./CreateReviewForm"
 import Modal from "./Modal"
 import UpdateReviewForm from "./UpdateReviewForm"
 import './ReviewSection.css';
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { createReview, getProductReviews } from "./actions"
 
-const ReviewSection = memo(({sendReview, getProduct, productChange,clickProduct, createUserReview, deleteOneReview,setReviewPageNo,setDeleteClick, deleteClick, id,editReviewClick, editMyReview, deleteReview,previousCommentClickButton, moreComment,moreCommentButtonClick,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
+const ReviewSection = memo(({ getProduct, setId,id, productChange,clickProduct, createUserReview, setCreateUserReview, deleteOneReview,setDeleteClick, deleteClick,editReviewClick, editMyReview, moreComment,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
+  const [ reviewPageNo, setReviewPageNo ] = useState(1)
+  const dispatch = useDispatch()
+  const { reviews, result, recentNum, currentPage, totalReview, isLoading:isLoading } = useSelector(state=>state.reviews);
+  useEffect(()=>{
+    setCreateUserReview(false)
+    dispatch(getProductReviews(id))
+  },[dispatch])
+
+  const previousCommentClickButton = (productId) => {
+    setReviewPageNo(reviewPageNo-1);
+    dispatch(getProductReviews(productId, reviewPageNo-1))
+  }
+  const moreCommentButtonClick = (productId) => {
+    setReviewPageNo(reviewPageNo+1);
+    console.log(reviewPageNo+1)
+    dispatch(getProductReviews(productId, reviewPageNo+1))
+  }
+  const sendReview = (e,productId) => {
+    e.preventDefault()
+    const review = e.target.review.value;
+    const rating = e.target.rating.value;
+    dispatch(createReview(review,rating,getProduct,productId, setCreateUserReview))
+  }
+  const deleteReview = (id) => {
+    setDeleteClick(true)
+    setId(id)
+  }
   console.log(productChange)
   
-  const { reviews, result, recentNum, currentPage, totalReview, isLoading:isLoading } = useSelector(state=>state.reviews);
   let myLoading = false;
 
   if(productChange){

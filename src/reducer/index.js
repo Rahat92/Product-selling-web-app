@@ -55,7 +55,7 @@ import {
   UPDATE_USER_ROLE_SUCCESS 
 } from "../const";
 import { combineReducers } from 'redux'
-import { GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS } from "../const/productConsts";
+import { GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
     case increaseNum:
@@ -66,12 +66,42 @@ const numberReducer = (initialState = 1, action) => {
       return initialState
   }
 }
-const allProduct = (initialState = {}, action) => {
-  if(action.type === fetchAllProduct){
-    return initialState = action.payload
+// const allProduct = (initialState = {}, action) => {
+//   if(action.type === fetchAllProduct){
+//     return initialState = action.payload
+//   }
+//   return initialState
+// }
+
+const allProduct = (state = {products:{}}, action) => {
+  switch(action.type){
+    case GET_PRODUCTS_REQUEST:
+      return{
+        ...state,
+        productsLoading:true,
+      }
+    case GET_PRODUCTS_SUCCESS:
+      const { docs, currentNum, currentPage, result, totalPage, resPerPage, docNum } = action.payload;
+      return{
+        productsLoading: false,
+        docNum,
+        currentPage,
+        result,
+        totalPage,
+        resPerPage,
+        currentNum,
+        products: docs,
+      }
+    case GET_PRODUCTS_FAIL:
+      return{
+        productsLoading: false
+      }
+    default:
+      return state;
   }
-  return initialState
 }
+
+
 const getProductReducer = (state = {product:{}},action) => {
   switch(action.type){
     case GET_A_PRODUCT_REQUEST:

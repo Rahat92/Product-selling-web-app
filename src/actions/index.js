@@ -61,7 +61,7 @@ import {
   LOG_IN_FAIL,
 } from "../const"
 import requestCreator from '../axios.js';
-import { GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS } from "../const/productConsts";
+import { GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
 export const increase = () => {
   return {
     type: increaseNum,
@@ -74,19 +74,44 @@ export const decrease = () => {
     payload:1
   }
 }
+// export const fetchProducts = (currentPage, sortvalue, searchValue) => {  
+//   return async(dispatch) => {
+//     const response = await requestCreator.get('/products',{
+//       params:{
+//         page:currentPage,
+//         sort:sortvalue,
+//         keyword:searchValue
+//       }
+//     })
+//     dispatch({
+//       type:fetchAllProduct,
+//       payload: response
+//     })
+//   }
+// }
 export const fetchProducts = (currentPage, sortvalue, searchValue) => {  
   return async(dispatch) => {
-    const response = await requestCreator.get('/products',{
-      params:{
-        page:currentPage,
-        sort:sortvalue,
-        keyword:searchValue
-      }
-    })
-    dispatch({
-      type:fetchAllProduct,
-      payload: response
-    })
+    try{
+      dispatch({
+        type: GET_PRODUCTS_REQUEST
+      })
+      const {data} = await requestCreator.get('/products',{
+        params:{
+          page:currentPage,
+          sort:sortvalue,
+          keyword:searchValue
+        }
+      })
+      dispatch({
+        type:GET_PRODUCTS_SUCCESS,
+        payload: data
+      })
+    }catch(error){
+      dispatch({
+        type: GET_PRODUCTS_FAIL,
+        payload: error.response.data
+      })
+    }
   }
 }
 export const getProductReviews = (productId, pageNo) => {

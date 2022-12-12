@@ -10,6 +10,7 @@ import Products from './Products';
 import FilterProduct from './FilterProduct';
 const Main = memo(({anyFunc}) => {
   const [ clickProduct, setClickProduct ] = useState();
+  const [ id, setId ] = useState()
   const moreComment = useRef();
   let styl;
   if(moreComment.current){
@@ -31,19 +32,18 @@ const Main = memo(({anyFunc}) => {
 
   // const currentUrl = window.location.pathname;
   const [deleteClick, setDeleteClick] = useState(false);
-  const [ id, setId ] = useState()
   const [productClick, setProductClick] = useState({
     id:'',
     isChange: false
   })
-  const { reviews, result, recentNum, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
-  const [ reviewPageNo, setReviewPageNo ] = useState(1)
+  const { reviews, result, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
   const [searchParam, setSearchParams] = useSearchParams();
   let yourpage = searchParam.get('page')
   const myPage = new URLSearchParams().get('page')
   console.log('mypage', myPage)
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
+  const {products, productsLoading} = useSelector(state=> state.allProduct)
   const { product,Loading } = useSelector(state=> state.singleProduct)
   console.log(product)
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ const Main = memo(({anyFunc}) => {
     }
     let timer;
     
-    if(selector.allProduct.data){
+    if(!productsLoading){
       if(search){
         selector.currentNum= 1
       }else{
@@ -80,7 +80,7 @@ const Main = memo(({anyFunc}) => {
     }
     return ()=> clearTimeout(timer)
 
-  },[user,selector.deleteproduct.data,reviews, selector.createBrandNewProduct.data,price, selector.currentNum,search])
+  },[selector.deleteproduct.data,selector.createBrandNewProduct.data,price, selector.currentNum,search])
   const doIncrease = () => {
     dispatch(increase())
     setSearchParams({
@@ -95,8 +95,8 @@ const Main = memo(({anyFunc}) => {
   }
   const getProduct = (id) => {
     dispatch(getSingleProduct(id))
+    setCreateUserReview(false)
     setClickProduct(true)
-    setReviewPageNo(1)
     setProductClick(prev=>{
       return{
         id:id,
@@ -109,19 +109,11 @@ const Main = memo(({anyFunc}) => {
     setDeleteClick(true)
     setId(id)
   } 
-  const deleteReview = (id) => {
-    setDeleteClick(true)
-    setId(id)
-  }
+
   const editProduct = (id) => {
     dispatch(editProduct(id))
   }
-  const sendReview = (e,productId) => {
-    e.preventDefault()
-    const review = e.target.review.value;
-    const rating = e.target.rating.value;
-    dispatch(createReview(review,rating,getProduct,productId, setCreateUserReview))
-  }
+  
   const createProduct = () => {
     dispatch(createNewProduct())
   }
@@ -162,26 +154,18 @@ const Main = memo(({anyFunc}) => {
   const updateMyReview = (e, id, productId) => {
     e.preventDefault()
     console.log('should update')
-    dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick, setReviewPageNo, reviewPageNo))
+    dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick))
   }
   const sendProductDataToEditForm = (productName, productPrice, productPhoto, productCategory, id) => {
     anyFunc(productName, productPrice, productPhoto, productCategory)
     navigate(`product/${id}`)
   }
-  const previousCommentClickButton = (productId) => {
-    setReviewPageNo(reviewPageNo-1);
-    dispatch(getProductReviews(productId, reviewPageNo-1))
-  }
-  const moreCommentButtonClick = (productId) => {
-    setReviewPageNo(reviewPageNo+1);
-    console.log(reviewPageNo+1)
-    dispatch(getProductReviews(productId, reviewPageNo+1))
-  }
+  
   const changeProductPhoto = (e) => {
     setPhoto(e.target.files[0])
   }
   const allProduct = () => {
-    if(!selector.allProduct.data){
+    if(productsLoading){
       return <p>Loading data, Please wait...</p>
     }
     return(
@@ -213,32 +197,25 @@ const Main = memo(({anyFunc}) => {
               </Container>
               <ReviewSection 
                 product = {product} 
+                setId = {setId}
                 getProduct = {getProduct}
                 editReview = {editReview} 
                 updateMyReview = {updateMyReview} 
                 isLoading = {isLoading} 
-                reviews = {reviews} 
                 reviewEditCancel = {reviewEditCancel}
-                recentNum = {recentNum}
-                totalReview = {totalReview}
                 moreComment = {moreComment}
-                moreCommentButtonClick = {moreCommentButtonClick}
                 Loading = {Loading}
                 productChange = {productClick.isChange}
                 clickProduct = {clickProduct}
-                currentPage = {currentPage}
-                previousCommentClickButton = {previousCommentClickButton}
                 editReviewClick = {editReviewClick}
-                deleteReview = {deleteReview}
                 editMyReview = {editMyReview}
                 deleteClick = {deleteClick}
                 id = {id}
                 setDeleteClick = {setDeleteClick}
-                setReviewPageNo = {setReviewPageNo}
                 deleteOneReview = {deleteOneReview}
                 result = {result}
                 createUserReview = {createUserReview}
-                sendReview = {sendReview}
+                setCreateUserReview = {setCreateUserReview}
               />
             </div> 
           }
