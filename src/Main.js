@@ -53,9 +53,10 @@ const Main = memo(({anyFunc}) => {
   }
   console.log(clickProduct)
   useEffect(()=>{
+    setClickProduct(false)
     setCreateUserReview(false)
     setEditReviewClick(false)
-    setClickProduct(false)
+    // setClickProduct(false)
     if(yourpage){
       selector.currentNum = yourpage
     }
@@ -105,7 +106,6 @@ const Main = memo(({anyFunc}) => {
       }
     })
   }
-  console.log(productClick)
   const deleteProduct = (id) => {
     setDeleteClick(true)
     setId(id)
@@ -166,63 +166,60 @@ const Main = memo(({anyFunc}) => {
     setPhoto(e.target.files[0])
   }
   const allProduct = () => {
-    if(productsLoading){
-      return <p>Loading data, Please wait...</p>
+      return(
+          <div style={{display:'flex'}}>
+            <Products 
+              yourpage = {yourpage}
+              deleteOneProduct = {deleteOneProduct} 
+              createProduct = {createProduct}
+              postProduct = {postProduct}
+              changeProductPhoto = {changeProductPhoto}
+              doDecrease = {doDecrease}
+              doIncrease = {doIncrease} 
+              selector = {selector}
+              clickProduct = {clickProduct}
+              id = {id}
+              product = {product}
+              setDeleteClick = {setDeleteClick}
+              deleteClick = {deleteClick}
+              getProduct = {getProduct}
+              user = {user}
+              deleteProduct = {deleteProduct}
+              sendProductDataToEditForm = {sendProductDataToEditForm}
+            />
+            {
+              product.photo&&clickProduct&&
+              <div style = {{display:'flex', boxSizing:'border-box', flex: '0 0 75%' , alignItems:'flex-start', margin: '3rem', justifyContent: 'space-around'}}>
+                <Container>
+                  <ProductDetail productChange = {productClick.isChange} />
+                </Container>
+                <ReviewSection 
+                  product = {product} 
+                  setId = {setId}
+                  getProduct = {getProduct}
+                  editReview = {editReview} 
+                  updateMyReview = {updateMyReview} 
+                  isLoading = {isLoading} 
+                  reviewEditCancel = {reviewEditCancel}
+                  moreComment = {moreComment}
+                  Loading = {Loading}
+                  productChange = {productClick.isChange}
+                  clickProduct = {clickProduct}
+                  editReviewClick = {editReviewClick}
+                  editMyReview = {editMyReview}
+                  deleteClick = {deleteClick}
+                  id = {id}
+                  setDeleteClick = {setDeleteClick}
+                  deleteOneReview = {deleteOneReview}
+                  result = {result}
+                  createUserReview = {createUserReview}
+                  setCreateUserReview = {setCreateUserReview}
+                />
+              </div> 
+            }
+        </div>
+      )
     }
-    return(
-        <div style={{display:'flex'}}>
-          <Products 
-            yourpage = {yourpage}
-            deleteOneProduct = {deleteOneProduct} 
-            createProduct = {createProduct}
-            postProduct = {postProduct}
-            changeProductPhoto = {changeProductPhoto}
-            doDecrease = {doDecrease}
-            doIncrease = {doIncrease} 
-            selector = {selector}
-            clickProduct = {clickProduct}
-            id = {id}
-            product = {product}
-            setDeleteClick = {setDeleteClick}
-            deleteClick = {deleteClick}
-            getProduct = {getProduct}
-            user = {user}
-            deleteProduct = {deleteProduct}
-            sendProductDataToEditForm = {sendProductDataToEditForm}
-          />
-          {
-            product.photo&&clickProduct&&
-            <div style = {{display:'flex', boxSizing:'border-box', flex: '0 0 75%' , alignItems:'flex-start', margin: '3rem', justifyContent: 'space-around'}}>
-              <Container>
-                <ProductDetail productChange = {productClick.isChange} />
-              </Container>
-              <ReviewSection 
-                product = {product} 
-                setId = {setId}
-                getProduct = {getProduct}
-                editReview = {editReview} 
-                updateMyReview = {updateMyReview} 
-                isLoading = {isLoading} 
-                reviewEditCancel = {reviewEditCancel}
-                moreComment = {moreComment}
-                Loading = {Loading}
-                productChange = {productClick.isChange}
-                clickProduct = {clickProduct}
-                editReviewClick = {editReviewClick}
-                editMyReview = {editMyReview}
-                deleteClick = {deleteClick}
-                id = {id}
-                setDeleteClick = {setDeleteClick}
-                deleteOneReview = {deleteOneReview}
-                result = {result}
-                createUserReview = {createUserReview}
-                setCreateUserReview = {setCreateUserReview}
-              />
-            </div> 
-          }
-      </div>
-    )
-  }
   const params = {
     name:'rahat',
     age:30,

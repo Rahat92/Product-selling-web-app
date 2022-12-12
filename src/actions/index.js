@@ -491,7 +491,7 @@ export const deleteOneUser = (userId, setDeleteClick) => {
       })
       // dispatch(getAllUser())
       setDeleteClick(false)
-      dispatch(getMe())
+      // dispatch(getMe())
     }catch(error){
       dispatch({
         type: DELETE_ONE_USER_FAIL,

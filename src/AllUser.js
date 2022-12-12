@@ -9,10 +9,11 @@ const AllUser = ({ getUserData }) => {
   const [ needUpdateUserId, setNeedUpdateUserId ] = useState(null)
   const [ updateRoleClick, setUpdateRoleClick] = useState(false);
   const { users, message, documentNumber } = useSelector(state => state.users)
+  console.log(documentNumber)
   const dispatch = useDispatch()
   useEffect(()=> {
     dispatch(getAllUser())
-  },[])
+  },[dispatch])
   const deleteUser = (userId) => {
     setDeleteClick(true)
     setId(userId)

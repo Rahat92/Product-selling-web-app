@@ -42,7 +42,6 @@ const ReviewSection = memo(({ getProduct, setId,id, productChange,clickProduct, 
   if(productChange){
     myLoading = isLoading
   }
-  console.log(myLoading)
   const {user} = useSelector(state=>state.user)
   return(
     <div className="super_div">
@@ -61,7 +60,7 @@ const ReviewSection = memo(({ getProduct, setId,id, productChange,clickProduct, 
           return editReviewClick&&user&&el.user._id === user._id?
             <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
               <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,product._id)} />
-            </div>
+            </div>    
 
           :
             <div className={`comment ${user&&el.user&&el.user._id === user._id&& 'user_comment'}`} style = {{ position:'relative', padding:'.5rem', opacity: isLoading&&productChange&&'.5'}}>
@@ -75,7 +74,8 @@ const ReviewSection = memo(({ getProduct, setId,id, productChange,clickProduct, 
               <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':''}}>{el.review}</h4>
               {user&&el.user&&el.user._id === user._id&&(
                 <div>
-                  <button onClick= {()=>deleteReview(el._id)}>delete</button><button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
+                  <button onClick= {()=>deleteReview(el._id)}>delete</button>
+                  <button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
                   {deleteClick? <Modal productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} setReviewPageNo = {setReviewPageNo} getProduct = {getProduct} deleteOne = {deleteOneReview} />:''}
                 </div>
               )}
