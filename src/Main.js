@@ -40,18 +40,15 @@ const Main = memo(({anyFunc}) => {
   const [searchParam, setSearchParams] = useSearchParams();
   let yourpage = searchParam.get('page')
   const myPage = new URLSearchParams().get('page')
-  console.log('mypage', myPage)
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
   const {products, productsLoading} = useSelector(state=> state.allProduct)
   const { product,Loading } = useSelector(state=> state.singleProduct)
-  console.log(product)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
   if(yourpage === null){
     yourpage = 1
   }
-  console.log(clickProduct)
   useEffect(()=>{
     setClickProduct(false)
     setCreateUserReview(false)
@@ -82,7 +79,7 @@ const Main = memo(({anyFunc}) => {
     }
     return ()=> clearTimeout(timer)
 
-  },[selector.deleteproduct.data,selector.createBrandNewProduct.data,price, selector.currentNum,search])
+  },[dispatch])
   const doIncrease = () => {
     dispatch(increase())
     setSearchParams({
@@ -195,6 +192,7 @@ const Main = memo(({anyFunc}) => {
                 </Container>
                 <ReviewSection 
                   product = {product} 
+                  productClick = {productClick}
                   setId = {setId}
                   getProduct = {getProduct}
                   editReview = {editReview} 

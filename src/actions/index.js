@@ -138,6 +138,7 @@ export const getProductReviews = (productId, pageNo) => {
   }
 }
 export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
+  console.log(currentPage)
   return async(dispatch, getState) => {
     try{
       dispatch({
@@ -328,9 +329,10 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
         type: createUserReviewSuccess,
         payload: {data:data.doc,totalReview:productLength}
       })
+      dispatch(getProductReviews(productId,1))
       getProduct(productId)
-      // dispatch(getSingleProduct(productId))
       setCreateUserReview(true)
+      // dispatch(getSingleProduct(productId))
     }catch(error){
       dispatch({
         type: createUserReviewFail,

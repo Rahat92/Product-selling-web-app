@@ -5,25 +5,21 @@ import Modal from "./Modal"
 import UpdateReviewForm from "./UpdateReviewForm"
 import './ReviewSection.css';
 import { useDispatch, useSelector } from "react-redux"
-import { createReview, getProductReviews } from "./actions"
+import { createReview, getProductReviews, getSingleProduct } from "./actions"
 
-const ReviewSection = memo(({ getProduct, setId,id, productChange,clickProduct, createUserReview, setCreateUserReview, deleteOneReview,setDeleteClick, deleteClick,editReviewClick, editMyReview, moreComment,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
-  const [ reviewPageNo, setReviewPageNo ] = useState(1)
+const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,clickProduct, createUserReview, setCreateUserReview, deleteOneReview,setDeleteClick, deleteClick,editReviewClick, editMyReview, moreComment,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
   const dispatch = useDispatch()
   const { reviews, result, recentNum, currentPage, totalReview, isLoading:isLoading } = useSelector(state=>state.reviews);
   useEffect(()=>{
     setCreateUserReview(false)
-    dispatch(getProductReviews(id))
-  },[dispatch])
-
+    dispatch(getProductReviews(id,currentPage))
+  },[dispatch, productClick.isChange])
+  console.log('database review page no: ', currentPage)
   const previousCommentClickButton = (productId) => {
-    setReviewPageNo(reviewPageNo-1);
-    dispatch(getProductReviews(productId, reviewPageNo-1))
+    dispatch(getProductReviews(productId, currentPage-1))
   }
   const moreCommentButtonClick = (productId) => {
-    setReviewPageNo(reviewPageNo+1);
-    console.log(reviewPageNo+1)
-    dispatch(getProductReviews(productId, reviewPageNo+1))
+    dispatch(getProductReviews(productId, currentPage+1))
   }
   const sendReview = (e,productId) => {
     e.preventDefault()
@@ -35,7 +31,6 @@ const ReviewSection = memo(({ getProduct, setId,id, productChange,clickProduct, 
     setDeleteClick(true)
     setId(id)
   }
-  console.log(productChange)
   
   let myLoading = false;
 
@@ -76,7 +71,7 @@ const ReviewSection = memo(({ getProduct, setId,id, productChange,clickProduct, 
                 <div>
                   <button onClick= {()=>deleteReview(el._id)}>delete</button>
                   <button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
-                  {deleteClick? <Modal productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} setReviewPageNo = {setReviewPageNo} getProduct = {getProduct} deleteOne = {deleteOneReview} />:''}
+                  {deleteClick? <Modal productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} getProduct = {getProduct} deleteOne = {deleteOneReview} />:''}
                 </div>
               )}
               {user&&user.role === 'admin'&&(

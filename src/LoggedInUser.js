@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import './LoggedInUser.css';
 const LoggedInUser = () => {  
   const {user, isAuthenticated, loading} = useSelector(state => state.user);
-  console.log(loading)
   return (
     <div className="super_div_logged_in_user">
       {!loading&&isAuthenticated&&(
