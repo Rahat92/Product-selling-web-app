@@ -116,8 +116,6 @@ export const fetchProducts = (currentPage, sortvalue, searchValue) => {
 }
 export const getProductReviews = (productId, pageNo) => {
   return async(dispatch, getState) => {
-    const productLength = getState().singleProduct.product.review.length;    
-    
     try{
       dispatch({type: getProductReviewRequest})
       const { data } = await requestCreator.get(`/products/${productId}/reviews`,{
@@ -127,7 +125,7 @@ export const getProductReviews = (productId, pageNo) => {
       })
       dispatch({
         type: getProductReviewSuccess,
-        payload: {data, productLength}
+        payload: data
       })
     }catch(error){
       dispatch({
@@ -149,7 +147,7 @@ export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
         type:GET_A_PRODUCT_SUCCESS,
         payload:data.doc
       })
-      dispatch(getProductReviews(id))
+      // dispatch(getProductReviews(id))
       if(setReviewPageNo){
         setReviewPageNo(1)
       }
@@ -316,8 +314,8 @@ export const getLogOut = (navigate) => {
 
 export const createReview = (review, rating,getProduct, productId, setCreateUserReview) => {
   return async(dispatch, getState) => {
+    const totalReview = getState().singleProduct.product.review.length
     try{
-      const productLength = getState().singleProduct.product.review.length
       dispatch({
         type: createUserReviewRequest
       })
@@ -327,12 +325,12 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
       })
       dispatch({
         type: createUserReviewSuccess,
-        payload: {data:data.doc,totalReview:productLength}
+        payload: {review:data.doc,totalReview}
       })
-      dispatch(getProductReviews(productId,1))
-      getProduct(productId)
+      // dispatch(getProductReviews(productId,1))
+      // getProduct(productId)
       setCreateUserReview(true)
-      // dispatch(getSingleProduct(productId))
+      dispatch(getSingleProduct(productId))
     }catch(error){
       dispatch({
         type: createUserReviewFail,
@@ -341,8 +339,9 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
     }
   }
 }
-export const deleteOneReview = (id, setDeleteClick, getProduct,productId, setReviewPageNo) => {
+export const deleteOneReview = (id, setDeleteClick, getProduct,productId, setReviewPageNo, currentPage, result) => {
   return async(dispatch) => {
+    console.log(currentPage, result) //page 2 , result 1
     try{
       dispatch({
         type:deleteReviewRequest
@@ -352,11 +351,9 @@ export const deleteOneReview = (id, setDeleteClick, getProduct,productId, setRev
         type: deleteReviewSuccess,
         payload: id
       })
-      // console.log(getProduct)
       setDeleteClick(false)
       getProduct(productId)
-      dispatch(getSingleProduct(productId))
-      // setReviewPageNo(2)
+      // setReviewPageNo(1)
     }catch(error){
       dispatch({
         type: deleteReviewFail,

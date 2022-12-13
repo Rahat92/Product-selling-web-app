@@ -9,6 +9,9 @@ import ReviewSection from './ReviewSection';
 import Products from './Products';
 import FilterProduct from './FilterProduct';
 const Main = memo(({anyFunc}) => {
+
+  
+
   const [ clickProduct, setClickProduct ] = useState(false);
   const [ id, setId ] = useState()
   const moreComment = useRef();
@@ -36,20 +39,25 @@ const Main = memo(({anyFunc}) => {
     id:'',
     isChange: false
   })
+
+  const { product,Loading } = useSelector(state=> state.singleProduct)
   const { reviews, result, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
+
+  console.log(reviews&&reviews)
+  const reviewLength = product.review&&product.review.length
   const [searchParam, setSearchParams] = useSearchParams();
   let yourpage = searchParam.get('page')
   const myPage = new URLSearchParams().get('page')
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
   const {products, productsLoading} = useSelector(state=> state.allProduct)
-  const { product,Loading } = useSelector(state=> state.singleProduct)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
   if(yourpage === null){
     yourpage = 1
   }
   useEffect(()=>{
+    setId(null)
     setClickProduct(false)
     setCreateUserReview(false)
     setEditReviewClick(false)
@@ -92,14 +100,17 @@ const Main = memo(({anyFunc}) => {
       page: yourpage*1-1
     })
   }
-  const getProduct = (id) => {
-    dispatch(getSingleProduct(id))
+  
+  const getProduct = (productId) => {
+    dispatch(getSingleProduct(productId))
+    dispatch(getProductReviews(productId))
+    setId(productId)
     setCreateUserReview(false)
     setClickProduct(true)
     setProductClick(prev=>{
       return{
-        id:id,
-        isChange:prev.id !== id?true:false
+        id:productId,
+        isChange:prev.id !== productId?true:false
       }
     })
   }
@@ -185,7 +196,7 @@ const Main = memo(({anyFunc}) => {
               sendProductDataToEditForm = {sendProductDataToEditForm}
             />
             {
-              product.photo&&clickProduct&&
+              clickProduct&&
               <div style = {{display:'flex', boxSizing:'border-box', flex: '0 0 75%' , alignItems:'flex-start', margin: '3rem', justifyContent: 'space-around'}}>
                 <Container>
                   <ProductDetail productChange = {productClick.isChange} />

@@ -305,18 +305,20 @@ const reviewReducer = (state = {reviews:[]}, action) => {
         ...state,
         isLoading:true,
         // result: 0
+        totalPage:null
       }
     case getProductReviewSuccess:
       return {
-        ...state,
+        // ...state,
         isLoading: false,
-        totalReview: action.payload.productLength,
+        // totalReview: action.payload.productLength,
+        
         result: action.payload.result,
         resPerPage:action.payload.resPerPage,
-        recentNum: action.payload.data.currentNum,
-        currentPage: action.payload.data.currentPage,
-        totalPage:action.payload.totalPage,
-        reviews:[...action.payload.data.docs]
+        recentNum: action.payload.currentNum,
+        currentPage: action.payload.currentPage,
+        totalPage:null,
+        reviews:[...action.payload.docs]
       }
     case getProductReviewFail:
       return {
@@ -330,13 +332,13 @@ const reviewReducer = (state = {reviews:[]}, action) => {
         isLoading: true
       }
     case createUserReviewSuccess:
-      console.log(action.payload.data.user.name)
       return {
         ...state,
         isLoading: false,
-        userName: action.payload.data.user.name,
-        totalReview: state.totalReview,
-        reviews: [...state.reviews, action.payload.data]
+        userName: action.payload.review.user.name,
+        totalReview:action.payload.totalReview + 1,
+        recentNum: state.recentNum + 1,
+        reviews: [...state.reviews, action.payload.review]
       }
     case createUserReviewFail:
       return{
@@ -348,11 +350,15 @@ const reviewReducer = (state = {reviews:[]}, action) => {
       return {
         ...state,
         isLoading:true,
+
       }
     case deleteReviewSuccess:
       return {
         ...state,
         isLoading:false,
+        result: action.payload.result,
+        totalReview: state.totalReview - 1,
+        recentNum: state.recentNum - 1,
         reviews: [...state.reviews ].filter(el=>el._id!==action.payload)
       }
     // case deleteReviewFail:

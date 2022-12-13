@@ -7,14 +7,17 @@ import './ReviewSection.css';
 import { useDispatch, useSelector } from "react-redux"
 import { createReview, getProductReviews, getSingleProduct } from "./actions"
 
-const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,clickProduct, createUserReview, setCreateUserReview, deleteOneReview,setDeleteClick, deleteClick,editReviewClick, editMyReview, moreComment,Loading, product, reviewEditCancel, editReview, updateMyReview}) => {
+const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,clickProduct, createUserReview, setCreateUserReview, deleteOneReview,setDeleteClick, deleteClick,editReviewClick, editMyReview, moreComment,Loading, reviewEditCancel, editReview, updateMyReview}) => {
   const dispatch = useDispatch()
-  const { reviews, result, recentNum, currentPage, totalReview, isLoading:isLoading } = useSelector(state=>state.reviews);
+  const { reviews, result, recentNum,totalReview, currentPage,isLoading } = useSelector(state=>state.reviews);
+  const {product} = useSelector(state=>state.singleProduct)
+  let totalReviewFromProduct = product&&product.review&&product.review.length
+  if(totalReview){
+    totalReviewFromProduct = totalReview
+  }
   useEffect(()=>{
     setCreateUserReview(false)
-    dispatch(getProductReviews(id,currentPage))
   },[dispatch, productClick.isChange])
-  console.log('database review page no: ', currentPage)
   const previousCommentClickButton = (productId) => {
     dispatch(getProductReviews(productId, currentPage-1))
   }
@@ -40,11 +43,11 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
   const {user} = useSelector(state=>state.user)
   return(
     <div className="super_div">
-      <h2 style={{marginBottom:'.2rem'}}>Comments:</h2>
+      <h2 style={{marginBottom:'.2rem'}}>Comments: {totalReviewFromProduct}</h2>
       {!myLoading&&reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
         :
       <div>
-        <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
+        <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1&&!myLoading&&!Loading?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
       </div>
       }
     
@@ -71,7 +74,7 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
                 <div>
                   <button onClick= {()=>deleteReview(el._id)}>delete</button>
                   <button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
-                  {deleteClick? <Modal productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} getProduct = {getProduct} deleteOne = {deleteOneReview} />:''}
+                  {deleteClick? <Modal currentPage = {currentPage} result = {result} productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} getProduct = {getProduct} deleteOne = {deleteOneReview} />:''}
                 </div>
               )}
               {user&&user.role === 'admin'&&(
@@ -86,13 +89,13 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
         }
       </div>
       <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&!Loading&&recentNum !==0&&totalReview>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
-        {recentNum !==0&&totalReview&&!myLoading&&reviews&&reviews.length>0?(
-          <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReview}</h4>
+        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&recentNum !==0&&totalReviewFromProduct>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
+        {recentNum !==0&&totalReviewFromProduct&&!myLoading&&reviews&&reviews.length>0?(
+          <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReviewFromProduct}</h4>
         ):''}
       </div>
-      {user&&user.role === 'user'&&!createUserReview&&
-        (product&&product.review&&!product.review.find(el=>el.user&&el.user._id === user._id)&&!myLoading&&
+      {user&&user.role === 'user'&&!createUserReview&&!myLoading&&reviews&&reviews.length >=0&&
+        (product&&product.review&&!product.review.find(el=>el.user&&el.user._id === user._id)&&
         <CreateReviewForm sendReview={(e) => sendReview(e,product&&product.id, createUserReview)} />
       )}
   </div>

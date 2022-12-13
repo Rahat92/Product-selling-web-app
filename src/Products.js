@@ -1,10 +1,20 @@
-import { memo } from "react";
-import { useSelector } from "react-redux";
+import { memo, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductReviews } from "./actions";
 import CreateProduct from "./CreateProduct"
 import Modal from "./Modal";
 
 const Products = memo(({ yourpage,deleteOneProduct, createProduct, postProduct, changeProductPhoto, doDecrease, doIncrease, selector,clickProduct,id,product,setDeleteClick, deleteClick, getProduct, user, deleteProduct,sendProductDataToEditForm }) => {
   const { products, productsLoading, docNum, totalPage } = useSelector(state=>state.allProduct)
+  const dispatch = useDispatch()
+  const [ productId, setProductId ] = useState()
+  useEffect(() => {
+    // if(products.length>0){
+    //   setProductId(products[0].id)
+    // }
+    // dispatch(getProductReviews(productId))
+  }, [productId])
+  console.log(productId)
   return(
     <div style={{flex: '0 0 20%'}}>
         <h1>Products: {docNum}</h1>
