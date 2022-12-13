@@ -21,7 +21,7 @@ const ProductDetail = memo(({productChange}) => {
         <h3><span>Category: </span><span>{product&&product.category}</span></h3>
         <h3><span>Price: </span><span>{product&&product.price}</span></h3>
         <h3><span>Total ratings: </span><span>{product&&product.numberOfRatings}</span></h3>
-        <h3><span>Ratings: </span><span>{product&&product.ratingsAverage}</span></h3>
+        <h3><span>Ratings: </span><span>{product&&product.ratingsAverage&&product.ratingsAverage.toFixed()}</span></h3>
         <h3>{product&&product.review&&product.review.length} reviews</h3>
       </div>
     </div>

@@ -350,7 +350,6 @@ const reviewReducer = (state = {reviews:[]}, action) => {
       return {
         ...state,
         isLoading:true,
-
       }
     case deleteReviewSuccess:
       return {
