@@ -74,7 +74,7 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
                 <div>
                   <button onClick= {()=>deleteReview(el._id)}>delete</button>
                   <button onClick={()=>editMyReview(el._id, el.review, el.rating)}>edit</button>
-                  {deleteClick? <Modal currentPage = {currentPage} result = {result} productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} getProduct = {getProduct} deleteOne = {deleteOneReview} />:''}
+                  {deleteClick? <Modal setCreateUserReview = {setCreateUserReview} currentPage = {currentPage} result = {result} productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} getProduct = {getProduct} deleteOne = {deleteOneReview} />:''}
                 </div>
               )}
               {user&&user.role === 'admin'&&(

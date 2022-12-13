@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-const Modal = ({ setDeleteClick, currentPage, result, userId, deleteClick, id, deleteOne, getProduct, productId, setReviewPageNo }) => {
+const Modal = ({ setDeleteClick, setCreateUserReview, currentPage, result, userId, deleteClick, id, deleteOne, getProduct, productId, setReviewPageNo }) => {
   console.log(id)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -18,7 +18,7 @@ const Modal = ({ setDeleteClick, currentPage, result, userId, deleteClick, id, d
           <h3>Are you sure you want to delete this product from your list?</h3>
           <div>
             <button onClick={()=>setDeleteClick(false)}>cancel</button>
-            <button onClick={()=>dispatch(deleteOne(id, setDeleteClick, getProduct&&getProduct,productId, setReviewPageNo, currentPage, result))}>delete</button>
+            <button onClick={()=>dispatch(deleteOne(id, setDeleteClick, getProduct&&getProduct,productId, setReviewPageNo, currentPage, result, setCreateUserReview))}>delete</button>
           </div>
         </div>
         

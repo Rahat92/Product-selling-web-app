@@ -13,9 +13,9 @@ const ProductDetail = memo(({productChange}) => {
     <div className='super_div'>
       <div className='main_div'>
         <h3><span>Name: </span><span>{product&&product.name}</span><br/></h3>
-          <div style = {{width: '300px', opacity:myLoading&&'.5',height: '250px', position:'relative', margin:'2rem 0'}}>
+          <div style = {{width: '300px',height: '250px', position:'relative', margin:'1.5rem 0'}}>
             {
-              <img style={{border: '.5px solid rgba(0,0,0,.5)', borderRadius:'10px'}} className='product_img' src = { `/public/img/users/${!Loading&&product&&product.photo}` } />
+              product&&product.photo&&<img style={{border: '.5px solid rgba(0,0,0,.5)',opacity:myLoading?'.3':'1', borderRadius:'10px'}} className='product_img' src = { `/public/img/users/${product&&product.photo}` } />
             }
           </div>
         <h3><span>Category: </span><span>{product&&product.category}</span></h3>

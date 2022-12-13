@@ -339,9 +339,8 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
     }
   }
 }
-export const deleteOneReview = (id, setDeleteClick, getProduct,productId, setReviewPageNo, currentPage, result) => {
+export const deleteOneReview = (id, setDeleteClick, getProduct,productId, setReviewPageNo, currentPage, result, setCreateUserReview) => {
   return async(dispatch) => {
-    console.log(currentPage, result) //page 2 , result 1
     try{
       dispatch({
         type:deleteReviewRequest
@@ -351,6 +350,7 @@ export const deleteOneReview = (id, setDeleteClick, getProduct,productId, setRev
         type: deleteReviewSuccess,
         payload: id
       })
+      setCreateUserReview(false)
       setDeleteClick(false)
       dispatch(getSingleProduct(productId))
       // setReviewPageNo(1)
