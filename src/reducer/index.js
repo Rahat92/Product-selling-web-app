@@ -310,9 +310,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
     case getProductReviewSuccess:
       return {
         // ...state,
-        isLoading: false,
-        // totalReview: action.payload.productLength,
-        
+        isLoading: false,        
         result: action.payload.result,
         resPerPage:action.payload.resPerPage,
         recentNum: action.payload.currentNum,
@@ -355,7 +353,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
       return {
         ...state,
         isLoading:false,
-        result: action.payload.result,
+        result: state.result-1,
         totalReview: state.totalReview - 1,
         recentNum: state.recentNum - 1,
         reviews: [...state.reviews ].filter(el=>el._id!==action.payload)

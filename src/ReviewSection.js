@@ -9,11 +9,11 @@ import { createReview, getProductReviews, getSingleProduct } from "./actions"
 
 const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,clickProduct, createUserReview, setCreateUserReview, deleteOneReview,setDeleteClick, deleteClick,editReviewClick, editMyReview, moreComment,Loading, reviewEditCancel, editReview, updateMyReview}) => {
   const dispatch = useDispatch()
-  const { reviews, result, recentNum,totalReview, currentPage,isLoading } = useSelector(state=>state.reviews);
+  const { reviews, result, recentNum,totalReviewFromProduct, currentPage,isLoading } = useSelector(state=>state.reviews);
   const {product} = useSelector(state=>state.singleProduct)
-  let totalReviewFromProduct = product&&product.review&&product.review.length
-  if(totalReview){
-    totalReviewFromProduct = totalReview
+  let totalReviewFromProductFromProduct = product&&product.review&&product.review.length
+  if(totalReviewFromProduct){
+    totalReviewFromProductFromProduct = totalReviewFromProduct
   }
   useEffect(()=>{
     setCreateUserReview(false)
@@ -41,15 +41,18 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
     myLoading = isLoading
   }
   const {user} = useSelector(state=>state.user)
+  
   return(
     <div className="super_div">
-      <h2 style={{marginBottom:'.2rem'}}>Comments: {totalReviewFromProduct}</h2>
-      {!myLoading&&reviews&&reviews.length === 0?(<div><h2 style={{color:'red'}}>No comment available</h2></div>)
-        :
+      <h2 style={{marginBottom:'.2rem'}}>Comments: {totalReviewFromProductFromProduct}</h2>
+      {!myLoading&&reviews&&reviews.length === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
+        
       <div>
-        <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${currentPage>1&&!myLoading&&!Loading?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
+        {console.log(currentPage,result)}
+        {result === 0&&currentPage>1&&console.log('previous button appear')}
+        <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${(currentPage>1&&!Loading)||((currentPage>1)&&(!myLoading&&!Loading&&result*1 === 0)&&totalReviewFromProduct>0)?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
       </div>
-      }
+      
     
       <div style={{borderRadius:'3px', color:'brown', overflow:'hidden'}}>
         {
@@ -89,9 +92,9 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
         }
       </div>
       <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&recentNum !==0&&totalReviewFromProduct>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
-        {recentNum !==0&&totalReviewFromProduct&&!myLoading&&reviews&&reviews.length>0?(
-          <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReviewFromProduct}</h4>
+        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&recentNum !==0&&totalReviewFromProductFromProduct>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
+        {recentNum !==0&&totalReviewFromProductFromProduct&&!myLoading&&reviews&&reviews.length>0?(
+          <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReviewFromProductFromProduct}</h4>
         ):''}
       </div>
       {user&&user.role === 'user'&&!createUserReview&&!myLoading&&reviews&&reviews.length >=0&&

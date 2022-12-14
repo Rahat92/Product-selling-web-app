@@ -14,7 +14,6 @@ const Products = memo(({ yourpage,deleteOneProduct, createProduct, postProduct, 
     // }
     // dispatch(getProductReviews(productId))
   }, [productId])
-  console.log(productId)
   return(
     <div style={{flex: '0 0 20%'}}>
         <h1>Products: {docNum}</h1>

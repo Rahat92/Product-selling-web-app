@@ -43,7 +43,6 @@ const Main = memo(({anyFunc}) => {
   const { product,Loading } = useSelector(state=> state.singleProduct)
   const { reviews, result, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
 
-  console.log(reviews&&reviews)
   const reviewLength = product.review&&product.review.length
   const [searchParam, setSearchParams] = useSearchParams();
   let yourpage = searchParam.get('page')
