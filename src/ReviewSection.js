@@ -64,7 +64,7 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
             </div>    
 
           :
-            <div className={`comment ${user&&el.user&&el.user._id === user._id&& 'user_comment'}`} style = {{ position:'relative', padding:'.5rem', opacity: isLoading&&productChange&&'.5'}}>
+            <div className={`comment ${user&&el.user&&el.user._id === user._id&& 'user_comment'}`} style = {{ position:'relative', padding:'.4rem', opacity: isLoading&&productChange&&'.5'}}>
               <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user&&el.user._id === user._id?700:400}}>
                 {el.user?(
                 <Link to = {user&&el.user&&el.user._id === user._id?'/me':`/profile/${el.user._id}`}>
@@ -72,7 +72,7 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
                 </Link>
                 ):<h4 style={{color:'white'}}>Removed user</h4>}
               </h4>
-              <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':''}}>{el.review}</h4>
+              <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':'', margin:'.7rem 0'}}>{el.review}</h4>
               {user&&el.user&&el.user._id === user._id&&(
                 <div>
                   <button onClick= {()=>deleteReview(el._id)}>delete</button>

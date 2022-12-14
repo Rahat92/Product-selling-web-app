@@ -196,7 +196,7 @@ const Main = memo(({anyFunc}) => {
             />
             {
               clickProduct&&
-              <div style = {{display:'flex', boxSizing:'border-box', flex: '0 0 75%' , alignItems:'flex-start', margin: '3rem', justifyContent: 'space-around'}}>
+              <div style = {{display:'flex', boxSizing:'border-box', flex: '0 0 75%' , alignItems:'flex-start', margin: '2rem 3rem', justifyContent: 'space-around'}}>
                 <Container>
                   <ProductDetail productChange = {productClick.isChange} />
                 </Container>
