@@ -11,7 +11,6 @@ import FilterProduct from './FilterProduct';
 const Main = memo(({anyFunc}) => {
 
   
-
   const [ clickProduct, setClickProduct ] = useState(false);
   const [ id, setId ] = useState()
   const moreComment = useRef();
@@ -213,7 +212,6 @@ const Main = memo(({anyFunc}) => {
                   moreComment = {moreComment}
                   Loading = {Loading}
                   productChange = {productClick.isChange}
-                  clickProduct = {clickProduct}
                   editReviewClick = {editReviewClick}
                   editMyReview = {editMyReview}
                   deleteClick = {deleteClick}
