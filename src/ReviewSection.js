@@ -6,7 +6,7 @@ import UpdateReviewForm from "./UpdateReviewForm"
 import './ReviewSection.css';
 import { useDispatch, useSelector } from "react-redux"
 import { createReview, getProductReviews, getSingleProduct } from "./actions"
-
+//is not false
 const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,clickProduct, createUserReview, setCreateUserReview, deleteOneReview,setDeleteClick, deleteClick,editReviewClick, editMyReview, moreComment,Loading, reviewEditCancel, editReview, updateMyReview}) => {
   const dispatch = useDispatch()
   const { reviews, result, recentNum,totalReviewFromProduct, currentPage,isLoading } = useSelector(state=>state.reviews);
@@ -37,9 +37,9 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
   
   let myLoading = false;
 
-  if(productChange){
-    myLoading = isLoading
-  }
+  // if(productChange){
+  //   myLoading = isLoading
+  // }
   const {user} = useSelector(state=>state.user)
   
   return(
