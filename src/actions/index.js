@@ -136,7 +136,6 @@ export const getProductReviews = (productId, pageNo) => {
   }
 }
 export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
-  console.log(currentPage)
   return async(dispatch, getState) => {
     try{
       dispatch({
@@ -151,6 +150,7 @@ export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
       if(setReviewPageNo){
         setReviewPageNo(1)
       }
+
     }catch(error){
       dispatch({
         type: GET_A_PRODUCT_FAIL,
@@ -392,13 +392,16 @@ export const updateReview = (id, review, rating, getProduct, productId, setEditR
         review,
         rating
       })
+      
       dispatch({
         type: updateReviewSuccess,
         payload: data.doc 
       })
-      // setEditReviewClick(null)
+      setEditReviewClick(null)
+      dispatch(getSingleProduct(productId))
+      
       // setReviewPageNo(currentNum)
-      dispatch(getSingleProduct(productId, setReviewPageNo, reviewPageNo+1))
+      
     }catch(error){
       dispatch({
         type: updateReviewFail,

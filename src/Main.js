@@ -159,10 +159,10 @@ const Main = memo(({anyFunc}) => {
   const reviewEditCancel = () => {
     setEditReviewClick(false)  
   }
-  const updateMyReview = (e, id, productId) => {
+  const updateMyReview = (e, id, productId,reviewEditCancel) => {
     e.preventDefault()
     console.log('should update')
-    dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick))
+    dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick, reviewEditCancel, productClick, setProductClick))
   }
   const sendProductDataToEditForm = (productName, productPrice, productPhoto, productCategory, id) => {
     anyFunc(productName, productPrice, productPhoto, productCategory)
@@ -201,6 +201,7 @@ const Main = memo(({anyFunc}) => {
                   <ProductDetail productChange = {productClick.isChange} />
                 </Container>
                 <ReviewSection 
+                  clickProduct = {clickProduct}
                   product = {product} 
                   productClick = {productClick}
                   setId = {setId}

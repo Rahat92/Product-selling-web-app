@@ -45,11 +45,11 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
   return(
     <div className="super_div">
       <h2 style={{marginBottom:'.2rem'}}>Comments: {totalReviewFromProductFromProduct}</h2>
-      {!myLoading&&reviews&&reviews.length === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
+      {!myLoading&&!Loading&&!isLoading&&reviews&&reviews.length === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
         
       <div>
         {console.log(currentPage,result)}
-        {result === 0&&currentPage>1&&console.log('previous button appear')}
+        {(!myLoading&&result === 0&&totalReviewFromProduct>0)&&currentPage>1&&console.log('previous button appear')}
         <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${(currentPage>1&&!Loading)||((currentPage>1)&&(!myLoading&&!Loading&&result*1 === 0)&&totalReviewFromProduct>0)?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
       </div>
       
@@ -60,7 +60,7 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
         reviews&&reviews.length>0&&reviews.map(el=>{
           return editReviewClick&&user&&el.user._id === user._id?
             <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
-              <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,product._id)} />
+              <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,product._id, reviewEditCancel)} />
             </div>    
 
           :
@@ -92,12 +92,13 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
         }
       </div>
       <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&recentNum !==0&&totalReviewFromProductFromProduct>recentNum?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
+                                                                                    {/* !myLoading&&result === 0&&totalReviewFromProduct>0)&&currentPage>1&& */}
+        <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&recentNum !==0&&totalReviewFromProductFromProduct>recentNum&&result>0?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
         {recentNum !==0&&totalReviewFromProductFromProduct&&!myLoading&&reviews&&reviews.length>0?(
           <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReviewFromProductFromProduct}</h4>
         ):''}
       </div>
-      {user&&user.role === 'user'&&!createUserReview&&!myLoading&&reviews&&reviews.length >=0&&
+      {user&&user.role === 'user'&&!createUserReview&&!myLoading&&
         (product&&product.review&&!product.review.find(el=>el.user&&el.user._id === user._id)&&
         <CreateReviewForm sendReview={(e) => sendReview(e,product&&product.id, createUserReview)} />
       )}

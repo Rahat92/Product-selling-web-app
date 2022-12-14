@@ -378,7 +378,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
       })
       copiedList[index] = action.payload;
       return{
-        // ...state,
+        ...state,
         isLoading: false,
         reviews: copiedList
       }
