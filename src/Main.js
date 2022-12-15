@@ -10,9 +10,22 @@ import Products from './Products';
 import FilterProduct from './FilterProduct';
 const Main = memo(({anyFunc}) => {
 
-  
   const [ clickProduct, setClickProduct ] = useState(false);
   const [ id, setId ] = useState()
+  const [ createUserReview, setCreateUserReview ] = useState(false)
+  const [search, setSearch] = useState('');
+  const [ editReviewClick, setEditReviewClick ] = useState(false)
+  const [ photo, setPhoto ] = useState('')
+  const [deleteClick, setDeleteClick] = useState(false);
+  const [ editReview, setEditReview ] = useState({
+    review:'',
+    rating:''
+  })
+  const [productClick, setProductClick] = useState({
+    id:'',
+    isChange: false
+  })
+  
   const moreComment = useRef();
   let styl;
   if(moreComment.current){
@@ -21,34 +34,33 @@ const Main = memo(({anyFunc}) => {
     }
   }
   const { isAuthenticated, user, loading } = useSelector(state=>state.user)
-  const [ createUserReview, setCreateUserReview ] = useState(false)
+  const { product,Loading } = useSelector(state=> state.singleProduct)
+  const { result, isLoading } = useSelector(state=>state.reviews)
+  const {products, productsLoading,docNum, currentPage, totalPage } = useSelector(state=> state.allProduct)
+  console.log(docNum)
+
+  /*
+  
+  productsLoading(pin):false
+  docNum(pin):7
+  currentPage(pin):2
+  result(pin):4
+  totalPage(pin):2
+  resPerPage(pin):4
+  currentNum(pin):7
+
+  */
   const navigate = useNavigate()
   // const param = useParams();
-  const [search, setSearch] = useState('');
-  const [ editReviewClick, setEditReviewClick ] = useState(false)
-  const [ editReview, setEditReview ] = useState({
-    review:'',
-    rating:''
-  })
-  const [ photo, setPhoto ] = useState('')
 
   // const currentUrl = window.location.pathname;
-  const [deleteClick, setDeleteClick] = useState(false);
-  const [productClick, setProductClick] = useState({
-    id:'',
-    isChange: false
-  })
 
-  const { product,Loading } = useSelector(state=> state.singleProduct)
-  const { reviews, result, currentPage, totalReview, isLoading } = useSelector(state=>state.reviews)
 
-  const reviewLength = product.review&&product.review.length
   const [searchParam, setSearchParams] = useSearchParams();
   let yourpage = searchParam.get('page')
   const myPage = new URLSearchParams().get('page')
   // const sortvalue = new URLSearchParams(location).get('sort')
   const selector = useSelector(state=> state)
-  const {products, productsLoading} = useSelector(state=> state.allProduct)
   const dispatch = useDispatch();
   const price = selector.sortValue === 'price'?'-price':selector.sortValue
   if(yourpage === null){
@@ -85,7 +97,7 @@ const Main = memo(({anyFunc}) => {
     }
     return ()=> clearTimeout(timer)
 
-  },[dispatch])
+  },[search,yourpage, price, myPage])
   const doIncrease = () => {
     dispatch(increase())
     setSearchParams({
@@ -126,7 +138,6 @@ const Main = memo(({anyFunc}) => {
   }
   const postProduct = (e) => {
     e.preventDefault();
-    console.log(photo)
     selector.createAProduct = false;
     let formData = new FormData();
     formData.append('name', e.target.productName.value)
@@ -135,7 +146,7 @@ const Main = memo(({anyFunc}) => {
     formData.append('photo', photo)
     for (var pair of formData.entries()) {
       console.log(pair[0]+ ', ' + pair[1]); 
-  }
+    }
     dispatch(createAProduct(formData, navigate))
   }
   const trackSortValue =(e)=> {
@@ -160,7 +171,6 @@ const Main = memo(({anyFunc}) => {
   }
   const updateMyReview = (e, id, productId,reviewEditCancel) => {
     e.preventDefault()
-    console.log('should update')
     dispatch(updateReview(id, e.target.review.value, e.target.rating.value, getProduct, productId, setEditReviewClick, reviewEditCancel, productClick, setProductClick))
   }
   const sendProductDataToEditForm = (productName, productPrice, productPhoto, productCategory, id) => {

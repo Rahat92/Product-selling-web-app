@@ -5,15 +5,10 @@ import CreateProduct from "./CreateProduct"
 import Modal from "./Modal";
 
 const Products = memo(({ yourpage,deleteOneProduct, createProduct, postProduct, changeProductPhoto, doDecrease, doIncrease, selector,clickProduct,id,product,setDeleteClick, deleteClick, getProduct, user, deleteProduct,sendProductDataToEditForm }) => {
-  const { products, productsLoading, docNum, totalPage } = useSelector(state=>state.allProduct)
+  const {products, productsLoading,docNum, currentPage, totalPage } = useSelector(state=> state.allProduct)
   const dispatch = useDispatch()
   const [ productId, setProductId ] = useState()
-  useEffect(() => {
-    // if(products.length>0){
-    //   setProductId(products[0].id)
-    // }
-    // dispatch(getProductReviews(productId))
-  }, [productId])
+
   return(
     <div style={{flex: '0 0 20%'}}>
         <h1>Products: {docNum}</h1>
@@ -29,7 +24,7 @@ const Products = memo(({ yourpage,deleteOneProduct, createProduct, postProduct, 
         </ul>
         {products&&totalPage&&totalPage>1&&(
           <div>
-            <button onClick={doDecrease} disabled = {yourpage*1 === 1||selector.currentNum ===1 ? true:false}>decrease</button>
+            <button onClick={doDecrease} disabled = {currentPage === 1 ? true:false}>decrease</button>
             <button onClick={doIncrease} disabled = {yourpage >= totalPage?true:false}>increase</button>
           </div>
         )}

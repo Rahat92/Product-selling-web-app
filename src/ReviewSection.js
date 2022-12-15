@@ -48,7 +48,6 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
       {!myLoading&&!Loading&&!isLoading&&reviews&&reviews.length === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
         
       <div>
-        {console.log(currentPage,result)}
         {(!myLoading&&result === 0&&totalReviewFromProduct>0)&&currentPage>1&&console.log('previous button appear')}
                                                                       {/* ${!myLoading&&recentNum !==0&&totalReviewFromProduct>recentNum&&result>0                                                                                                      */}
         <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${(currentPage>1)||((currentPage>1)&&(!myLoading)&&totalReviewFromProduct>0)?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
