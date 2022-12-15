@@ -45,25 +45,22 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
   return(
     <div className="super_div">
       <h2 style={{marginBottom:'.2rem'}}>Comments: {totalReviewFromProduct}</h2>
-      {!myLoading&&reviews&&reviews.length === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
+      {totalReviewFromProduct === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
         
       <div>
-        {(!myLoading&&result === 0&&totalReviewFromProduct>0)&&currentPage>1&&console.log('previous button appear')}
-                                                                      {/* ${!myLoading&&recentNum !==0&&totalReviewFromProduct>recentNum&&result>0                                                                                                      */}
         <button type='button' style={{border:'none', marginBottom:'.5rem', visibility:`${(currentPage>1)||((currentPage>1)&&(!myLoading)&&totalReviewFromProduct>0)?'visible':'hidden'}`, fontWeight:'700'}} onClick={()=>previousCommentClickButton(product._id)}>Previous review</button>
       </div>
       
     
       <div style={{borderRadius:'3px', color:'brown', overflow:'hidden'}}>
         {
-
         reviews&&reviews.length>0&&reviews.map(el=>{
           return editReviewClick&&user&&el.user._id === user._id?
             <div style = {{border:`${user&&el.user._id === user._id?'2px':'1px'} solid ${user&&el.user._id === user._id?'red':''}`, padding:'.5rem'}}>
               <UpdateReviewForm reviewEditCancel={reviewEditCancel} editReview = {editReview} updateMyReview={(e)=>updateMyReview(e,el._id,product._id, reviewEditCancel)} />
             </div>    
 
-          :
+          :totalReviewFromProduct>0&&
             <div className={`comment ${user&&el.user&&el.user._id === user._id&& 'user_comment'}`} style = {{ position:'relative', padding:'.4rem', opacity: isLoading&&productChange&&'.5'}}>
               <h4 style = {{color:user&&el.user&&el.user._id === user._id?'green':'', padding:'0px', margin:'0', fontSize: user&&el.user&&el.user._id === user._id? '1.5rem':'1rem', fontWeight:user&&el.user&&el.user._id === user._id?700:400}}>
                 {el.user?(
