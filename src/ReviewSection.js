@@ -45,7 +45,7 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
   return(
     <div className="super_div">
       <h2 style={{marginBottom:'.2rem'}}>Comments: {totalReviewFromProduct}</h2>
-      {!myLoading&&!Loading&&!isLoading&&reviews&&reviews.length === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
+      {!myLoading&&reviews&&reviews.length === 0&&(<div><h2 style={{color:'red'}}>No comment available</h2></div>)}
         
       <div>
         {(!myLoading&&result === 0&&totalReviewFromProduct>0)&&currentPage>1&&console.log('previous button appear')}
