@@ -17,7 +17,7 @@ const Products = memo(({ yourpage,deleteOneProduct, createProduct, postProduct, 
             return (
               <div className= {clickProduct&& el.id === product.id?'active_product':''}>
                 <li key = {el.id}>{el.name}({el.price}) <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>delete</button><button onClick={()=>sendProductDataToEditForm(el.name, el.price, el.photo, el.category, el.id)}>edit product</button></>)}</li>
-                {deleteClick&&id===el._id?<Modal id = {el._id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
+                {deleteClick&&id===el._id?<Modal item = {el} id = {el._id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
               </div>
             )
           }):products.length === 0&&<div><h1 style={{color:'red'}}>No document found</h1></div>}

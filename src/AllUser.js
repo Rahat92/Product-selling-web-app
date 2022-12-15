@@ -65,7 +65,7 @@ const AllUser = ({ getUserData }) => {
                 )}
                 &nbsp;
                 <button onClick={()=>deleteUser(el._id)}>delete</button></h3></li>
-                {deleteClick? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneUser} />:''}
+                {deleteClick&&el._id === id? <Modal id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneUser} />:''}
               </div>
             )
         })}
