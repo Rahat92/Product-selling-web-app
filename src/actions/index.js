@@ -61,7 +61,7 @@ import {
   LOG_IN_FAIL,
 } from "../const"
 import requestCreator from '../axios.js';
-import { GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
+import { CREATE_PRODUCT_FAIL, CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, DELETE_ONE_PRODUCT_FAIL, DELETE_ONE_PRODUCT_REQUEST, DELETE_ONE_PRODUCT_SUCCESS, GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
 export const increase = () => {
   return {
     type: increaseNum,
@@ -160,17 +160,27 @@ export const getSingleProduct = (id, setReviewPageNo, currentPage) => {
   }
 }
 
-export const deleteOneProduct = (id, setDeleteClick) => {
-  let response;
-  return async (dispatch) => {
-    await requestCreator.delete(`/products/${id}`).then(data=>{
-      response = data;
-    }).catch(err=>  response = err.response)
-    dispatch({
-      type:deleteAProduct,
-      payload:response
-    })
-    setDeleteClick(false)
+export const deleteOneProduct = (id, setDeleteClick, productId,setCreateUserReview,setClickProduct ) => {
+  return async(dispatch) => {
+    try{
+      dispatch({
+        type: DELETE_ONE_PRODUCT_REQUEST
+      })
+      await requestCreator.delete(`/products/${id}`)
+      dispatch({
+        type: DELETE_ONE_PRODUCT_SUCCESS,
+        payload: id
+      })
+      setClickProduct(false)
+      console.log(setClickProduct)
+      setDeleteClick(false)
+    }catch(error){
+      dispatch({
+        type: DELETE_ONE_PRODUCT_FAIL,
+        payload: error.response.data
+      })
+    }
+
   }
 }
 export const editProduct = (formData, id, navigate) => {
@@ -204,20 +214,27 @@ export const handleChange = (value) => {
 export const createNewProduct = () => {
   return {
     type: createProduct,
+
   }
 }
-export const createAProduct = (product, price, navigate) => {
+export const createAProduct = (product, price, navigate, e) => {
   return async (dispatch) => {
-    console.log(product)
     try{
-      const response = await requestCreator.post(`/products`,product)
       dispatch({
-        type:createASingleProduct,
-        payload: response
+        type: CREATE_PRODUCT_REQUEST
+      })
+      const { data } = await requestCreator.post(`/products`,product)
+      dispatch({
+        type:CREATE_PRODUCT_SUCCESS,
+        payload: data.doc
       }) 
+      e.target.productName.value = ''
+      e.target.productCategory.value = ''
+      e.target.price.value = ''
+      e.target.photo.value = ''
     }catch(error){
       dispatch({
-        type:'createProductFail',
+        type:CREATE_PRODUCT_FAIL,
         payload: error.response.data
       })
     }
@@ -339,7 +356,7 @@ export const createReview = (review, rating,getProduct, productId, setCreateUser
     }
   }
 }
-export const deleteOneReview = (id, setDeleteClick, getProduct,productId, setReviewPageNo, currentPage, result, setCreateUserReview) => {
+export const deleteOneReview = (id, setDeleteClick,productId, setCreateUserReview) => {
   return async(dispatch) => {
     try{
       dispatch({

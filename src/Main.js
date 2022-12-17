@@ -9,7 +9,6 @@ import ReviewSection from './ReviewSection';
 import Products from './Products';
 import FilterProduct from './FilterProduct';
 const Main = memo(({anyFunc}) => {
-
   const [ clickProduct, setClickProduct ] = useState(false);
   const [ id, setId ] = useState()
   const [ createUserReview, setCreateUserReview ] = useState(false)
@@ -33,28 +32,16 @@ const Main = memo(({anyFunc}) => {
       styl = '3px'
     }
   }
-  const { isAuthenticated, user, loading } = useSelector(state=>state.user)
+  const {  user } = useSelector(state=>state.user)
   const { product,Loading } = useSelector(state=> state.singleProduct)
   const { result, isLoading } = useSelector(state=>state.reviews)
-  const {products, productsLoading,docNum, currentPage, totalPage } = useSelector(state=> state.allProduct)
-  console.log(docNum)
+  const { productsLoading } = useSelector(state=> state.allProduct)
 
-  /*
-  
-  productsLoading(pin):false
-  docNum(pin):7
-  currentPage(pin):2
-  result(pin):4
-  totalPage(pin):2
-  resPerPage(pin):4
-  currentNum(pin):7
-
-  */
+ 
   const navigate = useNavigate()
   // const param = useParams();
 
   // const currentUrl = window.location.pathname;
-
 
   const [searchParam, setSearchParams] = useSearchParams();
   let yourpage = searchParam.get('page')
@@ -67,6 +54,7 @@ const Main = memo(({anyFunc}) => {
     yourpage = 1
   }
   useEffect(()=>{
+    document.title = 'Home'
     setId(null)
     setClickProduct(false)
     setCreateUserReview(false)
@@ -95,7 +83,10 @@ const Main = memo(({anyFunc}) => {
     if(search.length === 0){
       request()
     }
-    return ()=> clearTimeout(timer)
+    return ()=> {
+      clearTimeout(timer)
+      setId(null)
+    }
 
   },[search,yourpage, price, myPage])
   const doIncrease = () => {
@@ -138,16 +129,18 @@ const Main = memo(({anyFunc}) => {
   }
   const postProduct = (e) => {
     e.preventDefault();
-    selector.createAProduct = false;
+    selector.createAProduct = true;
     let formData = new FormData();
     formData.append('name', e.target.productName.value)
     formData.append('category', e.target.productCategory.value)
     formData.append('price', e.target.price.value)
-    formData.append('photo', photo)
+    if(photo){
+      formData.append('photo', photo)
+    }
     for (var pair of formData.entries()) {
       console.log(pair[0]+ ', ' + pair[1]); 
     }
-    dispatch(createAProduct(formData, navigate))
+    dispatch(createAProduct(formData, navigate,undefined, e))
   }
   const trackSortValue =(e)=> {
     dispatch(trackSortedValue(e.target.value))
@@ -179,7 +172,7 @@ const Main = memo(({anyFunc}) => {
   }
   
   const changeProductPhoto = (e) => {
-    setPhoto(e.target.files[0])
+    setPhoto(e.target.files[0][0])
   }
   const allProduct = () => {
       return(
@@ -187,6 +180,7 @@ const Main = memo(({anyFunc}) => {
             <Products 
               yourpage = {yourpage}
               deleteOneProduct = {deleteOneProduct} 
+              setClickProduct = {setClickProduct}
               createProduct = {createProduct}
               postProduct = {postProduct}
               changeProductPhoto = {changeProductPhoto}

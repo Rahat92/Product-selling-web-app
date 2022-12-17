@@ -12,6 +12,7 @@ const AllUser = ({ getUserData }) => {
   console.log(documentNumber)
   const dispatch = useDispatch()
   useEffect(()=> {
+    document.title = 'all user'
     dispatch(getAllUser())
   },[dispatch])
   const deleteUser = (userId) => {
@@ -45,9 +46,9 @@ const AllUser = ({ getUserData }) => {
   //   )
   // }
   return(
-    <div>
+    <div style={{marginTop:'1rem'}}>
       <h2>Total Users: {documentNumber}</h2>
-      <ul style={{listStyle: 'none'}}>
+      <ul style={{listStyle: 'none', marginTop:'1rem'}}>
         {users.map(el=>{
             return (
               <div style={{display:'flex', alignItems:'center'}}>

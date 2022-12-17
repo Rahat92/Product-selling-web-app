@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getLogOut, getMe } from './actions';
-
+import './UserState.css'
 const UserState = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -21,13 +21,13 @@ const UserState = () => {
   return(
     <div style={{width:'100px', display:'flex', justifyContent:'center'}}>
         {!loading&&isAuthenticated&&(
-          <button type = 'button' onClick={()=>{
+          <button className='countButton' type = 'button' onClick={()=>{
             dispatch(getLogOut(navigate))
             // setTimeout(()=>goLogin(),500)
           }}>Log out</button>
         )}
         {!loading&&!isAuthenticated&&!window.location.pathname.includes('/login')&&(
-            <button type = 'button' onClick={()=>navigate('/login')}>Login</button>
+            <button className='countButton' type = 'button' onClick={()=>navigate('/login')}>Login</button>
         )}
     </div>
   )

@@ -1,12 +1,11 @@
-import React, {memo, useEffect, useState} from "react"
+import React, {memo, useEffect} from "react"
 import { Link } from "react-router-dom"
 import CreateReviewForm from "./CreateReviewForm"
 import Modal from "./Modal"
 import UpdateReviewForm from "./UpdateReviewForm"
 import './ReviewSection.css';
 import { useDispatch, useSelector } from "react-redux"
-import { createReview, getProductReviews, getSingleProduct } from "./actions"
-//is not false
+import { createReview, getProductReviews } from "./actions"
 const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,clickProduct, createUserReview, setCreateUserReview, deleteOneReview,setDeleteClick, deleteClick,editReviewClick, editMyReview, moreComment,Loading, reviewEditCancel, editReview, updateMyReview}) => {
   const dispatch = useDispatch()
   const { reviews, result, recentNum,totalReview, currentPage,isLoading } = useSelector(state=>state.reviews);
@@ -89,7 +88,6 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
       )}
         
       <div style={{ position:'relative', display:'flex', alignItems:'flex-start', justifyContent:'space-between'}}>
-                                                                                    {/* !myLoading&&result === 0&&totalReviewFromProduct>0)&&currentPage>1&& */}
         <button ref={moreComment} type='button' style={ {outline:'0', marginTop:'.5rem', border:'none', visibility:`${!myLoading&&recentNum !==0&&totalReviewFromProduct>recentNum&&result>0?'visible':'hidden'}`, fontWeight:'700'} } onClick = {()=>moreCommentButtonClick(product&&product._id)}>More comments</button>
         {recentNum !==0&&totalReviewFromProduct&&!myLoading&&reviews&&reviews.length>0?(
           <h4 style={{ marginTop:'.5rem' }}>{recentNum} of {totalReviewFromProduct}</h4>

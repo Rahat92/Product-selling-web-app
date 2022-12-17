@@ -55,7 +55,7 @@ import {
   UPDATE_USER_ROLE_SUCCESS 
 } from "../const";
 import { combineReducers } from 'redux'
-import { GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
+import { CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, DELETE_ONE_PRODUCT_REQUEST, DELETE_ONE_PRODUCT_SUCCESS, GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
     case increaseNum:
@@ -96,6 +96,31 @@ const allProduct = (state = {products:{}}, action) => {
       return{
         productsLoading: false
       }
+    case CREATE_PRODUCT_REQUEST:
+      return {
+        ...state,
+        productsLoading: true,
+      }
+    case CREATE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        productsLoading: false,
+        docNum: state.docNum+1,
+        products: [...state.products, action.payload]
+      }
+    case DELETE_ONE_PRODUCT_REQUEST:
+      return {
+        ...state,
+        productsLoading: false,
+      }
+    case DELETE_ONE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        result: state.result-1,
+        docNum: state.docNum - 1,
+        recentNum: state.currentNum - 1,
+        products: [...state.products].filter(el => el._id !== action.payload)
+      }
     default:
       return state;
   }
@@ -123,12 +148,12 @@ const getProductReducer = (state = {product:{}},action) => {
       return state
   }
 }
-const deleteProductReducer = (initialState = {}, action)=>{
-  if(action.type === deleteAProduct){
-    return initialState = action.payload
-  }
-  return initialState
-}
+// const deleteProductReducer = (initialState = {}, action)=>{
+//   if(action.type === deleteAProduct){
+//     return initialState = action.payload
+//   }
+//   return initialState
+// }
 const editProductReducer = (initialState = {}, action) => {
   if(action.type === editSingleProduct){
     return initialState = action.payload
@@ -147,12 +172,12 @@ const createSingleProduct = (initialState = false, action) => {
   }
   return initialState
 }
-const createBrandNewProduct = (initialState = {}, action) => {
-  if(action.type === createASingleProduct){
-    return initialState = action.payload
-  }
-  return initialState;
-}
+// const createBrandNewProduct = (initialState = {}, action) => {
+//   if(action.type === createASingleProduct){
+//     return initialState = action.payload
+//   }
+//   return initialState;
+// }
 
 const sortValueReducer = (initialState = 'price,-ratingsAverage', action) => {
   if(action.type === tracsortvalue){
@@ -327,7 +352,7 @@ const reviewReducer = (state = {reviews:[]}, action) => {
     case createUserReviewRequest:
       return {
         ...state,
-        isLoading: true
+        // isLoading: true
       }
     case createUserReviewSuccess:
       return {
@@ -358,15 +383,15 @@ const reviewReducer = (state = {reviews:[]}, action) => {
         recentNum: state.recentNum - 1,
         reviews: [...state.reviews ].filter(el=>el._id!==action.payload)
       }
-    // case deleteReviewFail:
-    //   return {
-    //     ...state,
-    //     loading: false,
-    //   }
+    case deleteReviewFail:
+      return {
+        ...state,
+        isLoading: false,
+      }
     case updateReviewRequest:
       return {
         ...state,
-        isLoading: true,
+        // isLoading: true,
       }
     case updateReviewSuccess:
       const copiedList = [...state.reviews]
@@ -513,11 +538,11 @@ export default combineReducers({
   currentNum: numberReducer,
   allProduct: allProduct,
   singleProduct:getProductReducer,
-  deleteproduct:deleteProductReducer,
+  // deleteproduct:deleteProductReducer,
   editedProduct:editProductReducer,
   changeInput: handleInputReducer,
   createAProduct: createSingleProduct,
-  createBrandNewProduct:createBrandNewProduct,
+  // createBrandNewProduct:createBrandNewProduct,
   sortValue:sortValueReducer,
   user:userReducer,
   reviews: reviewReducer,
