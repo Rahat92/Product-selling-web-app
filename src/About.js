@@ -55,7 +55,8 @@ const About = () => {
       }
     })
   }
-  const updateMyData = (data, type) => {
+  const updateMyData = (data, type, e) => {
+    e.preventDefault()
     if(!data) return
     setDisplay('block')  
     dispatch(updateCurrentUserData(data, type, updateMe, setMsg))
@@ -82,8 +83,8 @@ const About = () => {
       <div>
         {/* <img style={{width:'100px', height: '100px'}} src = {me.photo&&URL.createObjectURL(me.photo)} alt = 'profile review pic' /> */}
         <ul style = {{listStyle:'none', fontSize:'25px'}}>
-          <li>Name:{me.click&&me.type === 'name'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'name')} type = 'text' defaultValue={user.name}/>: user.name} <button type = 'submit' onClick={me.click&&me.type === 'name'?()=>updateMyData(me.name, 'name'):()=>editMyData(user.name,'name')}>{me.click&&me.type === 'name'?'update':'edit'}</button></li>
-          <li>Email:{me.click && me.type === 'email'?<input style={{width: '100px'}} onChange={(e)=>changeMyData(e,'email')} type = 'text' defaultValue={user.email}/>: user.email} <button type = 'submit' onClick={me.click&&me.type === 'email'?()=>updateMyData(me.email, 'email'):()=>editMyData(user.email,'email')}>{me.click&&me.type === 'email'?'update':'edit'}</button></li>
+          <li>Name:{me.click&&me.type === 'name'?<form onSubmit={(e)=>updateMyData(me.name,'name',e)} style={{display:'inline-block'}}><input style={{width: '200px'}} onChange={(e)=>changeMyData(e,'name')} type = 'text' defaultValue={user.name}/></form>: user.name} <button type = 'submit' onClick={me.click&&me.type === 'name'?(e)=>updateMyData(me.name, 'name',e):()=>editMyData(user.name,'name')}>{me.click&&me.type === 'name'?'update':'edit'}</button></li>
+          <li>Email:{me.click && me.type === 'email'?<form onSubmit={(e)=>updateMyData(me.email,'email',e)} style={{display:'inline-block'}}><input style={{width: '200px'}} onChange={(e)=>changeMyData(e,'email')} type = 'text' defaultValue={user.email}/></form>: user.email} <button type = 'submit' onClick={me.click&&me.type === 'email'?(e)=>updateMyData(me.email, 'email',e):()=>editMyData(user.email,'email')}>{me.click&&me.type === 'email'?'update':'edit'}</button></li>
             {me.type === 'email'&& message&&message.message.includes('E11000')?<h3 style={{color:'red', margin: '0', padding: '0', display: display }}>duplicate field error</h3>:''}
           <li>Role: {user.role}</li>
         </ul>

@@ -272,7 +272,7 @@ const userReducer = (initialState = {user:{}}, action)=>{
     case UPDATE_MY_PROFILE_REQUEST:
       return {
         ...initialState,
-        loading: true,
+        // loading: true,
       }
     case UPDATE_MY_PROFILE_SUCCESS:
       return {
