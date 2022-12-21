@@ -95,6 +95,15 @@ const Main = memo(({anyFunc}) => {
     }
 
   },[search,yourpage, price, myPage])
+  useEffect(() => {
+    if(id&&clickProduct){
+      dispatch(getSingleProduct(id))
+      dispatch(getProductReviews(id))
+    }
+    // return () => {
+    //   setId(null)
+    // }
+  },[productClick.id, productClick.isChange])
   console.log('clickProduct',clickProduct)
   console.log('id',id)
   const doIncrease = () => {
@@ -111,8 +120,8 @@ const Main = memo(({anyFunc}) => {
   }
   
   const getProduct = (productId) => {
-    dispatch(getSingleProduct(productId))
-    dispatch(getProductReviews(productId))
+    // dispatch(getSingleProduct(productId))
+    // dispatch(getProductReviews(productId))
     setId(productId)
     setCreateUserReview(false)
     setClickProduct(true)

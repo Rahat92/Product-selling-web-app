@@ -83,3 +83,4 @@ export const EDIT_PRODUCT_FAIL = 'EDIT_PRODUCT_FAIL';
 ////// for experiment////////
 export const createProductNameAndPrice = 'CREATE_PRODUCT_NAME_AND_PRICE';
 export const getProductNameAndPrice = 'GET_PRODUCT_NAME_AND_PRICE';
+export const CLEARERROR = 'CLEARERROR'

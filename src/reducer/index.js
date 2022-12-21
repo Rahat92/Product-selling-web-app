@@ -52,7 +52,8 @@ import {
   UPDATE_MY_PROFILE_REQUEST, 
   UPDATE_MY_PROFILE_SUCCESS, 
   UPDATE_USER_ROLE_REQUEST, 
-  UPDATE_USER_ROLE_SUCCESS 
+  UPDATE_USER_ROLE_SUCCESS, 
+  CLEARERROR
 } from "../const";
 import { combineReducers } from 'redux'
 import { CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, DELETE_ONE_PRODUCT_REQUEST, DELETE_ONE_PRODUCT_SUCCESS, GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
@@ -290,44 +291,31 @@ const userReducer = (initialState = {user:{}}, action)=>{
     case UPDATE_USER_PASSWORD_REQUEST:
       return {
         ...initialState,
-        loading: true,
+        // loading: true,
       }
     case UPDATE_USER_PASSWORD_SUCCESS:
+      console.log(action.payload)
       return {
         ...initialState,
-        user: action.payload
+        loading:false,
+        isAuthenticated: true,
+        user: action.payload,
+        message:'Password update successfully.'
       }
     case UPDATE_USER_PASSWORD_FAIL:
       return {
         ...initialState,
         message: action.payload
       }
+    case CLEARERROR:
+      return {
+        ...initialState,
+        message:null
+      }
     default:
       return initialState
   }
 }
-// const logOutReducer = (initialState = {}, action) => {
-//   switch(action.type){
-//     case LOG_OUT_REQUEST:
-//       return {
-//         loading:true,
-//         isAuthenticated:true,
-//       }
-//     case LOG_OUT_SUCCESS:
-//       return {
-//         loading:false,
-//         isAuthenticated:false,
-//         user:null
-//       }
-//     case LOG_OUT_FAIL:
-//       return {
-//         loading: false,
-//         isAuthenticated: true
-//       }
-//     default:
-//       return initialState
-//   }
-// }
 
 const adminPowerReducer = (state = {users:{}}, action) => {
   switch(action.type){
@@ -461,7 +449,6 @@ const users = (state = {users:[]}, action) => {
           index = i;
         }
       })
-      console.log(index)
       copiedList[index] = action.payload;
       console.log(copiedList)
       return{

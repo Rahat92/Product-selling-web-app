@@ -59,6 +59,7 @@ import {
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
   LOG_IN_FAIL,
+  CLEARERROR,
 } from "../const"
 import requestCreator from '../axios.js';
 import { CREATE_PRODUCT_FAIL, CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, DELETE_ONE_PRODUCT_FAIL, DELETE_ONE_PRODUCT_REQUEST, DELETE_ONE_PRODUCT_SUCCESS, GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
@@ -173,7 +174,6 @@ export const deleteOneProduct = (id, setDeleteClick, productId,setCreateUserRevi
         payload: id
       })
       setClickProduct(false)
-      console.log(setClickProduct)
       setDeleteClick(false)
     }catch(error){
       dispatch({
@@ -329,7 +329,7 @@ export const getLogOut = (navigate) => {
     }
   }
 }
-export const updateUserPassword = (currentPassword, newPassword, confirmPassword) => {
+export const updateUserPassword = (e,currentPassword, newPassword, confirmPassword) => {
   return async (dispatch) => {
     try{
       dispatch({
@@ -342,11 +342,14 @@ export const updateUserPassword = (currentPassword, newPassword, confirmPassword
         type:UPDATE_USER_PASSWORD_SUCCESS,
         payload:data.user
       })
-
+      e.target.currentPassword.value = '';
+      e.target.newPassword.value = '';
+      e.target.confirmPassword.value = '';
     }catch(error){
+      console.log(error.response.data.message)
       dispatch({
         type:UPDATE_USER_PASSWORD_FAIL,
-        payload:error.response.data
+        payload:error.response.data.message
       })
     }
   }
@@ -552,7 +555,6 @@ export const updateUserRole = (userId, role, setUpdateRoleClick) => {
       const { data } = await requestCreator.patch(`users/${userId}`,{
         role
       })
-      console.log(data)
       dispatch({
         type: UPDATE_USER_ROLE_SUCCESS,
         payload: data.user
@@ -567,7 +569,6 @@ export const updateUserRole = (userId, role, setUpdateRoleClick) => {
   }
 }
 export const updateCurrentUserData = (needUpdateData, type, updateMe, setMsg) => {
-  console.log(needUpdateData)
   return async(dispatch) => {
     try{
       dispatch({
@@ -597,5 +598,11 @@ export const updateCurrentUserData = (needUpdateData, type, updateMe, setMsg) =>
       })
       setMsg(true)
     }
+  }
+}
+
+export const clearError = () => {
+  return {
+    type: CLEARERROR
   }
 }

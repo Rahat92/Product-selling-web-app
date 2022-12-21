@@ -20,13 +20,13 @@ const UserState = () => {
   // }
   return(
     <div style={{width:'100px', display:'flex', justifyContent:'center'}}>
-        {!loading&&isAuthenticated&&(
+        {isAuthenticated&&(
           <button className='countButton' type = 'button' onClick={()=>{
             dispatch(getLogOut(navigate))
             // setTimeout(()=>goLogin(),500)
           }}>Log out</button>
         )}
-        {!loading&&!isAuthenticated&&!window.location.pathname.includes('/login')&&(
+        {!isAuthenticated&&!window.location.pathname.includes('/login')&&(
             <button className='countButton' type = 'button' onClick={()=>navigate('/login')}>Login</button>
         )}
     </div>

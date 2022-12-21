@@ -1,19 +1,24 @@
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { updateUserPassword } from "./actions";
+import { CLEARERROR } from "./const";
 
 const UpdatePassword = () => {
+  const { message } = useSelector(state=>state.user)
+  useEffect(()=>{
+    console.log(message)
+    if(message){
+      setTimeout(()=>{
+        dispatch({
+          type:CLEARERROR
+        })
+      },5000)
+    }
+  },[message])
   const dispatch = useDispatch()
   const updateCurrentPassword = (e) => {
     e.preventDefault()
-    // console.log('hello world')
-    // let formData = new FormData();
-    // formData.set('currentPassword',e.target.currentPassword.value)
-    // formData.set('password',e.target.newPassword.value)
-    // formData.set('passwordConfirm',e.target.confirmPassword.value)
-    // for (var pair of formData.entries()) {
-    //   console.log(pair[0]+ ', ' + pair[1]); 
-    // }
-    dispatch(updateUserPassword(e.target.currentPassword.value, e.target.newPassword.value, e.target.confirmPassword.value))
+    dispatch(updateUserPassword(e,e.target.currentPassword.value, e.target.newPassword.value, e.target.confirmPassword.value))
   }
   return (
     <div style={{marginTop: '2rem'}}>
@@ -34,6 +39,11 @@ const UpdatePassword = () => {
         </table>
         <input type = 'submit' value = 'Update'/>
       </form>
+      {message&&(
+        <div style={{color:'red'}}>
+          {message}
+        </div>
+      )}
     </div>
   )
 }
