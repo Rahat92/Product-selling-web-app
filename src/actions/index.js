@@ -62,6 +62,7 @@ import {
 } from "../const"
 import requestCreator from '../axios.js';
 import { CREATE_PRODUCT_FAIL, CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, DELETE_ONE_PRODUCT_FAIL, DELETE_ONE_PRODUCT_REQUEST, DELETE_ONE_PRODUCT_SUCCESS, GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
+import { UPDATE_USER_PASSWORD_FAIL, UPDATE_USER_PASSWORD_REQUEST, UPDATE_USER_PASSWORD_SUCCESS } from "../userConstant";
 export const increase = () => {
   return {
     type: increaseNum,
@@ -324,6 +325,28 @@ export const getLogOut = (navigate) => {
       dispatch({
         type:LOG_OUT_FAIL,
         payload:error.response
+      })
+    }
+  }
+}
+export const updateUserPassword = (currentPassword, newPassword, confirmPassword) => {
+  return async (dispatch) => {
+    try{
+      dispatch({
+        type: UPDATE_USER_PASSWORD_REQUEST
+      })
+      const {data} = await requestCreator.patch('/users/updatepassword',{
+        currentPassword, password:newPassword, passwordConfirm:confirmPassword 
+      })
+      dispatch({
+        type:UPDATE_USER_PASSWORD_SUCCESS,
+        payload:data.user
+      })
+
+    }catch(error){
+      dispatch({
+        type:UPDATE_USER_PASSWORD_FAIL,
+        payload:error.response.data
       })
     }
   }

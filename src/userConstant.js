@@ -19,4 +19,8 @@ export const log_out_request = 'LOG_OUT_REQUEST';
 export const log_out_success = 'LOG_OUT_SUCCESS';
 export const log_out_fail = 'LOG_OUT_FAIL';
 
+export const UPDATE_USER_PASSWORD_REQUEST = 'UPDATE_USER_PASSWORD_REQUEST'
+export const UPDATE_USER_PASSWORD_SUCCESS = 'UPDATE_USER_PASSWORD_SUCCESS'
+export const UPDATE_USER_PASSWORD_FAIL = 'UPDATE_USER_PASSWORD_FAIL'
+
 

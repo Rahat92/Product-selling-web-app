@@ -56,6 +56,7 @@ import {
 } from "../const";
 import { combineReducers } from 'redux'
 import { CREATE_PRODUCT_REQUEST, CREATE_PRODUCT_SUCCESS, DELETE_ONE_PRODUCT_REQUEST, DELETE_ONE_PRODUCT_SUCCESS, GET_A_PRODUCT_FAIL, GET_A_PRODUCT_REQUEST, GET_A_PRODUCT_SUCCESS, GET_PRODUCTS_FAIL, GET_PRODUCTS_REQUEST, GET_PRODUCTS_SUCCESS } from "../const/productConsts";
+import { UPDATE_USER_PASSWORD_FAIL, UPDATE_USER_PASSWORD_REQUEST, UPDATE_USER_PASSWORD_SUCCESS } from "../userConstant";
 const numberReducer = (initialState = 1, action) => {
   switch(action.type){
     case increaseNum:
@@ -284,6 +285,21 @@ const userReducer = (initialState = {user:{}}, action)=>{
         ...initialState,
         loading: false,
         isAuthenticated: false,
+        message: action.payload
+      }
+    case UPDATE_USER_PASSWORD_REQUEST:
+      return {
+        ...initialState,
+        loading: true,
+      }
+    case UPDATE_USER_PASSWORD_SUCCESS:
+      return {
+        ...initialState,
+        user: action.payload
+      }
+    case UPDATE_USER_PASSWORD_FAIL:
+      return {
+        ...initialState,
         message: action.payload
       }
     default:

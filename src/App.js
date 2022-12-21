@@ -20,6 +20,7 @@ import User from './User';
 import store from './store';
 import './App.css';
 import ProtectedRoute from './ProtectedRoute';
+import UpdatePassword from './UpdatePassword';
 const App = () => {
   const pathName = window.location.pathname
   const [ productData, setProductData ] = useState({
@@ -70,16 +71,24 @@ const App = () => {
           <Route path = {`/params`} element = {<Params/>}/>
           <Route path = {`/search/:keyword`} element = {<Main />}/>
           <Route path = {`/login`} element = {<Login/>}/>
-          <Route path = {`/me`} element = {<About />}/>
+          {/* <Route path = {`/me`} element = {<About />}/> */}
           {/* <Route path = {`product/:id`} element = {<Navigate to = '/'/>}/> */}
           <Route path = {`/count`} element = {<Count />}/>
           <Route path = {`/countmany`} element = {<CountMany />}/>
           <Route path = {`/names/`} element = {<Names />}/>
-          <Route path = {`/profile/:userId`} element = {<User name = {name} email = {email} role = {role} photo = {photo} />}/>
+          {/* <Route path = {`/profile/:userId`} element = {<User name = {name} email = {email} role = {role} photo = {photo} />}/> */}
           <Route path = {`/register`} element = {<Register />}/>
-          <Route element = {<ProtectedRoute />}>
+          {/* <Route path = {`/password/update`} element = {<UpdatePassword />}/> */}
+          <Route element = {<ProtectedRoute isAdmin = {true} />}>
             <Route element = {<h1>Hello world! this route is protected.only for admin</h1>} path = '/admin/dashboard'/>
             <Route element = {<AllUser getUserData = {getUserData} />} path = {`/admin/alluser`} />
+          </Route>
+          <Route element = {<ProtectedRoute />}>
+            <Route element = {<h1>this is Login user rout. not requiring to be an admin</h1>} path = '/normal'/>
+            <Route element = {<AllUser getUserData = {getUserData} />} path = {`/admin/alluser`} />
+            <Route path = {`/profile/:userId`} element = {<User name = {name} email = {email} role = {role} photo = {photo} />}/>
+            <Route path = {`/me`} element = {<About />}/>
+            <Route path = {`/password/update`} element = {<UpdatePassword />}/>
           </Route>
         </Routes>
       </Router>

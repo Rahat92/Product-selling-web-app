@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getMe, updateCurrentUserData } from './actions';
 
 const About = () => {
@@ -26,9 +26,9 @@ const About = () => {
     }
     return () => clearTimeout(dismiss)
   },[msg,message])
-  if(user === null||user==={}){
-    navigate('/login')
-  }
+  // if(user === null||user==={}){
+  //   navigate('/login')
+  // }
   const editMyData = (data, type) => {
     updateMe(prev=>{
       return {
@@ -87,6 +87,8 @@ const About = () => {
             {me.type === 'email'&& message&&message.message.includes('E11000')?<h3 style={{color:'red', margin: '0', padding: '0', display: display }}>duplicate field error</h3>:''}
           <li>Role: {user.role}</li>
         </ul>
+
+        <Link to = '/password/update'>Change password</Link>
       </div>
       <div>
         {!user.photo?<div style={{width: '300px',height: '300px',position: 'relative', top:'50%', left: '50%', transform: 'translate(-50% -50%)'}}><h1>Loading...</h1></div>:(
@@ -96,6 +98,7 @@ const About = () => {
           <input type='file' onChange={(e)=>changeMyData(e,'photo')} name = 'photo' />
           <input type = 'submit' value = 'save' />
         </form>
+        
       </div>
     </div>
 )

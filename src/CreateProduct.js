@@ -21,7 +21,8 @@ const CreateProduct = ({postProduct, changeProductPhoto}) => {
           <input id = 'price' type = 'number' name = 'price' />
         </div>
         <div>
-          <input type = 'file' onChange={changeProductPhoto} name = 'photo' />
+          <label htmlFor='image'>Upload image</label>
+          <input id = 'image' type = 'file' onChange={changeProductPhoto} multiple name = 'photo' />
         </div>
         <div>
           <input type= 'submit' value= 'create'/>

@@ -1,12 +1,13 @@
 import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "./actions";
 import CreateProduct from "./CreateProduct"
 import Modal from "./Modal";
 
 const Products = memo(({ setClickProduct,yourpage,deleteOneProduct, createProduct, postProduct, changeProductPhoto, doDecrease, doIncrease,clickProduct,id,product,setDeleteClick, deleteClick, getProduct, user, deleteProduct,sendProductDataToEditForm }) => {
   const {products,docNum, currentPage, totalPage } = useSelector(state=> state.allProduct)
-  const selector  = useSelector(state=> state)
-  console.log(selector&&selector.createAProduct)
+  const selector  = useSelector(state => state)
+
   return(
     <div style={{flex: '0 0 20%'}}>
         <h1>Products: {docNum}</h1>

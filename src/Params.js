@@ -5,7 +5,7 @@ const Params = () =>{
   console.log(params)
   const name = new URLSearchParams(params).get('name')
   console.log(name)
-  return(
+  return( 
     <div>{name}</div>
   )
 }

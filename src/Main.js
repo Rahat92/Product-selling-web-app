@@ -55,10 +55,14 @@ const Main = memo(({anyFunc}) => {
   }
   useEffect(()=>{
     document.title = 'Home'
-    setId(null)
-    setClickProduct(false)
-    setCreateUserReview(false)
-    setEditReviewClick(false)
+    // setId(null)
+    // setClickProduct(prev=>false)
+    // setCreateUserReview(false)
+    // setEditReviewClick(false)
+    // setProductClick({
+    //   id: null,
+    //   isChange: null
+    // })
     // setClickProduct(false)
     if(yourpage){
       selector.currentNum = yourpage
@@ -84,11 +88,15 @@ const Main = memo(({anyFunc}) => {
       request()
     }
     return ()=> {
+      console.log('clean works')
       clearTimeout(timer)
+      setClickProduct(null)
       setId(null)
     }
 
   },[search,yourpage, price, myPage])
+  console.log('clickProduct',clickProduct)
+  console.log('id',id)
   const doIncrease = () => {
     dispatch(increase())
     setSearchParams({
@@ -134,6 +142,7 @@ const Main = memo(({anyFunc}) => {
     formData.append('name', e.target.productName.value)
     formData.append('category', e.target.productCategory.value)
     formData.append('price', e.target.price.value)
+    console.log(photo)
     if(photo){
       formData.append('photo', photo)
     }
@@ -172,7 +181,7 @@ const Main = memo(({anyFunc}) => {
   }
   
   const changeProductPhoto = (e) => {
-    setPhoto(e.target.files[0][0])
+    setPhoto(e.target.files[0])
   }
   const allProduct = () => {
       return(
