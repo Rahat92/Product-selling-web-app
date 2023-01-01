@@ -1,21 +1,23 @@
 import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "./actions";
+import styles from './Products.module.css';
 import CreateProduct from "./CreateProduct"
 import Modal from "./Modal";
-
-const Products = memo(({ setClickProduct,yourpage,deleteOneProduct, createProduct, postProduct, changeProductPhoto, doDecrease, doIncrease,clickProduct,id,product,setDeleteClick, deleteClick, getProduct, user, deleteProduct,sendProductDataToEditForm }) => {
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';const Products = memo(({ setClickProduct,yourpage,deleteOneProduct, createProduct, postProduct, changeProductPhoto, doDecrease, doIncrease,clickProduct,id,product,setDeleteClick, deleteClick, getProduct, user, deleteProduct,sendProductDataToEditForm }) => {
   const {products,docNum, currentPage, totalPage } = useSelector(state=> state.allProduct)
   const selector  = useSelector(state => state)
 
   return(
-    <div style={{flex: '0 0 20%'}}>
-        <h1>Products: {docNum}</h1>
+    <div style={{flex: '0 0 20%', alignSelf:'stretch'}}>
+        <h1 style = {{letterSpacing:'-.5px'}}>Products: {docNum}</h1>
         <ul style={{listStyle: 'none'}}>
           {products.length>0?products.map(el=>{
             return (
               <h4 style={{padding:'.3rem'}} className= {clickProduct&& el.id === product.id?'active_product':''}>
-                <li key = {el.id}>{el.name.toUpperCase()} <button key = {el.id} onClick={()=>getProduct(el.id)}>Detail</button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}>Delete</button><button onClick={()=>sendProductDataToEditForm(el.name, el.price, el.photo, el.category, el.id)}>Edit</button></>)}</li>
+                <li style = {{display:'flex', alignItems:'center', gap:'5px'}} key = {el.id}>{el.name.toUpperCase()} <button key = {el.id} onClick={()=>getProduct(el.id)}><InfoOutlinedIcon className = 'icon'/></button>{user&&user.role === 'admin'&&(<><button onClick={()=>deleteProduct(el.id)}><DeleteIcon className = 'icon'/></button><button onClick={()=>sendProductDataToEditForm(el.name, el.price, el.photo, el.category, el.id)}><EditIcon className = 'icon' /></button></>)}</li>
                 {deleteClick&&id===el._id?<Modal setClickProduct = {setClickProduct} item = {el} id = {el._id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneProduct} />:''}
               </h4>
             )

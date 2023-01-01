@@ -6,6 +6,8 @@ import UpdateReviewForm from "./UpdateReviewForm"
 import './ReviewSection.css';
 import { useDispatch, useSelector } from "react-redux"
 import { createReview, getProductReviews } from "./actions"
+import DeleteIcon from '@mui/icons-material/Delete';
+
 const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,clickProduct, createUserReview, setCreateUserReview, deleteOneReview,setDeleteClick, deleteClick,editReviewClick, editMyReview, moreComment,Loading, reviewEditCancel, editReview, updateMyReview}) => {
   const dispatch = useDispatch()
   const { reviews, result, recentNum,totalReview, currentPage,isLoading } = useSelector(state=>state.reviews);
@@ -76,7 +78,7 @@ const ReviewSection = memo(({ getProduct, productClick, setId,id, productChange,
               )}
               {user&&user.role === 'admin'&&(
                 <div>
-                  <button onClick= {()=>deleteReview(el._id)} style={{position: 'absolute', top: '.5rem', right:'.5rem'}} type='button'>delete</button>
+                  <button onClick= {()=>deleteReview(el._id)} style={{position: 'absolute', top: '.5rem', right:'.5rem'}} type='button'><DeleteIcon /></button>
                   {deleteClick&& el._id === id? <Modal productId={product.id} id = {id} setDeleteClick = {setDeleteClick} deleteClick = {deleteClick} deleteOne = {deleteOneReview} />:''}
                 </div>
               )}

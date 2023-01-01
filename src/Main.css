@@ -8,8 +8,8 @@
 }
 /* .comment:nth-child(2){
   border-top: none;
-} */
-/* .comment:not(:last-child){
+} 
+.comment:not(:last-child){
   border-bottom: none;
 } */
 .user_comment{
@@ -19,23 +19,24 @@
   background: rgba(300,100,150,.1);
 }
 .active_product{
-  color:red;
+  color:green;
   position: relative;
-  font-weight: 700;
+  font-weight: 600;
 }
 .active_product::before{
   content:'.';
   font-size: 50px;
   line-height: 0;
   position: absolute;
-  top:-5px;
+  top:4.5px;
   display: table;
   width:10px;
   height: 10px;
-  left: -1rem;
+  left: -.8rem;
 }
 .main{
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  gap:1.5rem;
 }

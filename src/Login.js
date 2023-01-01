@@ -30,7 +30,7 @@ const Login = () => {
     navigate('/')
   }
   return(
-    <div style={{position:'absolute', margin:'3rem'}}>
+    <div style = {{marginTop:'2rem'}}>
         <form onSubmit={loginuser}>
         Email
         <input type = 'email' name = 'email' /><br />

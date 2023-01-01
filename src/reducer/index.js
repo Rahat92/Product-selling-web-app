@@ -452,7 +452,7 @@ const users = (state = {users:[]}, action) => {
       copiedList[index] = action.payload;
       console.log(copiedList)
       return{
-        // ...state,
+        ...state,
         loading: false,
         users: copiedList
       }
